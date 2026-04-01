@@ -74,9 +74,17 @@
   --sidebar-ring: #B8860B;
 }
 
+@theme {
+  --font-brandon: var(--font-brandon-grotesque), system-ui, sans-serif;
+  --font-monoCustom: var(--font-simply-mono), monospace;
+  --font-sans: var(--font-brandon-grotesque), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-kapraneuepro: var(--font-kapraneuepro-var), sans-serif;
+  --font-syndicatgrotesk: var(--font-syndicatgrotesk), sans-serif;
+}
+
 @theme inline {
   --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -119,13 +127,42 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
+
+  p {
+    @apply font-syndicatgrotesk leading-relaxed;
+  }
+}
+
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Apply marquee animation */
+.animate-marquee-ltr {
+  display: inline-flex;
+  animation: marquee-ltr 40s linear infinite;
+  white-space: nowrap;
 }

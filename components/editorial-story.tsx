@@ -1,20 +1,25 @@
 'use client'
+import Image from 'next/image'
 
 export function EditorialStory() {
   return (
     <section className="w-full py-16 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Image */}
           <div className="order-2 lg:order-1 relative">
-            <div className="aspect-[3/4] bg-gradient-to-br from-muted-taupe to-soft-cream rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 flex items-center justify-center text-muted-taupe opacity-40">
-                <span className="font-serif italic text-2xl">Story Image</span>
-              </div>
+            <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src="/images/men-bangle.jpg"
+                alt="Sri Devi Kangan Story"
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                priority
+              />
             </div>
           </div>
 
-          {/* Content */}
+
           <div className="order-1 lg:order-2 space-y-6">
             <span className="inline-block font-sans text-xs uppercase tracking-widest text-deep-gold font-semibold">
               Our Story

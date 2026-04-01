@@ -78,14 +78,14 @@ export function ProductCard({ id, name, price, weight = '1 gram', image, isDark 
         </h3>
 
         <div className="flex items-center gap-2">
-          <span className={`text-xs font-sans uppercase tracking-widest px-3 py-1 rounded-full ${
+          <span className={`text-xs font-syndicatgrotesk font-medium uppercase tracking-widest px-3 py-1 rounded-full ${
             isDark ? 'bg-gray-800 text-soft-cream' : 'bg-warm-beige text-warm-black'
           }`}>
             {weight}
           </span>
         </div>
 
-        <p className={`font-sans text-lg font-semibold ${isDark ? 'text-white' : 'text-warm-black'}`}>
+        <p className={`font-syndicatgrotesk text-lg font-bold ${isDark ? 'text-white' : 'text-warm-black'}`}>
           ₹{price.toLocaleString()}
         </p>
 
@@ -94,7 +94,7 @@ export function ProductCard({ id, name, price, weight = '1 gram', image, isDark 
           <button 
             onClick={() => handleAddToCart(false)}
             disabled={adding}
-            className={`flex-1 py-3 px-2 font-sans font-bold uppercase tracking-wider text-xs transition-all duration-300 rounded disabled:opacity-50 disabled:cursor-wait ${
+            className={`flex-1 py-3 px-2 font-syndicatgrotesk font-bold uppercase tracking-wider text-xs transition-all duration-300 rounded disabled:opacity-50 disabled:cursor-wait ${
             isDark 
               ? 'bg-transparent border-2 border-white text-white hover:bg-white hover:text-black' 
               : 'bg-transparent border-2 border-black text-black hover:bg-black hover:text-white'
@@ -105,7 +105,7 @@ export function ProductCard({ id, name, price, weight = '1 gram', image, isDark 
           <button 
             onClick={() => handleAddToCart(true)}
             disabled={adding}
-            className={`flex-1 py-3 px-2 font-sans font-bold uppercase tracking-wider text-xs transition-all duration-300 rounded shadow-md disabled:opacity-50 disabled:cursor-wait ${
+            className={`flex-1 py-3 px-2 font-syndicatgrotesk font-bold uppercase tracking-wider text-xs transition-all duration-300 rounded shadow-md disabled:opacity-50 disabled:cursor-wait ${
             isDark 
               ? 'bg-white text-black hover:bg-gray-200' 
               : 'bg-black text-white hover:bg-gray-800'

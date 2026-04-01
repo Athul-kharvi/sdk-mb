@@ -77,7 +77,8 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 min-w-[120px]">
             <Link href="/" className="inline-block">
-              <h1 className="text-lg sm:text-xl md:text-2xl font-serif italic text-warm-black leading-tight hover:text-deep-gold transition-colors">
+              <h1 className="text-lg sm:text-xl md:text-2xl uppercase font-brandon font-black
+ text-warm-black leading-tight hover:text-deep-gold transition-colors">
                 Sri Devi Kangan
               </h1>
             </Link>
@@ -89,8 +90,25 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link}
-                  href={`#${link.toLowerCase().replace(' ', '-')}`}
-                  className="text-[10px] sm:text-xs font-sans uppercase tracking-widest text-warm-black hover:text-deep-gold transition-colors whitespace-nowrap"
+                  href={`/category/${link.toLowerCase().replace(' ', '-')}`}
+                  className="
+                  relative 
+                  text-[10px] md:text-sm 
+                  font-syndicatgrotesk 
+                  antialiased
+                  font-normal
+                  uppercase  
+                  text-warm-black 
+                  whitespace-nowrap
+                  transition-all duration-300 ease-in-out
+                  
+                  bg-gradient-to-r from-current to-current 
+                  bg-[length:0%_1px] bg-no-repeat bg-left-bottom
+                  hover:bg-[length:100%_1px]
+
+                  hover:text-deep-gold
+                  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-deep-gold focus-visible:ring-offset-2
+                "
                 >
                   {link}
                 </a>
@@ -112,7 +130,7 @@ export function Navbar() {
               </span>
             </button>
 
-            <button 
+            <button
               onClick={() => setIsOpen(true)}
               className="relative p-1 sm:p-2 text-warm-black hover:text-deep-gold transition-colors"
             >
@@ -141,7 +159,7 @@ export function Navbar() {
             ) : (
               <a
                 href="/signin"
-                className="hidden sm:inline text-xs uppercase tracking-widest text-warm-black hover:text-deep-gold"
+                className="hidden sm:inline text-xs uppercase font-normal text-warm-black hover:text-deep-gold"
               >
                 Sign In
               </a>
@@ -164,7 +182,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a
                   key={link}
-                  href={`#${link.toLowerCase().replace(' ', '-')}`}
+                  href={`/category/${link.toLowerCase().replace(' ', '-')}`}
                   className="text-sm font-sans text-warm-black hover:text-deep-gold px-2 py-1"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

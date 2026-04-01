@@ -45,14 +45,14 @@ export function Testimonials() {
               </div>
 
               {/* Review */}
-              <p className="font-sans text-base text-gray-700 italic mb-4 leading-relaxed">
+              <p className="font-syndicatgrotesk text-base text-gray-700 italic mb-4 leading-relaxed">
                 "{testimonial.text}"
               </p>
 
               {/* Name and City */}
               <div className="border-t border-border-light pt-4">
-                <p className="font-sans font-semibold text-warm-black">{testimonial.name}</p>
-                <p className="font-sans text-sm text-gray-600">{testimonial.city}</p>
+                <p className="font-syndicatgrotesk font-bold text-warm-black">{testimonial.name}</p>
+                <p className="font-syndicatgrotesk text-sm text-gray-600">{testimonial.city}</p>
               </div>
             </div>
           ))}

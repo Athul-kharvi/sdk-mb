@@ -26,12 +26,12 @@ export default async function Home() {
       <GoldRateTicker />
       <CategoryGrid />
       <EditorialStory />
-      
+
       {categories.map((category, index) => {
         const categoryProducts = products?.filter(p => p.category_id === category.id) || []
-        
+
         if (categoryProducts.length === 0) return null
-        
+
         return (
           <div key={category.id} id={category.name.toLowerCase().replace(' ', '-')}>
             <ProductScroll
@@ -41,14 +41,14 @@ export default async function Home() {
               products={categoryProducts.map(p => {
                 let parsedImage = undefined
                 if (p.image) {
-                    try {
-                        const arr = JSON.parse(p.image)
-                        if (Array.isArray(arr) && arr.length > 0) {
-                            parsedImage = arr[0]
-                        }
-                    } catch {
-                        parsedImage = p.image
+                  try {
+                    const arr = JSON.parse(p.image)
+                    if (Array.isArray(arr) && arr.length > 0) {
+                      parsedImage = arr[0]
                     }
+                  } catch {
+                    parsedImage = p.image
+                  }
                 }
                 return {
                   id: p.id,
@@ -65,7 +65,7 @@ export default async function Home() {
 
       <TrustSignals />
       <Testimonials />
-      <InstagramStrip />
+      {/* <InstagramStrip /> */}
       <Newsletter />
       <Footer />
       <FloatingWhatsApp />

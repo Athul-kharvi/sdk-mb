@@ -33,10 +33,10 @@ export function TrustSignals() {
               <div className="flex justify-center text-4xl text-deep-gold mb-4">
                 {signal.icon}
               </div>
-              <h3 className="font-sans font-bold text-base sm:text-lg text-warm-black">
+              <h3 className="font-syndicatgrotesk font-bold text-base sm:text-lg text-warm-black">
                 {signal.label}
               </h3>
-              <p className="font-sans text-sm text-gray-600">
+              <p className="font-syndicatgrotesk text-sm text-gray-600">
                 {signal.description}
               </p>
             </div>
