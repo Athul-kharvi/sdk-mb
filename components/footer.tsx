@@ -1,5 +1,15 @@
 'use client'
 
+import Link from 'next/link'
+
+const POLICY_LINKS = [
+  { label: 'Shipping Policy',    href: '/policies/shipping' },
+  { label: 'Return & Refund',    href: '/policies/returns' },
+  { label: 'Track Order',        href: '/orders' },
+  { label: 'Privacy Policy',     href: '/policies/privacy' },
+  { label: 'Terms of Service',   href: '/policies/terms' },
+]
+
 export function Footer() {
   return (
     <footer className="bg-site-black border-t border-border-gold">
@@ -92,14 +102,14 @@ export function Footer() {
             </h4>
             <div className="w-8 h-px bg-rich-gold/50" />
             <ul className="space-y-2.5">
-              {['Shipping Policy', 'Return & Refund', 'Track Order', 'Privacy Policy', 'Terms of Service'].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
+              {POLICY_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
                     className="font-syndicatgrotesk text-xs text-muted-taupe hover:text-rich-gold transition-colors duration-200"
                   >
-                    {item}
-                  </a>
+                    {label}
+                  </Link>
                 </li>
               ))}
             </ul>

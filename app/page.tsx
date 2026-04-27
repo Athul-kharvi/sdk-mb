@@ -34,7 +34,7 @@ export default async function Home() {
             <ProductScroll
               title={category.name}
               subtitle="One Gram Gold"
-              viewAllLink={`#${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+              viewAllLink={`/category/${category.slug || category.name.toLowerCase().replace(/\s+/g, '-')}`}
               isDark={index % 2 === 0}
               products={categoryProducts.map(p => {
                 let parsedImage: string | undefined = undefined

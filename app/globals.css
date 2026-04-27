@@ -150,6 +150,16 @@
   }
 }
 
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 @keyframes marquee-ltr {
   0% {
     transform: translateX(-50%);
@@ -165,4 +175,16 @@
   display: inline-flex;
   animation: marquee-ltr 40s linear infinite;
   white-space: nowrap;
+}
+
+/* Keep autofill background consistent with light form inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1A1A1A !important;
+  caret-color: #1A1A1A;
+  transition: background-color 9999s ease-in-out 0s;
 }

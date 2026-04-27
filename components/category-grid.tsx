@@ -37,13 +37,6 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
   const items = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
 
-  const scrollToCategory = (slug: string) => {
-    const el = document.getElementById(slug)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
-
   return (
     <section className="w-full bg-site-black py-16 sm:py-20" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,11 +66,12 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {items.map((cat, i) => {
+            const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
             const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
             return (
-              <motion.button
+              <motion.a
                 key={cat.id}
-                onClick={() => scrollToCategory(cat.slug)}
+                href={`/category/${slug}`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: i * 0.12, ease: 'easeOut' }}
@@ -122,7 +116,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 <div className="absolute inset-0 border border-transparent group-hover:border-rich-gold/40 transition-all duration-[400ms] pointer-events-none" />
                 <div className="absolute top-3 right-3 w-6 h-6 border-t border-r border-rich-gold/0 group-hover:border-rich-gold/60 transition-all duration-[400ms] pointer-events-none" />
                 <div className="absolute bottom-3 left-3 w-6 h-6 border-b border-l border-rich-gold/0 group-hover:border-rich-gold/60 transition-all duration-[400ms] pointer-events-none" />
-              </motion.button>
+              </motion.a>
             )
           })}
         </div>

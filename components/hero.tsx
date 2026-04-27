@@ -30,16 +30,11 @@ export function Hero() {
         <div className="grid grid-cols-[1fr_auto_1fr] gap-10 items-center">
 
           {/* Left image */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-            className="relative"
-          >
+          <div className="relative animate-[fadeInLeft_0.85s_ease-out_forwards]">
             <div className="relative group overflow-hidden" style={{ aspectRatio: '3/4' }}>
               <div className="absolute -inset-2 border border-border-gold/40 pointer-events-none z-10" />
               <div className="absolute -inset-4 border border-border-gold/20 pointer-events-none z-10" />
-              <img src="/images/ring.jpg" alt="One Gram Gold Rings" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src="/images/ring.jpg" alt="One Gram Gold Rings" fetchPriority="high" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-site-black/70 via-transparent to-transparent" />
               <div className="absolute top-4 left-4 z-20">
                 <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} className="bg-rich-gold text-site-black px-3 py-1.5">
@@ -52,7 +47,7 @@ export function Hero() {
                 <p className="font-brandon text-lg font-black uppercase text-ivory leading-tight mt-0.5">Rings</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Center text */}
           <div className="flex flex-col items-center text-center space-y-6 w-[420px]">
@@ -102,16 +97,11 @@ export function Hero() {
           </div>
 
           {/* Right image */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-            className="relative"
-          >
+          <div className="relative animate-[fadeInRight_0.85s_ease-out_forwards]">
             <div className="relative group overflow-hidden" style={{ aspectRatio: '3/4' }}>
               <div className="absolute -inset-2 border border-border-gold/40 pointer-events-none z-10" />
               <div className="absolute -inset-4 border border-border-gold/20 pointer-events-none z-10" />
-              <img src="/images/necklace.jpg" alt="One Gram Gold Necklaces" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src="/images/necklace.jpg" alt="One Gram Gold Necklaces" fetchPriority="high" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-site-black/70 via-transparent to-transparent" />
               <div className="absolute top-4 right-4 z-20">
                 <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
@@ -125,7 +115,7 @@ export function Hero() {
                 <p className="font-brandon text-lg font-black uppercase text-ivory leading-tight mt-0.5">Necklaces</p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll indicator */}

@@ -5,116 +5,194 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import Link from 'next/link'
 
-export default function UserOrders() {
-    const router = useRouter()
-    const [orders, setOrders] = useState<any[]>([])
-    const [loading, setLoading] = useState(true)
+const STATUS_STYLES: Record<string, string> = {
+  pending:    'bg-amber-500/10 border-amber-500/30 text-amber-400',
+  processing: 'bg-blue-500/10 border-blue-500/30 text-blue-400',
+  shipped:    'bg-indigo-500/10 border-indigo-500/30 text-indigo-400',
+  delivered:  'bg-green-500/10 border-green-500/30 text-green-400',
+  paid:       'bg-green-500/10 border-green-500/30 text-green-400',
+  cancelled:  'bg-red-500/10 border-red-500/30 text-red-400',
+}
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (!session) {
-                router.push('/signin')
-                return
-            }
+function getFirstImage(raw: string | undefined): string | undefined {
+  if (!raw) return undefined
+  try {
+    const arr = JSON.parse(raw)
+    if (Array.isArray(arr) && arr.length > 0) return arr[0]
+  } catch {}
+  return raw
+}
 
-            try {
-                const res = await fetch('/api/user/orders', {
-                    headers: { Authorization: `Bearer ${session.access_token}` }
-                })
-                const data = await res.json()
-                if (data.data) {
-                    setOrders(data.data)
-                }
-            } catch (error) {
-                console.error('Failed to fetch orders:', error)
-            } finally {
-                setLoading(false)
-            }
-        }
+export default function OrdersPage() {
+  const router = useRouter()
+  const [orders, setOrders] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [expanded, setExpanded] = useState<string | null>(null)
 
-        fetchOrders()
-    }, [router])
+  useEffect(() => {
+    const init = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) { router.push('/signin'); return }
 
+      try {
+        const res = await fetch('/api/user/orders', {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        })
+        const data = await res.json()
+        setOrders(data.data || [])
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    init()
+  }, [])
+
+  if (loading) {
     return (
-        <div className="min-h-screen bg-[#faf9f6]">
-            <Navbar />
-            <main className="max-w-4xl mx-auto p-4 sm:p-8">
-                <h1 className="text-3xl font-serif italic text-warm-black mb-8">My Orders</h1>
-
-                {loading ? (
-                    <div className="text-center p-10 font-sans text-gray-500 tracking-widest uppercase text-sm">Loading orders...</div>
-                ) : orders.length === 0 ? (
-                    <div className="bg-white p-12 text-center rounded-xl border border-gray-100 shadow-sm">
-                        <p className="text-gray-500 font-sans tracking-wide">You haven't placed any orders yet.</p>
-                        <button 
-                            onClick={() => router.push('/')}
-                            className="mt-6 px-6 py-2 bg-warm-black text-white font-sans uppercase tracking-widest text-xs rounded hover:bg-gray-800 transition-colors"
-                        >
-                            Start Shopping
-                        </button>
-                    </div>
-                ) : (
-                    <div className="space-y-6">
-                        {orders.map(order => (
-                            <div key={order.id} className="bg-white border text-warm-black border-gray-100 rounded-xl overflow-hidden shadow-sm">
-                                <div className="bg-warm-beige/30 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-100 gap-4">
-                                    <div>
-                                        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">Order Placed</p>
-                                        <p className="font-sans font-medium">{new Date(order.created_at).toLocaleDateString()}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">Total</p>
-                                        <p className="font-sans font-medium">₹{order.total.toLocaleString()}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">Status</p>
-                                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider ${
-                                            order.status === 'paid' ? 'bg-green-100 text-green-700' :
-                                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                            'bg-gray-100 text-gray-700'
-                                        }`}>
-                                            {order.status}
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div className="p-4 sm:p-6">
-                                    <ul className="divide-y divide-gray-100">
-                                        {order.order_items.map((item: any) => {
-                                            let imgUrl = undefined
-                                            if (item.products.image) {
-                                                try {
-                                                    const arr = JSON.parse(item.products.image)
-                                                    if (Array.isArray(arr) && arr.length > 0) imgUrl = arr[0]
-                                                } catch { imgUrl = item.products.image }
-                                            }
-
-                                            return (
-                                                <li key={item.id} className="py-4 flex gap-4">
-                                                    <div className="h-20 w-20 shrink-0 bg-gray-50 rounded-md overflow-hidden border">
-                                                        {imgUrl ? (
-                                                            <img src={imgUrl} alt={item.products.name} className="h-full w-full object-cover" />
-                                                        ) : (
-                                                            <div className="h-full w-full flex items-center justify-center text-xs text-gray-400">No Img</div>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex-1 flex flex-col justify-center">
-                                                        <h3 className="font-serif text-lg">{item.products.name}</h3>
-                                                        <p className="text-sm font-sans text-gray-500 mt-1">₹{item.price.toLocaleString()} &times; {item.quantity}</p>
-                                                    </div>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </main>
-            <Footer />
-        </div>
+      <div className="min-h-screen bg-site-black text-ivory flex items-center justify-center gap-2">
+        {[0, 150, 300].map(d => (
+          <span key={d} className="w-2 h-2 bg-rich-gold rounded-full animate-bounce" style={{ animationDelay: `${d}ms` }} />
+        ))}
+      </div>
     )
+  }
+
+  return (
+    <div className="min-h-screen bg-site-black text-ivory">
+      <Navbar />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+        {/* Header */}
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-px bg-gradient-to-r from-transparent to-rich-gold" />
+            <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold/80">Account</span>
+            <div className="w-10 h-px bg-gradient-to-l from-transparent to-rich-gold" />
+          </div>
+          <h1 className="font-brandon text-3xl sm:text-4xl font-black uppercase tracking-tight text-ivory">
+            My Orders
+          </h1>
+          <p className="font-syndicatgrotesk text-xs text-muted-taupe mt-1">
+            {orders.length} order{orders.length !== 1 ? 's' : ''} placed
+          </p>
+        </div>
+
+        {orders.length === 0 ? (
+          <div className="bg-[#111] border border-white/8 px-8 py-16 text-center">
+            <svg className="w-12 h-12 text-white/10 mx-auto mb-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <p className="font-syndicatgrotesk text-xs tracking-[0.15em] uppercase text-muted-taupe mb-6">
+              No orders yet
+            </p>
+            <Link
+              href="/"
+              className="inline-block px-8 py-3 bg-rich-gold text-[#0D0D0D] font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase hover:bg-[#B8860B] transition-colors"
+            >
+              Start Shopping
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {orders.map(order => {
+              const isOpen = expanded === order.id
+              return (
+                <div key={order.id} className="bg-[#111] border border-white/8 overflow-hidden">
+
+                  {/* Order header row — click to expand */}
+                  <button
+                    onClick={() => setExpanded(isOpen ? null : order.id)}
+                    className="w-full px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 text-left hover:bg-white/[0.02] transition-colors"
+                  >
+                    {/* Left: date + ID */}
+                    <div className="flex-1">
+                      <p className="font-syndicatgrotesk text-[9px] tracking-[0.2em] uppercase text-muted-taupe mb-0.5">
+                        {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                      <p className="font-mono text-[11px] text-ivory/60">#{order.id.slice(0, 8).toUpperCase()}</p>
+                    </div>
+
+                    {/* Middle: item count */}
+                    <div className="sm:w-32 text-left sm:text-center">
+                      <p className="font-syndicatgrotesk text-xs text-ivory/70">
+                        {order.order_items?.length || 0} item{(order.order_items?.length || 0) !== 1 ? 's' : ''}
+                      </p>
+                    </div>
+
+                    {/* Status */}
+                    <div className="sm:w-28 flex sm:justify-center">
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 border font-syndicatgrotesk text-[9px] tracking-[0.15em] uppercase ${STATUS_STYLES[order.status?.toLowerCase()] || STATUS_STYLES.pending}`}>
+                        <span className="w-1 h-1 rounded-full bg-current" />
+                        {order.status || 'pending'}
+                      </span>
+                    </div>
+
+                    {/* Total */}
+                    <div className="sm:w-28 text-right flex sm:justify-end items-center gap-3">
+                      <span className="font-brandon text-base font-black text-ivory">
+                        ₹{(order.total || 0).toLocaleString('en-IN')}
+                      </span>
+                      <svg
+                        className={`w-4 h-4 text-muted-taupe transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </button>
+
+                  {/* Expanded items */}
+                  {isOpen && (
+                    <div className="border-t border-white/8 px-5 py-4 space-y-4">
+                      {order.order_items?.map((item: any) => {
+                        const img = getFirstImage(item.products?.image)
+                        return (
+                          <div key={item.id} className="flex gap-4">
+                            <div className="w-16 h-16 shrink-0 bg-[#1A1A1A] overflow-hidden">
+                              {img ? (
+                                <img src={img} alt={item.products?.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <svg className="w-5 h-5 text-white/15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                  </svg>
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-syndicatgrotesk text-xs text-ivory truncate">{item.products?.name || 'Product'}</p>
+                              <p className="font-syndicatgrotesk text-[10px] text-muted-taupe mt-0.5">Qty: {item.quantity}</p>
+                            </div>
+                            <p className="font-brandon text-sm font-black text-ivory whitespace-nowrap">
+                              ₹{((item.price || 0) * item.quantity).toLocaleString('en-IN')}
+                            </p>
+                          </div>
+                        )
+                      })}
+
+                      {order.address && (
+                        <div className="pt-3 border-t border-white/8">
+                          <p className="font-syndicatgrotesk text-[9px] tracking-[0.2em] uppercase text-muted-taupe mb-1">Delivery To</p>
+                          <p className="font-syndicatgrotesk text-[10px] text-ivory/70 leading-relaxed">
+                            {order.address.split(' | ').map((s: string) => s.replace(/^[^:]+: /, '')).join(', ')}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      <Footer />
+    </div>
+  )
 }

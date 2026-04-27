@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import localFont from "next/font/local";
@@ -10,6 +9,7 @@ const brandon = localFont({
   ],
   variable: '--font-brandon-grotesque',
   display: 'swap',
+  preload: true,
 })
 
 const syndicatgrotesk = localFont({
@@ -17,39 +17,30 @@ const syndicatgrotesk = localFont({
     { path: './fonts/syndicatgrotesk/syndicatgrotesk-regular.woff2', weight: '400', style: 'normal' },
   ],
   variable: '--font-syndicatgrotesk',
+  display: 'swap',
+  preload: true,
 })
 
 const simplyMono = localFont({
   src: [
     { path: './fonts/simply-mono/simplymono-regular.woff2', weight: '400', style: 'normal' },
-    { path: './fonts/simply-mono/simplymono-bold.woff2', weight: '700', style: 'normal' },
   ],
   variable: '--font-simply-mono',
-  display: 'swap',
+  display: 'optional',
+  preload: false,
 })
 
 const kapraneuepro = localFont({
   src: [
     { path: './fonts/kapraneuepro/kapraneuepro.woff2', weight: '400', style: 'normal' },
   ],
-  variable: '--font-kapraneuepro',  // ← renamed
-  display: 'swap',
-})
-
-
-const cormorantGaramond = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: '--font-serif',
-  weight: ['300', '400', '500', '600', '700']
-})
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: '--font-sans',
-  weight: ['400', '500', '700']
+  variable: '--font-kapraneuepro',
+  display: 'optional',
+  preload: false,
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sridevik.in'),
   title: 'Sri Devi Kangan - One Gram Gold Jewelry',
   description: 'Handcrafted one-gram gold jewelry for the modern Indian woman. BIS Hallmarked, free shipping, and easy returns.',
   // generator: 'v0.app',
@@ -80,15 +71,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`
-    ${brandon.variable}
-    ${simplyMono.variable}
-    ${cormorantGaramond.variable}
-    ${dmSans.variable}
-    ${kapraneuepro.variable}
-    ${syndicatgrotesk.variable}
-  `}
+      className={`${brandon.variable} ${syndicatgrotesk.variable} ${simplyMono.variable} ${kapraneuepro.variable}`}
     >
+      <head>
+        <link rel="preconnect" href="https://gmutwwuglrhyvcpzealx.supabase.co" />
+        <link rel="dns-prefetch" href="https://gmutwwuglrhyvcpzealx.supabase.co" />
+      </head>
       <body className="font-brandon">
         {children}
         <Analytics />

@@ -12,10 +12,21 @@ import { CartDrawer } from '@/components/cart-drawer'
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const [session, setSession] = useState<any>(null)
-  const [navLinks, setNavLinks] = useState<string[]>([])
+  const [navLinks, setNavLinks] = useState<{ name: string; slug: string }[]>([])
   const router = useRouter()
   const { items, setIsOpen, fetchCart } = useCartStore()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    const q = searchQuery.trim()
+    if (!q) return
+    setIsSearchOpen(false)
+    setSearchQuery('')
+    router.push(`/?search=${encodeURIComponent(q)}`)
+  }
 
   useEffect(() => {
     const getSession = async () => {
@@ -38,10 +49,18 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setIsSearchOpen(false); setSearchQuery('') }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
+
+  useEffect(() => {
     const load = async () => {
       try {
         const cats = await categoryService.getAll()
-        setNavLinks(cats.map((c) => c.name))
+        setNavLinks(cats.map((c) => ({ name: c.name, slug: c.slug || c.name.toLowerCase().replace(/\s+/g, '-') })))
       } catch {}
     }
     load()
@@ -90,18 +109,18 @@ export function Navbar() {
 
             {/* Desktop category nav — reads from Supabase */}
             <div className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4 mx-6">
-              {navLinks.map((link) => (
+              {navLinks.map(({ name, slug }) => (
                 <a
-                  key={link}
-                  href={`/category/${link.toLowerCase().replace(/\s+/g, '-')}`}
+                  key={slug}
+                  href={`/category/${slug}`}
                   className="group relative px-2 py-1 font-syndicatgrotesk text-[10px] lg:text-xs tracking-[0.14em] uppercase text-muted-taupe hover:text-rich-gold transition-colors duration-200 whitespace-nowrap"
                 >
-                  {link}
+                  {name}
                   <span className="absolute bottom-0 left-0 w-0 h-px bg-rich-gold group-hover:w-full transition-all duration-300" />
                 </a>
               ))}
               <a
-                href="/category/new-arrivals"
+                href="/"
                 className="px-2 py-1 font-syndicatgrotesk text-[10px] lg:text-xs tracking-[0.14em] uppercase text-rich-gold font-semibold whitespace-nowrap"
               >
                 New In
@@ -110,11 +129,19 @@ export function Navbar() {
 
             {/* Right icons */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <button className="p-2 text-muted-taupe hover:text-rich-gold transition-colors" aria-label="Search">
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 text-muted-taupe hover:text-rich-gold transition-colors"
+                aria-label="Search"
+              >
                 <Search size={17} />
               </button>
 
-              <button className="hidden sm:flex p-2 text-muted-taupe hover:text-rich-gold transition-colors" aria-label="Wishlist">
+              <button
+                onClick={() => session ? router.push('/orders') : router.push('/signin')}
+                className="hidden sm:flex p-2 text-muted-taupe hover:text-rich-gold transition-colors"
+                aria-label="Wishlist / Saved"
+              >
                 <Heart size={17} />
               </button>
 
@@ -162,18 +189,18 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-card-dark">
             <div className="px-4 py-4 space-y-0.5">
-              {navLinks.map((link) => (
+              {navLinks.map(({ name, slug }) => (
                 <a
-                  key={link}
-                  href={`/category/${link.toLowerCase().replace(/\s+/g, '-')}`}
+                  key={slug}
+                  href={`/category/${slug}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-3 py-2.5 font-syndicatgrotesk text-xs tracking-[0.15em] uppercase text-muted-taupe hover:text-rich-gold transition-colors"
                 >
-                  {link}
+                  {name}
                 </a>
               ))}
               <a
-                href="/category/new-arrivals"
+                href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2.5 font-syndicatgrotesk text-xs tracking-[0.15em] uppercase text-rich-gold font-semibold"
               >
@@ -200,6 +227,42 @@ export function Navbar() {
         )}
       </nav>
       <CartDrawer />
+
+      {/* Search overlay */}
+      {isSearchOpen && (
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-24 px-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+            onClick={() => { setIsSearchOpen(false); setSearchQuery('') }}
+          />
+          {/* Search box */}
+          <div className="relative w-full max-w-lg">
+            <form onSubmit={handleSearch} className="flex items-center bg-[#111] border border-white/15 focus-within:border-rich-gold/60 transition-colors">
+              <Search size={16} className="ml-4 text-muted-taupe shrink-0" />
+              <input
+                autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search jewellery…"
+                className="flex-1 px-3 py-4 bg-transparent font-syndicatgrotesk text-sm text-ivory placeholder-white/30 outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => { setIsSearchOpen(false); setSearchQuery('') }}
+                className="p-4 text-muted-taupe hover:text-ivory transition-colors"
+                aria-label="Close search"
+              >
+                <X size={16} />
+              </button>
+            </form>
+            <p className="mt-2 font-syndicatgrotesk text-[10px] text-white/30 text-center">
+              Press Enter to search · Esc to close
+            </p>
+          </div>
+        </div>
+      )}
     </>
   )
 }
