@@ -7,7 +7,6 @@ import { EditorialStory } from '@/components/editorial-story'
 import { ProductScroll } from '@/components/product-scroll'
 import { TrustSignals } from '@/components/trust-signals'
 import { Testimonials } from '@/components/testimonials'
-import { InstagramStrip } from '@/components/instagram-strip'
 import { Newsletter } from '@/components/newsletter'
 import { Footer } from '@/components/footer'
 import { FloatingWhatsApp } from '@/components/floating-whatsapp'
@@ -19,33 +18,30 @@ export default async function Home() {
   const products = await ProductService.getProducts()
 
   return (
-    <main className="w-full overflow-hidden bg-white">
+    <main className="w-full overflow-hidden bg-site-black">
       <AnnouncementBar />
       <Navbar />
       <Hero />
       <GoldRateTicker />
       <CategoryGrid />
-      <EditorialStory />
 
       {categories.map((category, index) => {
         const categoryProducts = products?.filter(p => p.category_id === category.id) || []
-
         if (categoryProducts.length === 0) return null
 
         return (
-          <div key={category.id} id={category.name.toLowerCase().replace(' ', '-')}>
+          <div key={category.id} id={category.name.toLowerCase().replace(/\s+/g, '-')}>
             <ProductScroll
               title={category.name}
-              viewAllLink={`#${category.name.toLowerCase().replace(' ', '-')}`}
-              isDark={index % 2 === 1}
+              subtitle="One Gram Gold"
+              viewAllLink={`#${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+              isDark={index % 2 === 0}
               products={categoryProducts.map(p => {
-                let parsedImage = undefined
+                let parsedImage: string | undefined = undefined
                 if (p.image) {
                   try {
                     const arr = JSON.parse(p.image)
-                    if (Array.isArray(arr) && arr.length > 0) {
-                      parsedImage = arr[0]
-                    }
+                    if (Array.isArray(arr) && arr.length > 0) parsedImage = arr[0]
                   } catch {
                     parsedImage = p.image
                   }
@@ -55,7 +51,7 @@ export default async function Home() {
                   name: p.name,
                   price: p.price,
                   weight: '1 gram',
-                  image: parsedImage
+                  image: parsedImage,
                 }
               })}
             />
@@ -63,9 +59,9 @@ export default async function Home() {
         )
       })}
 
+      <EditorialStory />
       <TrustSignals />
       <Testimonials />
-      {/* <InstagramStrip /> */}
       <Newsletter />
       <Footer />
       <FloatingWhatsApp />

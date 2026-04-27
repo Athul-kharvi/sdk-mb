@@ -1,45 +1,64 @@
 'use client'
 
+import { ShieldCheck, Truck, RotateCcw, Lock } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+
+const signals = [
+  {
+    Icon: ShieldCheck,
+    label: 'BIS Hallmarked',
+    description: 'Certified pure one-gram gold',
+  },
+  {
+    Icon: Truck,
+    label: 'Free Shipping',
+    description: 'On all orders above ₹999',
+  },
+  {
+    Icon: RotateCcw,
+    label: 'Easy Returns',
+    description: '7-day no-questions policy',
+  },
+  {
+    Icon: Lock,
+    label: 'Secure Payments',
+    description: 'UPI · Cards · Wallets',
+  },
+]
+
 export function TrustSignals() {
-  const signals = [
-    {
-      icon: '✓',
-      label: 'BIS Hallmarked',
-      description: 'Certified pure gold',
-    },
-    {
-      icon: '📦',
-      label: 'Free Shipping',
-      description: 'Orders above ₹999',
-    },
-    {
-      icon: '↺',
-      label: 'Easy Returns',
-      description: '7-day no questions',
-    },
-    {
-      icon: '🔒',
-      label: 'Secure Payments',
-      description: 'UPI · Cards · Wallets',
-    },
-  ]
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
 
   return (
-    <section className="w-full py-16 sm:py-20 bg-warm-beige">
+    <section className="w-full bg-card-dark border-y border-border-gold py-12 sm:py-14" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {signals.map((signal, index) => (
-            <div key={index} className="text-center space-y-3">
-              <div className="flex justify-center text-4xl text-deep-gold mb-4">
-                {signal.icon}
+          {signals.map(({ Icon, label, description }, i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: 'easeOut' }}
+              whileHover={{ y: -4 }}
+              className="flex flex-col items-center text-center gap-3 group cursor-default"
+            >
+              <motion.div
+                whileHover={{ boxShadow: '0 0 20px rgba(212,160,23,0.35)' }}
+                className="w-12 h-12 flex items-center justify-center border border-border-gold group-hover:border-rich-gold/70 transition-all duration-300"
+              >
+                <Icon size={20} className="text-rich-gold" strokeWidth={1.5} />
+              </motion.div>
+              <div>
+                <p className="font-brandon text-sm font-black uppercase tracking-wide text-ivory">
+                  {label}
+                </p>
+                <p className="font-syndicatgrotesk text-[11px] text-muted-taupe mt-0.5 leading-relaxed">
+                  {description}
+                </p>
               </div>
-              <h3 className="font-syndicatgrotesk font-bold text-base sm:text-lg text-warm-black">
-                {signal.label}
-              </h3>
-              <p className="font-syndicatgrotesk text-sm text-gray-600">
-                {signal.description}
-              </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
