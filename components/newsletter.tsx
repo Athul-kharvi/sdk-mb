@@ -28,7 +28,7 @@ export function Newsletter() {
           <div className="w-12 h-px bg-border-gold" />
         </div>
 
-        <h2 className="font-brandon text-3xl sm:text-4xl font-black uppercase tracking-tight text-ivory leading-none mb-3">
+        <h2 className="font-brandon text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-ivory leading-none mb-3">
           Join the<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-rich-gold to-light-gold">
             Inner Circle

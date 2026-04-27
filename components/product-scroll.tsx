@@ -81,7 +81,7 @@ export function ProductScroll({
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
-                className="w-52 sm:w-auto"
+                className="w-44 xs:w-48 sm:w-auto"
                 initial={{ opacity: 0, y: 40 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.55, delay: index * 0.08, ease: 'easeOut' }}

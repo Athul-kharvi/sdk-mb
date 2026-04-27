@@ -29,9 +29,9 @@ export function EditorialStory() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section className="w-full bg-site-black py-20 sm:py-28 overflow-hidden" ref={ref}>
+    <section className="w-full bg-site-black py-14 sm:py-20 lg:py-28 overflow-hidden" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
 
           {/* Image — left */}
           <motion.div
@@ -44,7 +44,7 @@ export function EditorialStory() {
             <div className="absolute -top-5 -left-5 w-3/4 h-3/4 border border-border-gold/35 pointer-events-none" />
             <div className="absolute -bottom-5 -right-5 w-3/4 h-3/4 border border-border-gold/20 pointer-events-none" />
 
-            <div className="relative aspect-[4/5] overflow-hidden">
+            <div className="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden">
               <Image
                 src="/images/men-bangle.jpg"
                 alt="Sri Devi Kangan — Craftsmanship"
@@ -87,7 +87,7 @@ export function EditorialStory() {
               </span>
             </div>
 
-            <h2 className="font-brandon text-4xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
+            <h2 className="font-brandon text-3xl sm:text-4xl lg:text-6xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
               Crafted With<br />
               <span
                 className="text-transparent bg-clip-text animate-shimmer-text"

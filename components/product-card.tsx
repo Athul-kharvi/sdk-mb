@@ -155,7 +155,7 @@ export function ProductCard({
             whileTap={{ scale: 0.95 }}
             onClick={() => handleAddToCart(false)}
             disabled={adding}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
+            className={`flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
               isDark
                 ? 'border border-border-gold/70 text-muted-taupe hover:border-rich-gold hover:text-rich-gold'
                 : 'border border-site-black/30 text-site-black hover:border-deep-gold hover:text-deep-gold'
@@ -168,7 +168,7 @@ export function ProductCard({
             whileTap={{ scale: 0.95 }}
             onClick={() => handleAddToCart(true)}
             disabled={adding}
-            className={`flex-1 py-2.5 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
+            className={`flex-1 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
               isDark
                 ? 'bg-rich-gold text-site-black hover:bg-light-gold'
                 : 'bg-site-black text-white hover:bg-deep-gold'

@@ -152,7 +152,7 @@ export function Footer() {
           <p className="font-syndicatgrotesk text-[10px] tracking-wider text-muted-taupe/70 text-center sm:text-left">
             © 2025 Sri Devi Kangan · All Rights Reserved · Made with love in India
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
             {['UPI', 'VISA', 'Mastercard', 'RuPay'].map((method) => (
               <span
                 key={method}
