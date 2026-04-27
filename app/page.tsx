@@ -23,14 +23,14 @@ export default async function Home() {
       <Navbar />
       <Hero />
       <GoldRateTicker />
-      <CategoryGrid />
+      <CategoryGrid categories={categories} />
 
       {categories.map((category, index) => {
         const categoryProducts = products?.filter(p => p.category_id === category.id) || []
         if (categoryProducts.length === 0) return null
 
         return (
-          <div key={category.id} id={category.name.toLowerCase().replace(/\s+/g, '-')}>
+          <div key={category.id} id={category.slug || category.name.toLowerCase().replace(/\s+/g, '-')}>
             <ProductScroll
               title={category.name}
               subtitle="One Gram Gold"
@@ -50,7 +50,8 @@ export default async function Home() {
                   id: p.id,
                   name: p.name,
                   price: p.price,
-                  weight: '1 gram',
+
+                  weight: (p as any).weight || '1 gram',
                   image: parsedImage,
                 }
               })}

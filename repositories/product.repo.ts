@@ -3,6 +3,8 @@ import { supabase } from '@/lib/supabase'
 export const ProductRepo = {
     getAll: () => supabase.from('products').select('*, categories(id, name, slug)').eq('is_active', true).order('created_at', { ascending: false }),
 
+    getAllAdmin: () => supabase.from('products').select('*, categories(id, name, slug)').order('created_at', { ascending: false }),
+
     getById: (id: string) =>
         supabase.from('products').select('*, categories(id, name, slug)').eq('id', id).single(),
 

@@ -1,4 +1,5 @@
 import { ProductService } from '@/services/product.service'
+import { ProductRepo } from '@/repositories/product.repo'
 import { isAdmin } from '@/lib/auth'
 
 export async function GET(req: Request) {
@@ -6,7 +7,9 @@ export async function GET(req: Request) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const data = await ProductService.getProducts()
+    // Admin sees ALL products including hidden ones
+    const { data, error } = await ProductRepo.getAllAdmin()
+    if (error) return Response.json({ error: error.message }, { status: 500 })
     return Response.json({ data })
 }
 

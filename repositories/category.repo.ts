@@ -7,4 +7,11 @@ export const categoryRepository = {
             .select("id, name, slug")
             .eq("is_active", true)
             .order("name"),
+
+    getAllWithImages: () =>
+        supabase
+            .from("categories")
+            .select("id, name, slug, image, count_label")
+            .eq("is_active", true)
+            .order("name"),
 }
