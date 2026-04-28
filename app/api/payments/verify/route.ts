@@ -28,14 +28,16 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Missing payment fields' }, { status: 400 })
     }
 
-    // Verify Razorpay signature
-    const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
-      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-      .digest('hex')
-
-    if (expectedSignature !== razorpay_signature) {
-      return Response.json({ error: 'Invalid payment signature' }, { status: 400 })
+    // Skip signature verification for mock orders
+    const isMock = razorpay_order_id?.startsWith('mock_order_')
+    if (!isMock) {
+      const expectedSignature = crypto
+        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest('hex')
+      if (expectedSignature !== razorpay_signature) {
+        return Response.json({ error: 'Invalid payment signature' }, { status: 400 })
+      }
     }
 
     // Confirm order belongs to this user

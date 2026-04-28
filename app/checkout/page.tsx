@@ -64,6 +64,25 @@ export default function CheckoutPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to initialize checkout')
 
+      // If mock order (Razorpay not configured), skip modal and confirm directly
+      if (data.razorpayOrderId?.startsWith('mock_order_')) {
+        const verifyRes = await fetch('/api/payments/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            orderId: data.orderId,
+            razorpay_order_id: data.razorpayOrderId,
+            razorpay_payment_id: `mock_pay_${data.orderId}`,
+            razorpay_signature: 'mock_signature',
+          }),
+        })
+        const verifyData = await verifyRes.json()
+        if (!verifyRes.ok) throw new Error(verifyData.error || 'Order confirmation failed')
+        useCartStore.getState().clearCart()
+        router.push(`/orders/success?orderId=${data.orderId}`)
+        return
+      }
+
       const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount * 100,

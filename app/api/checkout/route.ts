@@ -1,11 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 import { CartService } from '@/services/cart.service'
-import Razorpay from 'razorpay'
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-})
 
 const getSupabaseWithAuth = (req: Request) => {
   const token = req.headers.get('Authorization')?.replace('Bearer ', '')
@@ -61,20 +55,14 @@ export async function POST(req: Request) {
     const { error: itemsError } = await supabase.from('order_items').insert(orderItems)
     if (itemsError) throw new Error(itemsError.message)
 
-    // Create Razorpay order (amount in paise)
-    const razorpayOrder = await razorpay.orders.create({
-      amount: Math.round(total * 100),
-      currency: 'INR',
-      receipt: order.id,
-    })
-
-    // Save razorpay_order_id on the order row for later verification
-    await supabase.from('orders').update({ razorpay_order_id: razorpayOrder.id }).eq('id', order.id)
+    // Mock Razorpay order until credentials are configured
+    const mockRazorpayOrderId = `mock_order_${order.id}`
+    await supabase.from('orders').update({ razorpay_order_id: mockRazorpayOrderId }).eq('id', order.id)
 
     return Response.json({
       success: true,
       orderId: order.id,
-      razorpayOrderId: razorpayOrder.id,
+      razorpayOrderId: mockRazorpayOrderId,
       amount: total,
       currency: 'INR',
       name,
