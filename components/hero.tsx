@@ -56,7 +56,7 @@ export function Hero() {
             </motion.div>
             <div className="space-y-1">
               <motion.h1 {...fadeUp(0.1)} className="font-brandon text-[5.5rem] font-black uppercase leading-[0.85] tracking-tighter text-ivory">Bridal to</motion.h1>
-              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[5.5rem] font-black uppercase leading-[0.85] tracking-tighter">
+              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[4rem] font-black uppercase leading-[0.85] tracking-tighter">
                 <span className="text-transparent bg-clip-text animate-shimmer-text" style={{ backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)', backgroundSize: '200% auto' }}>Daily</span>
               </motion.h1>
               <motion.div {...fadeUp(0.25)}>

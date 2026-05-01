@@ -11,6 +11,7 @@ const SLUG_IMAGES: Record<string, string> = {
   necklaces: '/images/necklace.jpg',
   bangles: '/images/bangle.jpg',
   pendants: '/images/pendent.png',
+  'children-kada': '/images/children_kada.png',
 }
 
 interface CategoryItem {
@@ -23,7 +24,6 @@ interface CategoryGridProps {
   categories?: CategoryItem[]
 }
 
-// Static fallback used only if no categories from DB
 const STATIC_CATEGORIES: CategoryItem[] = [
   { id: 'rings', name: 'Rings', slug: 'rings' },
   { id: 'earrings', name: 'Earrings', slug: 'earrings' },
@@ -35,7 +35,11 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const items = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
+  const raw = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
+  // Exclude "new arrivals" and cap at 4 for a clean 2×2
+  const items = raw
+    .filter(c => !['new-arrivals', 'new arrivals'].includes((c.slug || c.name).toLowerCase()))
+    .slice(0, 4)
 
   return (
     <section className="w-full bg-site-black py-16 sm:py-20" ref={ref}>
@@ -64,7 +68,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
             const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
@@ -80,7 +84,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 aria-label={`Shop ${cat.name}`}
               >
                 {/* Image */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-card-dark">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-card-dark">
                   <Image
                     src={image}
                     alt={cat.name}
