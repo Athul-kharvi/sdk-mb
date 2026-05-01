@@ -32,8 +32,6 @@ export function Hero() {
           {/* Left image */}
           <div className="relative animate-[fadeInLeft_0.85s_ease-out_forwards]">
             <div className="relative group overflow-hidden" style={{ aspectRatio: '3/4' }}>
-              <div className="absolute -inset-2 border border-border-gold/40 pointer-events-none z-10" />
-              <div className="absolute -inset-4 border border-border-gold/20 pointer-events-none z-10" />
               <img src="/images/ring.jpg" alt="One Gram Gold Rings" fetchPriority="high" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-site-black/70 via-transparent to-transparent" />
               <div className="absolute top-4 left-4 z-20">
@@ -50,23 +48,24 @@ export function Hero() {
           </div>
 
           {/* Center text */}
-          <div className="flex flex-col items-center text-center space-y-6 w-[420px]">
+          <div className="flex flex-col items-center text-center space-y-6 w-[460px]">
             <motion.div {...fadeUp(0)} className="flex items-center gap-3">
               <div className="w-10 h-px bg-rich-gold/60" />
-              <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold">BIS Hallmarked · One Gram Gold</span>
+              {/* <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold">One Gram Gold</span> */}
               <div className="w-10 h-px bg-rich-gold/60" />
             </motion.div>
             <div className="space-y-1">
-              <motion.h1 {...fadeUp(0.1)} className="font-brandon text-7xl font-black uppercase leading-[0.88] tracking-tight text-ivory">Wear Gold</motion.h1>
-              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-7xl font-black uppercase leading-[0.88] tracking-tight">
-                <span className="text-transparent bg-clip-text animate-shimmer-text" style={{ backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)', backgroundSize: '200% auto' }}>Every Day</span>
+              <motion.h1 {...fadeUp(0.1)} className="font-brandon text-[5.5rem] font-black uppercase leading-[0.85] tracking-tighter text-ivory">Bridal to</motion.h1>
+              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[5.5rem] font-black uppercase leading-[0.85] tracking-tighter">
+                <span className="text-transparent bg-clip-text animate-shimmer-text" style={{ backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)', backgroundSize: '200% auto' }}>Daily</span>
               </motion.h1>
               <motion.div {...fadeUp(0.25)}>
-                <p className="font-brandon text-xl font-black uppercase leading-[0.9] tracking-tight text-muted-taupe mt-1">New Collection 2025</p>
+                <p className="font-brandon text-2xl font-black uppercase leading-[0.9] tracking-tight text-muted-taupe mt-2">Crafted for Every You</p>
               </motion.div>
             </div>
             <motion.p {...fadeUp(0.3)} className="font-syndicatgrotesk text-sm text-muted-taupe leading-relaxed max-w-xs">
-              Handcrafted one-gram gold jewelry for the modern Indian woman.<br />Rings · Necklaces · Bangles &amp; much more.
+              {/* Handcrafted one-gram gold jewelry for the modern Indian woman. */}
+              <br />Rings · Necklaces · Bangles &amp; much more.
             </motion.p>
             <motion.div {...fadeUp(0.4)} className="flex items-center gap-3 flex-wrap justify-center">
               {[{ pct: '20%', cat: 'Rings' }, { pct: '15%', cat: 'Necklaces' }, { pct: '10%', cat: 'Earrings' }].map((b) => (
@@ -82,25 +81,23 @@ export function Hero() {
                 className="inline-flex items-center justify-center px-8 py-4 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.22em] hover:bg-light-gold transition-colors duration-200 animate-glow-pulse">
                 Shop Collections
               </motion.a>
-              <motion.a href="#story" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
+              {/* <motion.a href="#story" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center justify-center px-8 py-4 border border-muted-taupe/40 text-ivory font-syndicatgrotesk text-[10px] uppercase tracking-[0.22em] hover:border-rich-gold/70 hover:text-rich-gold transition-all duration-200">
                 Our Story
-              </motion.a>
+              </motion.a> */}
             </motion.div>
-            <motion.div {...fadeUp(0.6)} className="flex items-center gap-4 pt-2">
+            {/* <motion.div {...fadeUp(0.6)} className="flex items-center gap-4 pt-2">
               {['Free Shipping ₹999+', 'BIS Certified', '10K+ Customers'].map((t, idx) => (
                 <span key={idx} className="font-syndicatgrotesk text-[8px] tracking-[0.15em] uppercase text-muted-taupe/80">
                   {idx > 0 && <span className="mr-4 text-rich-gold/50">·</span>}{t}
                 </span>
               ))}
-            </motion.div>
+            </motion.div> */}
           </div>
 
           {/* Right image */}
           <div className="relative animate-[fadeInRight_0.85s_ease-out_forwards]">
             <div className="relative group overflow-hidden" style={{ aspectRatio: '3/4' }}>
-              <div className="absolute -inset-2 border border-border-gold/40 pointer-events-none z-10" />
-              <div className="absolute -inset-4 border border-border-gold/20 pointer-events-none z-10" />
               <img src="/images/necklace.jpg" alt="One Gram Gold Necklaces" fetchPriority="high" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-site-black/70 via-transparent to-transparent" />
               <div className="absolute top-4 right-4 z-20">
@@ -152,10 +149,10 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Sub copy */}
+        {/* Sub copy
         <motion.p {...fadeUp(0.25)} className="font-syndicatgrotesk text-xs sm:text-sm text-muted-taupe leading-relaxed text-center max-w-sm mx-auto mb-5 sm:mb-6">
           Handcrafted one-gram gold jewelry for the modern Indian woman. Rings · Necklaces · Bangles &amp; much more.
-        </motion.p>
+        </motion.p> */}
 
         {/* 2-col image strip */}
         <motion.div {...fadeUp(0.3)} className="grid grid-cols-2 gap-2 sm:gap-3 mb-5 sm:mb-6">
@@ -177,17 +174,17 @@ export function Hero() {
         </motion.div>
 
         {/* Discount badges */}
-        <motion.div {...fadeUp(0.35)} className="flex items-center justify-center gap-2 flex-wrap mb-5 sm:mb-6">
+        {/* <motion.div {...fadeUp(0.35)} className="flex items-center justify-center gap-2 flex-wrap mb-5 sm:mb-6">
           {[{ pct: '20%', cat: 'Rings' }, { pct: '15%', cat: 'Necklaces' }, { pct: '10%', cat: 'Earrings' }].map((b) => (
             <div key={b.cat} className="flex flex-col items-center px-3 sm:px-4 py-2 border border-rich-gold/60 bg-rich-gold/[0.12]">
               <span className="font-brandon text-lg sm:text-xl font-black text-rich-gold leading-none">{b.pct}</span>
               <span className="font-syndicatgrotesk text-[7px] tracking-[0.2em] uppercase text-muted-taupe mt-0.5">OFF {b.cat}</span>
             </div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* CTAs */}
-        <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row gap-3 mb-5 sm:mb-6">
+        {/* <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row gap-3 mb-5 sm:mb-6">
           <a href="#collections"
             className="flex-1 flex items-center justify-center px-6 py-3.5 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.22em] hover:bg-light-gold transition-colors duration-200">
             Shop Collections
@@ -196,16 +193,16 @@ export function Hero() {
             className="flex-1 flex items-center justify-center px-6 py-3.5 border border-muted-taupe/40 text-ivory font-syndicatgrotesk text-[10px] uppercase tracking-[0.22em] hover:border-rich-gold/70 hover:text-rich-gold transition-all duration-200">
             Our Story
           </a>
-        </motion.div>
+        </motion.div> */}
 
         {/* Trust bar */}
-        <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+        {/* <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
           {['Free Shipping ₹999+', 'BIS Certified', '10K+ Customers'].map((t, idx) => (
             <span key={idx} className="font-syndicatgrotesk text-[8px] tracking-[0.12em] uppercase text-muted-taupe/70">
               {idx > 0 && <span className="mr-3 text-rich-gold/40">·</span>}{t}
             </span>
           ))}
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   )
