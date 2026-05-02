@@ -127,35 +127,36 @@ export function Hero() {
       {/* ── MOBILE / TABLET layout (< lg) ── */}
       <div className="lg:hidden w-full px-4 sm:px-6 pt-10 pb-8 sm:pt-14 sm:pb-10">
 
-        {/* Eyebrow */}
+        {/* Eyebrow — same as desktop divider lines */}
         <motion.div {...fadeUp(0)} className="flex items-center justify-center gap-3 mb-5 sm:mb-6">
-          <div className="w-8 h-px bg-rich-gold/60" />
-          <span className="font-syndicatgrotesk text-[8px] sm:text-[9px] tracking-[0.35em] uppercase text-rich-gold">BIS Hallmarked · One Gram Gold</span>
-          <div className="w-8 h-px bg-rich-gold/60" />
+          <div className="w-10 h-px bg-rich-gold/60" />
+          <div className="w-10 h-px bg-rich-gold/60" />
         </motion.div>
 
-        {/* Headline */}
+        {/* Headline — mirrors desktop fonts & text exactly */}
         <div className="text-center space-y-1 mb-4 sm:mb-5">
-          <motion.h1 {...fadeUp(0.1)} className="font-brandon text-[2.6rem] sm:text-5xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
-            Wear Gold
+          <motion.h1 {...fadeUp(0.1)} className="font-syndicatgrotesk text-[2.6rem] sm:text-5xl font-black uppercase leading-[0.85] text-ivory">
+            Bridal to
           </motion.h1>
-          <motion.h1 {...fadeUp(0.15)} className="font-brandon text-[2.6rem] sm:text-5xl font-black uppercase leading-[0.88] tracking-tight">
+          <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[2.6rem] sm:text-5xl font-black uppercase leading-[0.85] tracking-widest">
             <span className="text-transparent bg-clip-text animate-shimmer-text" style={{ backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)', backgroundSize: '200% auto' }}>
-              Every Day
+              Daily
             </span>
           </motion.h1>
-          <motion.div {...fadeUp(0.2)}>
-            <p className="font-brandon text-sm sm:text-base font-black uppercase tracking-tight text-muted-taupe mt-1">New Collection 2025</p>
+          <motion.div {...fadeUp(0.25)}>
+            <p className="font-kapraneuepro text-lg sm:text-2xl font-black leading-[0.9] text-muted-taupe mt-2 tracking-wider">
+              Crafted for Every You
+            </p>
           </motion.div>
         </div>
 
-        {/* Sub copy
-        <motion.p {...fadeUp(0.25)} className="font-syndicatgrotesk text-xs sm:text-sm text-muted-taupe leading-relaxed text-center max-w-sm mx-auto mb-5 sm:mb-6">
-          Handcrafted one-gram gold jewelry for the modern Indian woman. Rings · Necklaces · Bangles &amp; much more.
-        </motion.p> */}
+        {/* Sub copy */}
+        <motion.p {...fadeUp(0.3)} className="font-syndicatgrotesk text-xs text-muted-taupe leading-relaxed text-center max-w-xs mx-auto mb-5 sm:mb-6">
+          Rings · Necklaces · Bangles &amp; much more.
+        </motion.p>
 
         {/* 2-col image strip */}
-        <motion.div {...fadeUp(0.3)} className="grid grid-cols-2 gap-2 sm:gap-3 mb-5 sm:mb-6">
+        <motion.div {...fadeUp(0.35)} className="grid grid-cols-2 gap-2 sm:gap-3 mb-5 sm:mb-6">
           {[
             { src: '/images/ring.jpg', label: 'Rings', badge: '20% OFF' },
             { src: '/images/necklace.jpg', label: 'Necklaces', badge: 'NEW' },
@@ -173,36 +174,23 @@ export function Hero() {
           ))}
         </motion.div>
 
-        {/* Discount badges */}
-        {/* <motion.div {...fadeUp(0.35)} className="flex items-center justify-center gap-2 flex-wrap mb-5 sm:mb-6">
+        {/* Discount badges — same as desktop */}
+        <motion.div {...fadeUp(0.4)} className="flex items-center justify-center gap-2 flex-wrap mb-5 sm:mb-6">
           {[{ pct: '20%', cat: 'Rings' }, { pct: '15%', cat: 'Necklaces' }, { pct: '10%', cat: 'Earrings' }].map((b) => (
-            <div key={b.cat} className="flex flex-col items-center px-3 sm:px-4 py-2 border border-rich-gold/60 bg-rich-gold/[0.12]">
-              <span className="font-brandon text-lg sm:text-xl font-black text-rich-gold leading-none">{b.pct}</span>
-              <span className="font-syndicatgrotesk text-[7px] tracking-[0.2em] uppercase text-muted-taupe mt-0.5">OFF {b.cat}</span>
+            <div key={b.cat} className="flex flex-col items-center px-4 py-2.5 border border-rich-gold/60 bg-rich-gold/[0.12]">
+              <span className="font-brandon text-xl font-black text-rich-gold leading-none">{b.pct}</span>
+              <span className="font-syndicatgrotesk text-[7px] tracking-[0.25em] uppercase text-muted-taupe mt-0.5">OFF {b.cat}</span>
             </div>
           ))}
-        </motion.div> */}
+        </motion.div>
 
-        {/* CTAs */}
-        {/* <motion.div {...fadeUp(0.4)} className="flex flex-col sm:flex-row gap-3 mb-5 sm:mb-6">
-          <a href="#collections"
-            className="flex-1 flex items-center justify-center px-6 py-3.5 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.22em] hover:bg-light-gold transition-colors duration-200">
+        {/* CTA — same as desktop */}
+        <motion.div {...fadeUp(0.5)} className="flex justify-center">
+          <motion.a href="/category/rings" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center justify-center px-8 py-4 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.22em] hover:bg-amber-400 transition-colors duration-200">
             Shop Collections
-          </a>
-          <a href="#story"
-            className="flex-1 flex items-center justify-center px-6 py-3.5 border border-muted-taupe/40 text-ivory font-syndicatgrotesk text-[10px] uppercase tracking-[0.22em] hover:border-rich-gold/70 hover:text-rich-gold transition-all duration-200">
-            Our Story
-          </a>
-        </motion.div> */}
-
-        {/* Trust bar */}
-        {/* <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          {['Free Shipping ₹999+', 'BIS Certified', '10K+ Customers'].map((t, idx) => (
-            <span key={idx} className="font-syndicatgrotesk text-[8px] tracking-[0.12em] uppercase text-muted-taupe/70">
-              {idx > 0 && <span className="mr-3 text-rich-gold/40">·</span>}{t}
-            </span>
-          ))}
-        </motion.div> */}
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   )
