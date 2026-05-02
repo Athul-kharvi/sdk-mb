@@ -60,7 +60,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
             <div className="w-12 h-px bg-gradient-to-l from-transparent to-rich-gold" />
           </div>
           <h2 className="font-brandon text-3xl sm:text-4xl font-black uppercase tracking-tight text-ivory leading-none">
-            ║ Shop by Category ║
+             Shop by Category 
           </h2>
           <p className="font-syndicatgrotesk text-xs text-muted-taupe tracking-[0.15em]">
             Limited Styles · Endless Impressions

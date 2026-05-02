@@ -55,12 +55,12 @@ export function Hero() {
               <div className="w-10 h-px bg-rich-gold/60" />
             </motion.div>
             <div className="space-y-1">
-              <motion.h1 {...fadeUp(0.1)} className="font-brandon text-[5.5rem] font-black uppercase leading-[0.85] tracking-tighter text-ivory">Bridal to</motion.h1>
-              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[4rem] font-black uppercase leading-[0.85] tracking-tighter">
+              <motion.h1 {...fadeUp(0.1)} className="font-syndicatgrotesk text-[4rem] font-black uppercase leading-[0.85] text-ivory">Bridal to</motion.h1>
+              <motion.h1 {...fadeUp(0.2)} className="font-brandon text-[3rem] font-black uppercase leading-[0.85] tracking-widest">
                 <span className="text-transparent bg-clip-text animate-shimmer-text" style={{ backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)', backgroundSize: '200% auto' }}>Daily</span>
               </motion.h1>
               <motion.div {...fadeUp(0.25)}>
-                <p className="font-brandon text-2xl font-black uppercase leading-[0.9] tracking-tight text-muted-taupe mt-2">Crafted for Every You</p>
+                <p className="font-kapraneuepro text-3xl font-black  leading-[0.9] text-muted-taupe mt-2 tracking-wider">Crafted for Every You</p>
               </motion.div>
             </div>
             <motion.p {...fadeUp(0.3)} className="font-syndicatgrotesk text-sm text-muted-taupe leading-relaxed max-w-xs">
