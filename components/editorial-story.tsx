@@ -111,7 +111,7 @@ export function EditorialStory() {
             <div className="grid grid-cols-2 gap-5 pt-2">
               {[
                 { stat: 1, suffix: 'g', label: 'Pure Gold Standard' },
-                { stat: 0, suffix: 'BIS', label: 'Hallmark Certified', raw: true },
+                // { stat: 0, suffix: 'BIS', label: 'Hallmark Certified', raw: true },
                 { stat: 500, suffix: '+', label: 'Unique Designs' },
                 { stat: 100, suffix: '%', label: 'Handcrafted' },
               ].map((item, i) => (

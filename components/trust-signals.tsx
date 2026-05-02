@@ -6,11 +6,6 @@ import { useRef } from 'react'
 
 const signals = [
   {
-    Icon: ShieldCheck,
-    label: 'BIS Hallmarked',
-    description: 'Certified pure one-gram gold',
-  },
-  {
     Icon: Truck,
     label: 'Free Shipping',
     description: 'On all orders above ₹999',
@@ -34,7 +29,7 @@ export function TrustSignals() {
   return (
     <section className="w-full bg-card-dark border-y border-border-gold py-12 sm:py-14" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+       <div className="grid grid-cols-2 gap-6 sm:flex sm:justify-center sm:gap-20">
           {signals.map(({ Icon, label, description }, i) => (
             <motion.div
               key={label}
