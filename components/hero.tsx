@@ -84,9 +84,9 @@ export function Hero() {
         <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-20 xl:px-28 max-w-[600px]">
           <motion.div {...fadeUp(0)} className="flex items-center gap-3 mb-7">
             <div className="w-8 h-px bg-rich-gold/70" />
-            <span className="font-syndicatgrotesk text-[9px] tracking-[0.45em] uppercase text-rich-gold/80">
+            {/* <span className="font-syndicatgrotesk text-[9px] tracking-[0.45em] uppercase text-rich-gold/80">
               One Gram Gold
-            </span>
+            </span> */}
           </motion.div>
 
           <div className="mb-6">

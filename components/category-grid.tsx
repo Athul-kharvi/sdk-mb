@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 // Fallback static images keyed by slug
@@ -33,7 +32,6 @@ const STATIC_CATEGORIES: CategoryItem[] = [
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
 
   const raw = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
   // Exclude "new arrivals" and cap at 4 for a clean 2×2
@@ -42,88 +40,64 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
     .slice(0, 4)
 
   return (
-    <section className="w-full bg-site-black py-16 sm:py-20" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full bg-site-black py-14 sm:py-20" ref={ref}>
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="text-center space-y-3 mb-10 sm:mb-14"
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-rich-gold" />
-            <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold/80">
-              Explore
-            </span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-rich-gold" />
-          </div>
-          <h2 className="font-brandon text-3xl sm:text-4xl font-black uppercase tracking-tight text-ivory leading-none">
-             Shop by Category 
-          </h2>
-          <p className="font-syndicatgrotesk text-xs text-muted-taupe tracking-[0.15em]">
-            Limited Styles · Endless Impressions
-          </p>
-        </motion.div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {items.map((cat, i) => {
-            const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
-            const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
-            return (
-              <motion.a
-                key={cat.id}
-                href={`/category/${slug}`}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: i * 0.12, ease: 'easeOut' }}
-                whileHover={{ y: -6 }}
-                className="group relative overflow-hidden block text-left cursor-pointer w-full"
-                aria-label={`Shop ${cat.name}`}
-              >
-                {/* Image */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-card-dark">
-                  <Image
-                    src={image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.08]"
-                    priority={i < 2}
-                  />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-site-black/85 via-site-black/20 to-transparent" />
-                  {/* Hover gold tint */}
-                  <div className="absolute inset-0 bg-rich-gold/0 group-hover:bg-rich-gold/10 transition-all duration-500" />
-                </div>
-
-                {/* Label */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                  <p className="font-syndicatgrotesk text-[8px] tracking-[0.25em] uppercase text-rich-gold/70 mb-1">
-                    Collection
-                  </p>
-                  <h3 className="font-brandon text-xl sm:text-2xl font-black uppercase tracking-wide text-ivory leading-none">
-                    {cat.name}
-                  </h3>
-                  <motion.div
-                    className="h-px bg-rich-gold mt-2 origin-left"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    style={{ width: '2rem' }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
-
-                {/* Gold border on hover */}
-                <div className="absolute inset-0 border border-transparent group-hover:border-rich-gold/40 transition-all duration-[400ms] pointer-events-none" />
-                <div className="absolute top-3 right-3 w-6 h-6 border-t border-r border-rich-gold/0 group-hover:border-rich-gold/60 transition-all duration-[400ms] pointer-events-none" />
-                <div className="absolute bottom-3 left-3 w-6 h-6 border-b border-l border-rich-gold/0 group-hover:border-rich-gold/60 transition-all duration-[400ms] pointer-events-none" />
-              </motion.a>
-            )
-          })}
+      {/* Header */}
+      <div className="text-center space-y-3 mb-8 sm:mb-12 px-4">
+        <div className="flex items-center justify-center gap-3">
+          <div className="w-12 h-px bg-gradient-to-r from-transparent to-rich-gold" />
+          {/* <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold/80">Explore</span> */}
+          <div className="w-12 h-px bg-gradient-to-l from-transparent to-rich-gold" />
         </div>
+        <h2 className="font-brandon text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-[0.12em] text-ivory leading-none">
+          Shop by Category
+        </h2>
+        <p className="font-syndicatgrotesk text-xs text-muted-taupe tracking-[0.15em]">
+          Limited Styles · Endless Impressions
+        </p>
+      </div>
+
+      {/* Grid — full bleed, no gaps */}
+      <div className="grid grid-cols-2">
+        {items.map((cat, i) => {
+          const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
+          const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
+          return (
+            <a
+              key={cat.id}
+              href={`/category/${slug}`}
+              className="group relative overflow-hidden block cursor-pointer w-full"
+              aria-label={`Shop ${cat.name}`}
+            >
+              {/* Image — shorter aspect ratio to shrink size */}
+              <div className="relative aspect-[4/3] sm:aspect-[2/1] w-full overflow-hidden bg-card-dark">
+                <Image
+                  src={image}
+                  alt={cat.name}
+                  fill
+                  sizes="50vw"
+                  className="object-cover"
+                  priority={i < 2}
+                />
+                <div className="absolute inset-0 bg-site-black/40" />
+              </div>
+
+              {/* Category name — top */}
+              <div className="absolute top-0 left-0 right-0 p-4 sm:p-5">
+                <h3 className="font-brandon text-xl sm:text-2xl font-black uppercase tracking-wide text-ivory leading-none">
+                  {cat.name}
+                </h3>
+              </div>
+
+              {/* Shop Now — bottom */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                <span className="font-syndicatgrotesk text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-ivory font-bold underline underline-offset-4">
+                  Shop Now
+                </span>
+              </div>
+            </a>
+          )
+        })}
       </div>
     </section>
   )
