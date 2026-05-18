@@ -53,7 +53,7 @@ export function Hero() {
             <motion.a
               href="#collections"
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center px-7 py-3 bg-rich-gold text-site-black font-syndicatgrotesk text-[9px] font-bold uppercase tracking-[0.28em] hover:bg-light-gold transition-colors duration-200"
+              className="inline-flex items-center justify-center px-7 py-3 bg-[#1d1607] text-[#FFD700] font-syndicatgrotesk text-[9px] font-bold uppercase tracking-[0.28em] hover:bg-[#2a2008] transition-colors duration-200"
             >
               Shop Collection
             </motion.a>
@@ -119,7 +119,7 @@ export function Hero() {
               href="#collections"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center px-9 py-4 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.28em] hover:bg-light-gold transition-colors duration-200 animate-glow-pulse"
+              className="inline-flex items-center justify-center px-9 py-4 bg-[#1d1607] text-[#FFD700] font-syndicatgrotesk text-[10px] font-bold uppercase tracking-[0.28em] hover:bg-[#2a2008] transition-colors duration-200"
             >
               Shop Collection
             </motion.a>
