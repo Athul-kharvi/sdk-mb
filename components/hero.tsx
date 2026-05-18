@@ -49,7 +49,13 @@ export function Hero() {
               Daily
             </span>
           </motion.h1>
-          <motion.div {...fadeUp(0.22)}>
+          <motion.p
+            {...fadeUp(0.18)}
+            className="font-syndicatgrotesk text-[11px] text-ivory/80 leading-[1.75] max-w-[260px] mb-5"
+          >
+            A jewellery collection designed for every occasion — from bridal elegance to everyday wear, made to match every version of you.
+          </motion.p>
+          <motion.div {...fadeUp(0.28)}>
             <motion.a
               href="#collections"
               whileTap={{ scale: 0.97 }}
