@@ -15,7 +15,7 @@ export function Hero() {
       <section className="sm:hidden relative w-full overflow-hidden" style={{ height: '92svh' }}>
         <img
           src="/images/hero_image_mobile.png"
-          alt="Sri Devi Kangan Gold Bangles"
+          alt="Vinayaka Creation Gold Bangles"
           fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ objectPosition: 'center bottom' }}
@@ -74,7 +74,7 @@ export function Hero() {
       >
         <img
           src="/images/hero_image.png"
-          alt="Sri Devi Kangan Gold Bangles"
+          alt="Vinayaka Creation Gold Bangles"
           fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />

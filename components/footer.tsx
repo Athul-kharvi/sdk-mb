@@ -82,9 +82,8 @@ export function Footer() {
 
         {/* Big brand mark */}
         <div className="px-6 pt-10 pb-6 border-b border-[#B8860B]/15">
-          <p className="font-brandon text-[2.6rem] font-black uppercase tracking-tighter text-white leading-none">
-            Sri Devi<br />
-            <span className="text-[#B8860B]">Kangan</span>
+          <p className="font-brandon text-[1.9rem] font-black uppercase tracking-tighter text-white leading-none whitespace-nowrap">
+            Vinayaka <span className="text-[#B8860B]">Creation</span>
           </p>
           <p className="font-syndicatgrotesk text-[8px] tracking-[0.45em] uppercase text-[#B8860B]/60 mt-2">
             One Gram Gold · Handcrafted
@@ -164,7 +163,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="px-6 py-5 flex items-center justify-between">
           <p className="font-syndicatgrotesk text-[8px] text-[#B8860B]/30 tracking-wider">
-            © 2025 Sri Devi Kangan
+            © 2025 Vinayaka Creation
           </p>
           <div className="flex gap-3">
             {['UPI', 'VISA', 'RuPay'].map(m => (
@@ -183,7 +182,7 @@ export function Footer() {
             <div className="space-y-5">
               <div>
                 <p className="font-brandon text-base font-black tracking-[0.22em] text-white uppercase leading-none">
-                  Sri Devi Kangan
+                  Vinayaka Creation
                 </p>
                 <p className="font-syndicatgrotesk text-[8px] tracking-[0.4em] uppercase text-[#B8860B] mt-1">
                   One Gram Gold
@@ -286,7 +285,7 @@ export function Footer() {
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#B8860B]/15 pt-6">
               <p className="font-syndicatgrotesk text-[10px] tracking-wider text-[#B8860B]/30 text-center sm:text-left">
-                © 2025 Sri Devi Kangan · All Rights Reserved · Made with love in India
+                © 2025 Vinayaka Creation · All Rights Reserved · Made with love in India
               </p>
               <div className="flex flex-wrap items-center justify-end gap-4">
                 {['UPI', 'VISA', 'Mastercard', 'RuPay'].map((method) => (

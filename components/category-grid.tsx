@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 
-// Fallback static images keyed by slug
 const SLUG_IMAGES: Record<string, string> = {
   rings: '/images/ring.jpg',
   earrings: '/images/pendent.png',
@@ -32,9 +32,9 @@ const STATIC_CATEGORIES: CategoryItem[] = [
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
   const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
 
   const raw = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
-  // Exclude "new arrivals" and cap at 4 for a clean 2×2
   const items = raw
     .filter(c => !['new-arrivals', 'new arrivals'].includes((c.slug || c.name).toLowerCase()))
     .slice(0, 4)
@@ -43,10 +43,14 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
     <section className="w-full bg-site-black py-14 sm:py-20" ref={ref}>
 
       {/* Header */}
-      <div className="text-center space-y-3 mb-8 sm:mb-12 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        className="text-center space-y-3 mb-10 sm:mb-14 px-4"
+      >
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-px bg-gradient-to-r from-transparent to-rich-gold" />
-          {/* <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold/80">Explore</span> */}
           <div className="w-12 h-px bg-gradient-to-l from-transparent to-rich-gold" />
         </div>
         <h2 className="font-brandon text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-[0.12em] text-ivory leading-none">
@@ -55,49 +59,60 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         <p className="font-syndicatgrotesk text-xs text-muted-taupe tracking-[0.15em]">
           Limited Styles · Endless Impressions
         </p>
-      </div>
+      </motion.div>
 
-      {/* Grid — full bleed, no gaps */}
-      <div className="grid grid-cols-2">
-        {items.map((cat, i) => {
-          const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
-          const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
-          return (
-            <a
-              key={cat.id}
-              href={`/category/${slug}`}
-              className="group relative overflow-hidden block cursor-pointer w-full"
-              aria-label={`Shop ${cat.name}`}
-            >
-              {/* Image — shorter aspect ratio to shrink size */}
-              <div className="relative aspect-[4/3] sm:aspect-[2/1] w-full overflow-hidden bg-card-dark">
-                <Image
-                  src={image}
-                  alt={cat.name}
-                  fill
-                  sizes="50vw"
-                  className="object-cover"
-                  priority={i < 2}
-                />
-                <div className="absolute inset-0 bg-site-black/40" />
-              </div>
+      {/* Grid */}
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 max-w-7xl mx-auto">
+          {items.map((cat, i) => {
+            const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
+            const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
+            return (
+              <motion.a
+                key={cat.id}
+                href={`/category/${slug}`}
+                initial={{ opacity: 0, y: 32 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.65, delay: 0.15 + i * 0.1, ease: 'easeOut' }}
+                className="group relative overflow-hidden block cursor-pointer rounded-sm"
+                aria-label={`Shop ${cat.name}`}
+              >
+                {/* Image */}
+                <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full overflow-hidden bg-card-dark">
+                  <Image
+                    src={image}
+                    alt={cat.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    priority={i < 2}
+                  />
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-              {/* Category name — top */}
-              <div className="absolute top-0 left-0 right-0 p-4 sm:p-5">
-                <h3 className="font-brandon text-xl sm:text-2xl font-black uppercase tracking-wide text-ivory leading-none">
-                  {cat.name}
-                </h3>
-              </div>
+                  {/* Gold border reveal on hover */}
+                  <div className="absolute inset-0 border border-rich-gold/0 group-hover:border-rich-gold/50 transition-all duration-500 rounded-sm" />
+                </div>
 
-              {/* Shop Now — bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                <span className="font-syndicatgrotesk text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-ivory font-bold underline underline-offset-4">
-                  Shop Now
-                </span>
-              </div>
-            </a>
-          )
-        })}
+                {/* Bottom-left overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                  <h3
+                    className="font-brandon text-base sm:text-3xl font-black uppercase text-white tracking-wide leading-none mb-2 sm:mb-3"
+                    style={{ transform: 'scaleY(1.4) scaleX(1.1)', transformOrigin: 'bottom left', display: 'inline-block' }}
+                  >
+                    {cat.name}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="font-syndicatgrotesk text-[11px] sm:text-xs tracking-[0.15em] uppercase font-bold text-white">
+                      Shop Now
+                    </span>
+                    <span className="text-white text-sm transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                  </div>
+                </div>
+              </motion.a>
+            )
+          })}
+        </div>
       </div>
     </section>
   )

@@ -1,6 +1,6 @@
 import { PolicyLayout } from '@/components/policy-layout'
 
-export const metadata = { title: 'Shipping Policy — Sri Devi Kangan' }
+export const metadata = { title: 'Shipping Policy — Vinayaka Creation' }
 
 export default function ShippingPolicy() {
   return (
@@ -49,7 +49,7 @@ export default function ShippingPolicy() {
         },
         {
           heading: 'Address Accuracy',
-          body: 'Please ensure your delivery address is complete and accurate at checkout — including flat/house number, street name, landmark, city, state, and PIN code. Sri Devi Kangan is not responsible for delays or failed deliveries caused by an incorrect or incomplete address.',
+          body: 'Please ensure your delivery address is complete and accurate at checkout — including flat/house number, street name, landmark, city, state, and PIN code. Vinayaka Creation is not responsible for delays or failed deliveries caused by an incorrect or incomplete address.',
         },
         {
           heading: 'Failed Delivery Attempts',

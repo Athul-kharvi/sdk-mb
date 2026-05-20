@@ -1,6 +1,6 @@
 import { PolicyLayout } from '@/components/policy-layout'
 
-export const metadata = { title: 'Terms of Service — Sri Devi Kangan' }
+export const metadata = { title: 'Terms of Service — Vinayaka Creation' }
 
 export default function TermsOfService() {
   return (
@@ -8,11 +8,11 @@ export default function TermsOfService() {
       badge="Policies"
       title="Terms of Service"
       lastUpdated="April 2025"
-      intro="By accessing or using the Sri Devi Kangan website or placing an order, you agree to be bound by these Terms of Service. Please read them carefully."
+      intro="By accessing or using the Vinayaka Creation website or placing an order, you agree to be bound by these Terms of Service. Please read them carefully."
       sections={[
         {
           heading: 'Acceptance of Terms',
-          body: 'By using this website or purchasing from Sri Devi Kangan, you confirm that you are at least 18 years of age (or have parental consent), have read and understood these terms, and agree to be legally bound by them.',
+          body: 'By using this website or purchasing from Vinayaka Creation, you confirm that you are at least 18 years of age (or have parental consent), have read and understood these terms, and agree to be legally bound by them.',
         },
         {
           heading: 'Products & Pricing',
@@ -28,7 +28,7 @@ export default function TermsOfService() {
         },
         {
           heading: 'Intellectual Property',
-          body: 'All content on this website — including images, text, logos, design, and product photos — is the property of Sri Devi Kangan and is protected by copyright law. You may not reproduce, distribute, or use our content without prior written permission.',
+          body: 'All content on this website — including images, text, logos, design, and product photos — is the property of Vinayaka Creation and is protected by copyright law. You may not reproduce, distribute, or use our content without prior written permission.',
         },
         {
           heading: 'Product Care Disclaimer',
@@ -36,7 +36,7 @@ export default function TermsOfService() {
         },
         {
           heading: 'Limitation of Liability',
-          body: 'Sri Devi Kangan\'s total liability for any claim arising from your use of our store is limited to the amount you paid for the specific order in question. We are not liable for indirect, incidental, or consequential damages including loss of profits, data, or goodwill.',
+          body: 'Vinayaka Creation\'s total liability for any claim arising from your use of our store is limited to the amount you paid for the specific order in question. We are not liable for indirect, incidental, or consequential damages including loss of profits, data, or goodwill.',
         },
         {
           heading: 'Prohibited Uses',

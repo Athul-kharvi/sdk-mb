@@ -87,7 +87,7 @@ export default function CheckoutPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount * 100,
         currency: data.currency,
-        name: 'Sri Devi Kangan',
+        name: 'Vinayaka Creation',
         description: 'Jewellery Order',
         image: '/images/logo.png',
         order_id: data.razorpayOrderId,

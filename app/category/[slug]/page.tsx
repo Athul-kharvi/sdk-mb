@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params
   const name = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   return {
-    title: `${name} — Sri Devi Kangan`,
+    title: `${name} — Vinayaka Creations`,
     description: `Browse our ${name} collection. Handcrafted one-gram gold jewellery.`,
   }
 }

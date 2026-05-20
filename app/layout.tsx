@@ -41,7 +41,7 @@ const kapraneuepro = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sridevik.in'),
-  title: 'Sri Devi Kangan',
+  title: 'Vinayaka Creation',
   description: 'Handcrafted one-gram gold jewelry for the modern Indian woman. BIS Hallmarked, free shipping, and easy returns.',
   // generator: 'v0.app',
   icons: {

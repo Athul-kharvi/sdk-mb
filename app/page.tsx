@@ -24,7 +24,7 @@ export default async function Home() {
 
       <EditorialStory />
       <TrustSignals />
-      <Testimonials />
+      {/* <Testimonials /> */}
       {/* <Newsletter /> */}
       <Footer />
       <FloatingWhatsApp />

@@ -97,10 +97,10 @@ export function Navbar() {
             {/* Logo */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex-shrink-0"
+              className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex-shrink-0 text-center md:text-left"
             >
               <span className="block font-brandon text-base sm:text-lg font-black tracking-[0.22em] text-ivory uppercase leading-none">
-                Sri Devi Kangan
+                Vinayaka Creation
               </span>
               <span className="block text-center font-syndicatgrotesk text-[8px] tracking-[0.35em] text-rich-gold uppercase leading-none mt-1">
                 One Gram Gold

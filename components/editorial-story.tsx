@@ -47,7 +47,7 @@ export function EditorialStory() {
             <div className="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden">
               <Image
                 src="/images/men-bangle.jpg"
-                alt="Sri Devi Kangan — Craftsmanship"
+                alt="Vinayaka Creation — Craftsmanship"
                 fill
                 className="object-cover transition-transform duration-1000 hover:scale-[1.04]"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
@@ -75,19 +75,44 @@ export function EditorialStory() {
 
           {/* Text — right */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.85, delay: 0.15, ease: 'easeOut' }}
-            className="order-1 lg:order-2 space-y-7"
+            className="order-1 lg:order-2 space-y-7 text-left items-start"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-px bg-rich-gold" />
-              <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold">
+            {/* Mobile: Our Story above heading */}
+          <div className="-ml-8 flex items-center gap-1 lg:hidden">
+            <div className="w-8 h-px bg-rich-gold" />
+
+            <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-rich-gold">
+              Our Story
+            </span>
+          </div>
+
+            {/* Desktop: Our Story vertical beside heading */}
+            <div className="hidden lg:flex items-start gap-3">
+              <span
+                className="font-syndicatgrotesk text-[10.5px] tracking-[0.35em] uppercase text-rich-gold mt-1"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+              >
                 Our Story
               </span>
+              <h2 className="font-brandon text-3xl sm:text-4xl lg:text-6xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
+                Crafted With<br />
+                <span
+                  className="text-transparent bg-clip-text animate-shimmer-text"
+                  style={{
+                    backgroundImage: 'linear-gradient(90deg, #B8860B, #D4A017, #F0C040, #D4A017, #B8860B)',
+                    backgroundSize: '200% auto',
+                  }}
+                >
+                  Pure Love
+                </span>
+              </h2>
             </div>
 
-            <h2 className="font-brandon text-3xl sm:text-4xl lg:text-6xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
+            {/* Mobile heading standalone */}
+            <h2 className="lg:hidden font-brandon text-3xl sm:text-4xl font-black uppercase leading-[0.88] tracking-tight text-ivory">
               Crafted With<br />
               <span
                 className="text-transparent bg-clip-text animate-shimmer-text"
@@ -101,14 +126,14 @@ export function EditorialStory() {
             </h2>
 
             <p className="font-syndicatgrotesk text-sm sm:text-[15px] text-muted-taupe leading-relaxed max-w-md">
-              Sri Devi Kangan was born from a deep love of Indian craftsmanship.
+              Vinayaka Creation was born from a deep love of Indian craftsmanship.
               Each piece is handcrafted in one-gram gold — radiant, lightweight,
               and made to be worn every single day. From festivals to daily wear,
               our jewelry moves with you.
             </p>
 
             {/* Stats grid with countup */}
-            <div className="grid grid-cols-2 gap-5 pt-2">
+            <div className="grid grid-cols-2 gap-5 pt-2 text-left">
               {[
                 { stat: 1, suffix: 'g', label: 'Pure Gold Standard' },
                 // { stat: 0, suffix: 'BIS', label: 'Hallmark Certified', raw: true },

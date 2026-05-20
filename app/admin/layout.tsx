@@ -75,7 +75,7 @@ function SidebarContent({
       {/* Brand */}
       <div className="px-6 pt-7 pb-6 border-b border-white/[0.08]">
         <p className="font-brandon text-xs font-black tracking-[0.3em] uppercase text-[#D4A017]">
-          Sri Devi Kangan
+          Vinayaka Creation
         </p>
         <p className="font-syndicatgrotesk text-[10px] tracking-[0.25em] uppercase text-white/30 mt-0.5">
           Admin Panel
@@ -229,7 +229,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </svg>
           </button>
           <span className="font-brandon text-[11px] font-black tracking-[0.25em] uppercase text-[#D4A017]">
-            Sri Devi Kangan
+            Vinayaka Creation
           </span>
           <div className="w-9" />
         </header>

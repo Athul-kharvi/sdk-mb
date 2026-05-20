@@ -1,6 +1,6 @@
 import { PolicyLayout } from '@/components/policy-layout'
 
-export const metadata = { title: 'Return & Refund Policy — Sri Devi Kangan' }
+export const metadata = { title: 'Return & Refund Policy — Vinayaka Creation' }
 
 export default function ReturnsPolicy() {
   return (
@@ -84,7 +84,7 @@ export default function ReturnsPolicy() {
         },
         {
           heading: 'Return Shipping',
-          body: 'For defective or wrong items, Sri Devi Kangan will cover the return shipping cost. For other eligible returns, the customer is responsible for return shipping charges. We recommend using a trackable shipping service — we are not responsible for items lost in transit.',
+          body: 'For defective or wrong items, Vinayaka Creation will cover the return shipping cost. For other eligible returns, the customer is responsible for return shipping charges. We recommend using a trackable shipping service — we are not responsible for items lost in transit.',
         },
         {
           heading: 'Exchange Policy',
