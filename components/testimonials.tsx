@@ -14,7 +14,7 @@ const testimonials = [
   {
     name: 'Anjali R.',
     city: 'Delhi',
-    text: "I've been a customer for two years. Vinayaka Creation pieces are my go-to for both daily wear and special occasions.",
+    text: "I've been a customer for two years. Vinayak Creation pieces are my go-to for both daily wear and special occasions.",
     rating: 5,
   },
   {

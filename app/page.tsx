@@ -22,7 +22,7 @@ export default async function Home() {
       {/* <GoldRateTicker /> */}
       <CategoryGrid categories={categories} />
 
-      <EditorialStory />
+      {/* <EditorialStory /> */}
       <TrustSignals />
       {/* <Testimonials /> */}
       {/* <Newsletter /> */}

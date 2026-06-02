@@ -1,6 +1,6 @@
 import { PolicyLayout } from '@/components/policy-layout'
 
-export const metadata = { title: 'Privacy Policy — Vinayaka Creation' }
+export const metadata = { title: 'Privacy Policy — Vinayak Creation' }
 
 export default function PrivacyPolicy() {
   return (
@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
       badge="Policies"
       title="Privacy Policy"
       lastUpdated="April 2025"
-      intro="Vinayaka Creation ('we', 'our', 'us') is committed to protecting your personal information. This policy explains what data we collect, how we use it, and your rights."
+      intro="Vinayak Creation ('we', 'our', 'us') is committed to protecting your personal information. This policy explains what data we collect, how we use it, and your rights."
       sections={[
         {
           heading: 'Information We Collect',

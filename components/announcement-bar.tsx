@@ -1,9 +1,8 @@
 'use client'
 
 const messages = [
-  '✦ FREE SHIPPING on Orders Above ₹999',
-  '✦ BIS Hallmarked One Gram Gold Jewelry',
-  '✦ 10% OFF on Your First Order · Use: FIRST10',
+  '✦ FREE SHIPPING on Orders Above ₹599',
+  '✦ 20% OFF on Your First Order · Use: FIRST20',
   '✦ Easy 7-Day Returns — No Questions Asked',
   '✦ New Collection Arrived — Shop Now',
   '✦ Secure Payments · UPI · Cards · Wallets',

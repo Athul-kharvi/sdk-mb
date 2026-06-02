@@ -100,10 +100,10 @@ export function Navbar() {
               className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex-shrink-0 text-center md:text-left"
             >
               <span className="block font-brandon text-base sm:text-lg font-black tracking-[0.22em] text-ivory uppercase leading-none">
-                Vinayaka Creation
+                Vinayak Creation
               </span>
               <span className="block text-center font-syndicatgrotesk text-[8px] tracking-[0.35em] text-rich-gold uppercase leading-none mt-1">
-                One Gram Gold
+                Handcrafted Jewelry
               </span>
             </Link>
 

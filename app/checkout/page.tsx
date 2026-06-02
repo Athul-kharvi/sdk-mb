@@ -87,7 +87,7 @@ export default function CheckoutPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount * 100,
         currency: data.currency,
-        name: 'Vinayaka Creation',
+        name: 'Vinayak Creation',
         description: 'Jewellery Order',
         image: '/images/logo.png',
         order_id: data.razorpayOrderId,
@@ -342,8 +342,8 @@ export default function CheckoutPage() {
                   {[
                     { Icon: Shield,     label: 'SSL Secured Payment' },
                     { Icon: RotateCcw,  label: '7-Day Easy Returns' },
-                    { Icon: Truck,      label: 'Free Shipping on All Orders' },
-                    { Icon: BadgeCheck, label: 'BIS Certified Genuine Gold' },
+                    { Icon: Truck,      label: 'Free Shipping on Orders Above ₹599' },
+                    { Icon: BadgeCheck, label: 'Certified Quality Jewelry' },
                   ].map(({ Icon, label }) => (
                     <div key={label} className="flex items-center gap-2.5">
                       <Icon size={13} className="text-deep-gold shrink-0" />

@@ -124,7 +124,7 @@ export function CartDrawer() {
                               {item.product.name}
                             </h3>
                             <p className="font-syndicatgrotesk text-[10px] text-text-muted mt-0.5 tracking-wide">
-                              One Gram Gold
+                              Handcrafted Jewelry
                             </p>
                           </div>
                           <button
@@ -222,7 +222,7 @@ export function CartDrawer() {
 
               {/* Trust note */}
               <p className="text-center font-syndicatgrotesk text-[9px] tracking-[0.1em] text-muted-taupe">
-                🔒 Secure checkout · Free returns · BIS Certified
+                🔒 Secure checkout · Free returns · Certified Quality
               </p>
             </div>
           )}

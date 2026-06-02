@@ -41,8 +41,8 @@ const kapraneuepro = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sridevik.in'),
-  title: 'Vinayaka Creation',
-  description: 'Handcrafted one-gram gold jewelry for the modern Indian woman. BIS Hallmarked, free shipping, and easy returns.',
+  title: 'Vinayak Creation',
+  description: 'Handcrafted jewelry for the modern Indian woman. Free shipping on orders above ₹599, and easy returns.',
   // generator: 'v0.app',
   icons: {
     icon: [

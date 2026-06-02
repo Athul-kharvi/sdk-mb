@@ -55,7 +55,7 @@ const TRUST = [
   { icon: '✦', label: 'Free Shipping' },
   { icon: '✦', label: 'Cash on Delivery' },
   { icon: '✦', label: '7-Day Returns' },
-  { icon: '✦', label: 'BIS Certified' },
+  { icon: '✦', label: 'Certified Quality' },
 ]
 
 export function Footer() {
@@ -83,10 +83,10 @@ export function Footer() {
         {/* Big brand mark */}
         <div className="px-6 pt-10 pb-6 border-b border-[#B8860B]/15">
           <p className="font-brandon text-[1.9rem] font-black uppercase tracking-tighter text-white leading-none whitespace-nowrap">
-            Vinayaka <span className="text-[#B8860B]">Creation</span>
+            Vinayak <span className="text-[#B8860B]">Creation</span>
           </p>
           <p className="font-syndicatgrotesk text-[8px] tracking-[0.45em] uppercase text-[#B8860B]/60 mt-2">
-            One Gram Gold · Handcrafted
+            Handcrafted Jewelry
           </p>
         </div>
 
@@ -163,7 +163,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="px-6 py-5 flex items-center justify-between">
           <p className="font-syndicatgrotesk text-[8px] text-[#B8860B]/30 tracking-wider">
-            © 2025 Vinayaka Creation
+            © 2025 Vinayak Creation
           </p>
           <div className="flex gap-3">
             {['UPI', 'VISA', 'RuPay'].map(m => (
@@ -182,14 +182,14 @@ export function Footer() {
             <div className="space-y-5">
               <div>
                 <p className="font-brandon text-base font-black tracking-[0.22em] text-white uppercase leading-none">
-                  Vinayaka Creation
+                  Vinayak Creation
                 </p>
                 <p className="font-syndicatgrotesk text-[8px] tracking-[0.4em] uppercase text-[#B8860B] mt-1">
-                  One Gram Gold
+                  Handcrafted
                 </p>
               </div>
               <p className="font-syndicatgrotesk text-xs text-[#7A6F62] leading-relaxed max-w-xs">
-                Handcrafted one-gram gold jewelry for the modern Indian woman. Wear Gold Every Day.
+                Handcrafted jewelry for the modern Indian woman. Wear Gold Every Day.
               </p>
               <div className="flex gap-2.5">
                 {SOCIAL.map(({ href, label, svg }) => (
@@ -243,8 +243,8 @@ export function Footer() {
               <div className="w-8 h-px bg-[#B8860B]/40" />
               <ul className="space-y-2.5">
                 <li>
-                  <a href="https://wa.me/919999999999" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
-                    WhatsApp: +91 9999-999-999
+                  <a href="https://wa.me/917259333254" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
+                    WhatsApp: +91 7259-333-254
                   </a>
                 </li>
                 <li>
@@ -268,10 +268,10 @@ export function Footer() {
           <div className="border-t border-[#B8860B]/15 mt-12 pt-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
               {[
-                { label: 'Free Shipping', sub: 'On all orders' },
+                { label: 'Free Shipping', sub: 'On orders above ₹599' },
                 { label: 'Cash on Delivery', sub: 'Pay when you receive' },
                 { label: '7-Day Returns', sub: 'Hassle-free process' },
-                { label: 'BIS Certified', sub: 'Genuine one-gram gold' },
+                { label: 'Certified Quality', sub: 'Genuine jewelry' },
               ].map(({ label, sub }) => (
                 <div key={label} className="flex items-center gap-3">
                   <div className="w-1 h-8 bg-[#B8860B]/30 shrink-0" />
@@ -285,7 +285,7 @@ export function Footer() {
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#B8860B]/15 pt-6">
               <p className="font-syndicatgrotesk text-[10px] tracking-wider text-[#B8860B]/30 text-center sm:text-left">
-                © 2025 Vinayaka Creation · All Rights Reserved · Made with love in India
+                © 2025 Vinayak Creation · All Rights Reserved · Made with love in India
               </p>
               <div className="flex flex-wrap items-center justify-end gap-4">
                 {['UPI', 'VISA', 'Mastercard', 'RuPay'].map((method) => (

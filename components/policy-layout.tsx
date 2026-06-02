@@ -87,7 +87,7 @@ export function PolicyLayout({ badge, title, lastUpdated, intro, sections, relat
             <p className="font-syndicatgrotesk text-xs text-muted-taupe">Our team is happy to help via WhatsApp or email.</p>
           </div>
           <a
-            href="https://wa.me/919999999999"
+            href="https://wa.me/917259333254"
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 px-5 py-2.5 bg-rich-gold text-[#0D0D0D] font-syndicatgrotesk text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-[#B8860B] transition-colors text-center"

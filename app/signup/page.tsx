@@ -45,7 +45,7 @@ export default function SignUpPage() {
 
                 {/* Brand */}
                 <h1 className="text-3xl font-serif text-center text-warm-black mb-2">
-                    Vinayaka Creation
+                    Vinayak Creation
                 </h1>
 
                 <p className="text-center text-sm tracking-widest text-gray-500 mb-8 uppercase">

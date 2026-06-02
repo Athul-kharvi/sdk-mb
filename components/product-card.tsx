@@ -73,7 +73,7 @@ export function ProductCard({
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="font-syndicatgrotesk text-xs tracking-widest uppercase text-muted-taupe/50">
-              Vinayaka Creation
+              Vinayak Creation
             </span>
           </div>
         )}

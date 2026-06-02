@@ -47,7 +47,7 @@ export function EditorialStory() {
             <div className="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden">
               <Image
                 src="/images/men-bangle.jpg"
-                alt="Vinayaka Creation — Craftsmanship"
+                alt="Vinayak Creation — Craftsmanship"
                 fill
                 className="object-cover transition-transform duration-1000 hover:scale-[1.04]"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
@@ -126,8 +126,8 @@ export function EditorialStory() {
             </h2>
 
             <p className="font-syndicatgrotesk text-sm sm:text-[15px] text-muted-taupe leading-relaxed max-w-md">
-              Vinayaka Creation was born from a deep love of Indian craftsmanship.
-              Each piece is handcrafted in one-gram gold — radiant, lightweight,
+              Vinayak Creation was born from a deep love of Indian craftsmanship.
+              Each piece is handcrafted — radiant, lightweight,
               and made to be worn every single day. From festivals to daily wear,
               our jewelry moves with you.
             </p>

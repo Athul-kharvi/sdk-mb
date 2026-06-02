@@ -110,7 +110,7 @@ export default function AdminDashboard() {
         <div>
           <h1 className="font-brandon text-2xl font-black uppercase tracking-tight text-[#1A1A1A]">Dashboard</h1>
           <p className="font-syndicatgrotesk text-[11px] tracking-[0.15em] text-[#8A7A6A] mt-0.5">
-            Vinayaka Creation · Admin
+            Vinayak Creation · Admin
           </p>
         </div>
         <Link
