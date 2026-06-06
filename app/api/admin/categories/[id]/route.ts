@@ -15,6 +15,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   if (body.name !== undefined) updates.name = body.name.trim()
   if (body.slug !== undefined) updates.slug = body.slug.trim()
   if (body.is_active !== undefined) updates.is_active = body.is_active
+  if (body.image !== undefined) updates.image = body.image
+  if (body.sort_order !== undefined) updates.sort_order = body.sort_order
 
   const { data, error } = await supabase
     .from('categories')

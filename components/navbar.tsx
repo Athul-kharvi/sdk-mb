@@ -103,7 +103,7 @@ export function Navbar() {
                 Vinayak Creation
               </span>
               <span className="block text-center font-syndicatgrotesk text-[8px] tracking-[0.35em] text-rich-gold uppercase leading-none mt-1">
-                Handcrafted Jewelry
+                {/* Handcrafted Jewelry */}
               </span>
             </Link>
 

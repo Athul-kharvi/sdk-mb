@@ -17,6 +17,8 @@ interface CategoryItem {
   id: string
   name: string
   slug: string
+  image?: string | null
+  sort_order?: number | null
 }
 
 interface CategoryGridProps {
@@ -35,9 +37,9 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
   const raw = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
-  const items = raw
-    .filter(c => !['new-arrivals', 'new arrivals'].includes((c.slug || c.name).toLowerCase()))
-    .slice(0, 4)
+  const items = raw.filter(
+    c => !['new-arrivals', 'new arrivals'].includes((c.slug || c.name).toLowerCase())
+  )
 
   return (
     <section className="w-full bg-site-black py-14 sm:py-20" ref={ref}>
@@ -61,20 +63,20 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         </p>
       </motion.div>
 
-      {/* Grid */}
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 max-w-7xl mx-auto">
+      {/* Grid — flex-wrap + justify-center auto-centers the last row when odd */}
+      <div className="px-2 sm:px-3">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
-            const image = SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
+            const image = cat.image || SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
             return (
               <motion.a
                 key={cat.id}
                 href={`/category/${slug}`}
                 initial={{ opacity: 0, y: 32 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.65, delay: 0.15 + i * 0.1, ease: 'easeOut' }}
-                className="group relative overflow-hidden block cursor-pointer rounded-sm"
+                transition={{ duration: 0.65, delay: Math.min(0.15 + i * 0.08, 0.65), ease: 'easeOut' }}
+                className="group relative overflow-hidden cursor-pointer rounded-sm w-[calc(50%-4px)] sm:w-[calc(50%-6px)]"
                 aria-label={`Shop ${cat.name}`}
               >
                 {/* Image */}
@@ -83,9 +85,9 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                     src={image}
                     alt={cat.name}
                     fill
-                    sizes="(max-width: 640px) 50vw, 33vw"
+                    sizes="50vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    priority={i < 2}
+                    priority={i < 4}
                   />
                   {/* Dark overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />

@@ -11,7 +11,8 @@ export async function GET(req: Request) {
   const supabase = adminSupabase()
   const { data, error } = await supabase
     .from('categories')
-    .select('id, name, slug, is_active, created_at')
+    .select('id, name, slug, is_active, image, sort_order, created_at')
+    .order('sort_order', { ascending: true, nullsFirst: false })
     .order('name')
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -22,14 +23,20 @@ export async function POST(req: Request) {
   if (!(await isAdmin(req))) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { name, slug } = body
+  const { name, slug, image, sort_order } = body
 
   if (!name?.trim()) return NextResponse.json({ error: 'Name is required' }, { status: 400 })
 
   const supabase = adminSupabase()
   const { data, error } = await supabase
     .from('categories')
-    .insert([{ name: name.trim(), slug: slug?.trim() || name.trim().toLowerCase().replace(/\s+/g, '-'), is_active: true }])
+    .insert([{
+      name: name.trim(),
+      slug: slug?.trim() || name.trim().toLowerCase().replace(/\s+/g, '-'),
+      is_active: true,
+      image: image || null,
+      sort_order: sort_order ?? null,
+    }])
     .select()
     .single()
 

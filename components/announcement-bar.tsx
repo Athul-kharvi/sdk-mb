@@ -6,7 +6,7 @@ const messages = [
   '✦ Easy 7-Day Returns — No Questions Asked',
   '✦ New Collection Arrived — Shop Now',
   '✦ Secure Payments · UPI · Cards · Wallets',
-  '✦ Handcrafted Designs · 500+ Styles',
+  // '✦ Handcrafted Designs · 500+ Styles',
 ]
 
 export function AnnouncementBar() {

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props) {
   const name = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   return {
     title: `${name} — Vinayak Creation`,
-    description: `Browse our ${name} collection. Handcrafted jewellery.`,
+    description: `Browse our ${name} collection.`,
   }
 }
 
@@ -75,8 +75,8 @@ export default async function CategoryPage({ params }: Props) {
           </h1>
           <p className="font-syndicatgrotesk text-xs text-muted-taupe mt-2">
             {products.length > 0
-              ? `${products.length} piece${products.length !== 1 ? 's' : ''} · Handcrafted`
-              : 'Handcrafted Jewellery'}
+              ? `${products.length} piece${products.length !== 1 ? 's' : ''} · jewellery made in India.`
+              : 'Explore our jewellery collection.'}
           </p>
         </div>
       </div>

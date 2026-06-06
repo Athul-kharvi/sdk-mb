@@ -52,7 +52,7 @@ export function ProductScroll({
                 ║ {title} ║
               </h2>
               <p className="font-syndicatgrotesk text-[10px] tracking-[0.2em] uppercase text-muted-taupe">
-                Premium Handcrafted Designs
+                {/* Premium Handcrafted Designs */}
               </p>
             </>
           ) : (
@@ -69,7 +69,7 @@ export function ProductScroll({
                 ║ {title} ║
               </h2>
               <p className="font-syndicatgrotesk text-[11px] tracking-[0.2em] uppercase text-site-black/60">
-                Premium Handcrafted Designs
+                {/* Premium Handcrafted Designs */}
               </p>
             </>
           )}

@@ -86,7 +86,7 @@ export function Footer() {
             Vinayak <span className="text-[#B8860B]">Creation</span>
           </p>
           <p className="font-syndicatgrotesk text-[8px] tracking-[0.45em] uppercase text-[#B8860B]/60 mt-2">
-            Handcrafted Jewelry
+            {/* Handcrafted Jewelry */}
           </p>
         </div>
 
@@ -185,11 +185,11 @@ export function Footer() {
                   Vinayak Creation
                 </p>
                 <p className="font-syndicatgrotesk text-[8px] tracking-[0.4em] uppercase text-[#B8860B] mt-1">
-                  Handcrafted
+                  {/* Handcrafted */}
                 </p>
               </div>
               <p className="font-syndicatgrotesk text-xs text-[#7A6F62] leading-relaxed max-w-xs">
-                Handcrafted jewelry for the modern Indian woman. Wear Gold Every Day.
+                Wear Gold Every Day.
               </p>
               <div className="flex gap-2.5">
                 {SOCIAL.map(({ href, label, svg }) => (
@@ -244,12 +244,12 @@ export function Footer() {
               <ul className="space-y-2.5">
                 <li>
                   <a href="https://wa.me/917259333254" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
-                    WhatsApp: +91 7259-333-254
+                    WhatsApp: +91 7259333254
                   </a>
                 </li>
                 <li>
                   <a href="mailto:hello@sridevik.in" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
-                    hello@sridevik.in
+                    vinayakcreation66@gmail.com
                   </a>
                 </li>
                 <li className="font-syndicatgrotesk text-xs text-[#7A6F62]">

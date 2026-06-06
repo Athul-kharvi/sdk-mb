@@ -124,7 +124,7 @@ export function CartDrawer() {
                               {item.product.name}
                             </h3>
                             <p className="font-syndicatgrotesk text-[10px] text-text-muted mt-0.5 tracking-wide">
-                              Handcrafted Jewelry
+                              {/* Handcrafted Jewelry */}
                             </p>
                           </div>
                           <button

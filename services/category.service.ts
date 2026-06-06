@@ -4,6 +4,8 @@ export type Category = {
     id: string;
     name: string;
     slug: string | null;
+    image?: string | null;
+    sort_order?: number | null;
 };
 
 export const categoryService = {

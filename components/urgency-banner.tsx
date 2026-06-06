@@ -64,7 +64,7 @@ export function UrgencyBanner() {
             transition={{ duration: 0.6, delay: 0.26 }}
             className="font-syndicatgrotesk text-[11px] text-[#7A6F62] tracking-[0.15em] mb-10 max-w-xs leading-relaxed"
           >
-            Handcrafted pieces selling fast. Only a few left in select styles.
+            Only a few left in select styles.
           </motion.p>
 
           <motion.a

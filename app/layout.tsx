@@ -42,7 +42,7 @@ const kapraneuepro = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://sridevik.in'),
   title: 'Vinayak Creation',
-  description: 'Handcrafted jewelry for the modern Indian woman. Free shipping on orders above ₹599, and easy returns.',
+  description: "Free shipping on orders above ₹599, and easy returns.",
   // generator: 'v0.app',
   icons: {
     icon: [
