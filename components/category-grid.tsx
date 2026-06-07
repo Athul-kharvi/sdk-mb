@@ -59,7 +59,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
           Shop by Category
         </h2>
         <p className="font-syndicatgrotesk text-xs text-muted-taupe tracking-[0.15em]">
-          Limited Styles · Endless Impressions
+          {/* Limited Styles · Endless Impressions */}
         </p>
       </motion.div>
 
@@ -76,7 +76,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 initial={{ opacity: 0, y: 32 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.65, delay: Math.min(0.15 + i * 0.08, 0.65), ease: 'easeOut' }}
-                className="group relative overflow-hidden cursor-pointer rounded-sm w-[calc(50%-4px)] sm:w-[calc(50%-6px)]"
+                className="group relative overflow-hidden cursor-pointer rounded-sm w-[calc(50%-4px)] lg:w-[calc(33.333%-8px)]"
                 aria-label={`Shop ${cat.name}`}
               >
                 {/* Image */}
@@ -85,7 +85,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                     src={image}
                     alt={cat.name}
                     fill
-                    sizes="50vw"
+                    sizes="(max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     priority={i < 4}
                   />
