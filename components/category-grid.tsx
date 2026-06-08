@@ -4,14 +4,14 @@ import Image from 'next/image'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-const SLUG_IMAGES: Record<string, string> = {
-  rings: '/images/ring.jpg',
-  earrings: '/images/pendent.png',
-  necklaces: '/images/necklace.jpg',
-  bangles: '/images/bangle.jpg',
-  pendants: '/images/pendent.png',
-  'children-kada': '/images/children_kada.png',
-}
+// const SLUG_IMAGES: Record<string, string> = {
+//   rings: '/images/ring.jpg',
+//   earrings: '/images/pendent.png',
+//   necklaces: '/images/necklace.jpg',
+//   bangles: '/images/bangle.jpg',
+//   pendants: '/images/pendent.png',
+//   'children-kada': '/images/children_kada.png',
+// }
 
 interface CategoryItem {
   id: string
@@ -62,7 +62,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
-            const image = cat.image || SLUG_IMAGES[cat.slug] || SLUG_IMAGES[cat.name.toLowerCase()] || '/images/ring.jpg'
+            const image = cat.image
             return (
               <motion.a
                 key={cat.id}
