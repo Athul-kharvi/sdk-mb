@@ -62,7 +62,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
-            const image = cat.image
+            const image = cat.image || null
             return (
               <motion.a
                 key={cat.id}
@@ -75,6 +75,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
               >
                 {/* Image */}
                 <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full overflow-hidden bg-card-dark">
+                  {image ? (
                   <Image
                     src={image}
                     alt={cat.name}
@@ -83,6 +84,9 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     priority={i < 4}
                   />
+                  ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a]" />
+                  )}
                   {/* Dark overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
