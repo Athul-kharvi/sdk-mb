@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { categoryService } from '@/services/category.service'
 
 const POLICY_LINKS = [
   { label: 'Shipping',  href: '/policies/shipping' },
@@ -8,14 +10,6 @@ const POLICY_LINKS = [
   { label: 'Privacy',   href: '/policies/privacy' },
   { label: 'Terms',     href: '/policies/terms' },
   { label: 'Orders',    href: '/orders' },
-]
-
-const DISCOVER_LINKS = [
-  { label: 'Rings',      href: '/category/rings' },
-  { label: 'Earrings',   href: '/category/earrings' },
-  { label: 'Necklaces',  href: '/category/necklaces' },
-  { label: 'Bangles',    href: '/category/bangles' },
-  { label: 'Pendants',   href: '/category/pendants' },
 ]
 
 const SOCIAL = [
@@ -59,6 +53,19 @@ const TRUST = [
 ]
 
 export function Footer() {
+  const [discoverLinks, setDiscoverLinks] = useState<{ label: string; href: string }[]>([])
+
+  useEffect(() => {
+    categoryService.getAll().then(cats => {
+      setDiscoverLinks(
+        cats.map(c => ({
+          label: c.name,
+          href: `/category/${c.slug || c.name.toLowerCase().replace(/\s+/g, '-')}`,
+        }))
+      )
+    }).catch(() => {})
+  }, [])
+
   return (
     <footer className="relative bg-[#0d0b07] border-t border-[#B8860B]/20 overflow-hidden">
 
@@ -118,7 +125,7 @@ export function Footer() {
             Collections
           </p>
           <div className="flex flex-wrap gap-2">
-            {DISCOVER_LINKS.map(({ label, href }) => (
+            {discoverLinks.map(({ label, href }) => (
               <a
                 key={label}
                 href={href}
@@ -212,7 +219,7 @@ export function Footer() {
               <h4 className="font-brandon text-xs font-black uppercase tracking-[0.22em] text-white">Discover</h4>
               <div className="w-8 h-px bg-[#B8860B]/40" />
               <ul className="space-y-2.5">
-                {DISCOVER_LINKS.map(({ label, href }) => (
+                {discoverLinks.map(({ label, href }) => (
                   <li key={label}>
                     <a href={href} className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
                       {label}

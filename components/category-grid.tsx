@@ -25,21 +25,15 @@ interface CategoryGridProps {
   categories?: CategoryItem[]
 }
 
-const STATIC_CATEGORIES: CategoryItem[] = [
-  { id: 'rings', name: 'Rings', slug: 'rings' },
-  { id: 'earrings', name: 'Earrings', slug: 'earrings' },
-  { id: 'necklaces', name: 'Necklaces', slug: 'necklaces' },
-  { id: 'bangles', name: 'Bangles', slug: 'bangles' },
-]
-
 export function CategoryGrid({ categories }: CategoryGridProps) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
-  const raw = categories && categories.length > 0 ? categories : STATIC_CATEGORIES
-  const items = raw.filter(
+  const items = (categories ?? []).filter(
     c => !['new-arrivals', 'new arrivals'].includes((c.slug || c.name).toLowerCase())
   )
+
+  if (items.length === 0) return null
 
   return (
     <section className="w-full bg-site-black py-14 sm:py-20" ref={ref}>
