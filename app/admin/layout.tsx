@@ -18,6 +18,16 @@ const NAV_ITEMS = [
     ),
   },
   {
+    href: '/admin/hero',
+    label: 'Hero Image',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="14" rx="2" />
+        <path d="M3 13l4-4 4 4 3-3 4 4" />
+      </svg>
+    ),
+  },
+  {
     href: '/admin/categories',
     label: 'Categories',
     icon: (

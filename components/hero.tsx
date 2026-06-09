@@ -8,13 +8,21 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.8, delay, ease: 'easeOut' as const },
 })
 
-export function Hero() {
+interface HeroProps {
+  desktopImage?: string | null
+  mobileImage?: string | null
+}
+
+export function Hero({ desktopImage, mobileImage }: HeroProps) {
+  const mobileImg = mobileImage || desktopImage || '/images/hero_image_mobile.png'
+  const desktopImg = desktopImage || '/images/hero_image.png'
+
   return (
     <>
       {/* ── MOBILE (< sm) — portrait image, text pinned to top ── */}
       <section className="sm:hidden relative w-full overflow-hidden" style={{ height: '92svh' }}>
         <img
-          src="/images/hero_image_mobile.png"
+          src={mobileImg}
           alt="Vinayak Creation Gold Bangles"
           fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover"
@@ -73,7 +81,7 @@ export function Hero() {
         style={{ height: 'clamp(480px, 70vh, 800px)' }}
       >
         <img
-          src="/images/hero_image.png"
+          src={desktopImg}
           alt="Vinayak Creation Gold Bangles"
           fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover object-center"
