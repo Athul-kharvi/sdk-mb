@@ -58,8 +58,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
       </motion.div>
 
       {/* Grid — flex-wrap + justify-center auto-centers the last row when odd */}
-      <div className="px-2 sm:px-3">
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+      <div className="px-2 sm:px-3 lg:px-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 lg:max-w-7xl lg:mx-auto">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
             const image = cat.image || null
@@ -94,21 +94,22 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                   <div className="absolute inset-0 border border-rich-gold/0 group-hover:border-rich-gold/50 transition-all duration-500 rounded-sm" />
                 </div>
 
-                {/* Bottom-left overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                  <h3
-                    className="font-brandon text-base sm:text-3xl font-black uppercase text-white tracking-wide leading-none mb-2 sm:mb-3"
-                    style={{ transform: 'scaleY(1.4) scaleX(1.1)', transformOrigin: 'bottom left', display: 'inline-block' }}
-                  >
+                {/* Bottom overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="font-brandon text-sm sm:text-lg font-bold uppercase text-white tracking-[0.12em] leading-tight mb-1.5 drop-shadow-lg">
                     {cat.name}
                   </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="font-syndicatgrotesk text-[11px] sm:text-xs tracking-[0.15em] uppercase font-bold text-white">
+                  <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="font-syndicatgrotesk text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[#D4A017]">
                       Shop Now
                     </span>
-                    <span className="text-white text-sm transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                    <span className="text-[#D4A017] text-xs group-hover:translate-x-1 transition-transform duration-300">→</span>
                   </div>
                 </div>
+
+                {/* Glow on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+                  style={{ boxShadow: 'inset 0 0 40px rgba(212,160,23,0.18)' }} />
               </motion.a>
             )
           })}

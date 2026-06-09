@@ -108,61 +108,68 @@ export function Navbar() {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4 mx-6">
+            <div className="hidden md:flex flex-1 justify-center items-center gap-1 lg:gap-3 mx-4">
 
-              {/* Collections dropdown */}
-              <div
-                className="relative group"
-                onMouseEnter={() => {}}
-                onMouseLeave={() => {}}
-              >
-                <button className="flex items-center gap-1 px-2 py-1 font-syndicatgrotesk text-[10px] lg:text-xs tracking-[0.14em] uppercase text-muted-taupe hover:text-rich-gold transition-colors duration-200 whitespace-nowrap">
-                  Collections
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="transition-transform duration-200 group-hover:rotate-180">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </button>
+              {/* First 3 categories as direct links */}
+              {navLinks.slice(0, 3).map(({ name, slug }) => (
+                <a
+                  key={slug}
+                  href={`/category/${slug}`}
+                  className="group relative px-2 py-1 font-syndicatgrotesk text-[10px] lg:text-xs tracking-[0.14em] uppercase text-muted-taupe hover:text-rich-gold transition-colors duration-200 whitespace-nowrap"
+                >
+                  {name}
+                  <span className="absolute bottom-0 left-0 w-0 h-px bg-rich-gold group-hover:w-full transition-all duration-300" />
+                </a>
+              ))}
 
-                {/* Dropdown panel */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200 z-50 min-w-[520px]">
-                  {/* Arrow */}
-                  <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#111] border-l border-t border-[#B8860B]/30 rotate-45" />
+              {/* More → dropdown (remaining categories) */}
+              {navLinks.length > 3 && (
+                <div className="relative group">
+                  <button className="flex items-center gap-1 px-2 py-1 font-syndicatgrotesk text-[10px] lg:text-xs tracking-[0.14em] uppercase text-muted-taupe hover:text-rich-gold transition-colors duration-200 whitespace-nowrap">
+                    More
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="transition-transform duration-200 group-hover:rotate-180">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
 
-                  <div className="bg-[#111] border border-[#B8860B]/30 shadow-2xl p-5">
-                    <p className="font-syndicatgrotesk text-[8px] tracking-[0.4em] uppercase text-[#D4A017] mb-4">
-                      All Collections
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {navLinks.map(({ name, slug, image }) => (
-                        <a
-                          key={slug}
-                          href={`/category/${slug}`}
-                          className="group/item flex items-center gap-2.5 p-2 hover:bg-white/[0.07] transition-colors rounded-sm"
-                        >
-                          {/* Thumbnail */}
-                          <div className="w-9 h-9 shrink-0 overflow-hidden bg-[#222] border border-[#B8860B]/20">
-                            {image ? (
-                              <img src={image} alt={name} className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300" />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-[#222] to-[#333]" />
-                            )}
-                          </div>
-                          <span className="font-syndicatgrotesk text-[10px] tracking-[0.1em] uppercase text-white/80 group-hover/item:text-[#D4A017] transition-colors duration-200 leading-tight">
-                            {name}
-                          </span>
+                  {/* Dropdown panel */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200 z-50 min-w-[420px]">
+                    {/* Arrow tip */}
+                    <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#111] border-l border-t border-[#B8860B]/30 rotate-45" />
+
+                    <div className="bg-[#111] border border-[#B8860B]/30 shadow-2xl p-5">
+                      <p className="font-syndicatgrotesk text-[8px] tracking-[0.4em] uppercase text-[#D4A017] mb-4">
+                        More Collections
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {navLinks.slice(3).map(({ name, slug, image }) => (
+                          <a
+                            key={slug}
+                            href={`/category/${slug}`}
+                            className="group/item flex items-center gap-2.5 p-2 hover:bg-white/[0.07] transition-colors rounded-sm"
+                          >
+                            <div className="w-9 h-9 shrink-0 overflow-hidden bg-[#222] border border-[#B8860B]/20">
+                              {image ? (
+                                <img src={image} alt={name} className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300" />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-[#222] to-[#333]" />
+                              )}
+                            </div>
+                            <span className="font-syndicatgrotesk text-[10px] tracking-[0.1em] uppercase text-white/80 group-hover/item:text-[#D4A017] transition-colors duration-200 leading-tight">
+                              {name}
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                      <div className="mt-4 pt-3 border-t border-[#B8860B]/15 flex justify-end">
+                        <a href="/" className="font-syndicatgrotesk text-[9px] tracking-[0.25em] uppercase text-white/40 hover:text-[#D4A017] transition-colors flex items-center gap-1.5">
+                          View All <span>→</span>
                         </a>
-                      ))}
-                    </div>
-                    {/* View all link */}
-                    <div className="mt-4 pt-3 border-t border-[#B8860B]/15 flex justify-end">
-                      <a href="/" className="font-syndicatgrotesk text-[9px] tracking-[0.25em] uppercase text-white/40 hover:text-[#D4A017] transition-colors flex items-center gap-1.5">
-                        View All Collections
-                        <span>→</span>
-                      </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <a
                 href="/"

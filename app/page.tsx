@@ -1,4 +1,4 @@
-export const revalidate = 300 // rebuild cached page every 5 minutes
+export const revalidate = 300
 
 import { AnnouncementBar } from '@/components/announcement-bar'
 import { Navbar } from '@/components/navbar'
