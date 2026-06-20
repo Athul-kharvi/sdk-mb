@@ -99,11 +99,12 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                   <h3 className="font-brandon text-sm sm:text-lg font-bold uppercase text-white tracking-[0.12em] leading-tight mb-1.5 drop-shadow-lg">
                     {cat.name}
                   </h3>
-                  <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Mobile: always visible · Desktop: fade in on hover */}
+                  <div className="flex items-center gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
                     <span className="font-syndicatgrotesk text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[#D4A017]">
                       Shop Now
                     </span>
-                    <span className="text-[#D4A017] text-xs group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    <span className="text-[#D4A017] text-xs sm:group-hover:translate-x-1 transition-transform duration-300">→</span>
                   </div>
                 </div>
 

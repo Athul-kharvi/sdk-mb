@@ -20,11 +20,10 @@ export async function PUT(req: Request) {
   if (!(await isAdmin(req))) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { desktop, mobile } = body
-
-  const value: Record<string, string> = {}
-  if (desktop) value.desktop = desktop
-  if (mobile) value.mobile = mobile
+  // body.desktop: string[] (up to 3), body.mobile: string[] (up to 3)
+  const value: Record<string, string[]> = {}
+  if (Array.isArray(body.desktop)) value.desktop = body.desktop.slice(0, 3)
+  if (Array.isArray(body.mobile)) value.mobile = body.mobile.slice(0, 3)
 
   const { error } = await sb()
     .from('site_settings')

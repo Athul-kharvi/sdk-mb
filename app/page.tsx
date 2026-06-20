@@ -5,9 +5,7 @@ import { Navbar } from '@/components/navbar'
 import { Hero } from '@/components/hero'
 // import { GoldRateTicker } from '@/components/gold-rate-ticker'
 import { CategoryGrid } from '@/components/category-grid'
-import { EditorialStory } from '@/components/editorial-story'
 import { TrustSignals } from '@/components/trust-signals'
-import { Testimonials } from '@/components/testimonials'
 // import { Newsletter } from '@/components/newsletter'
 import { Footer } from '@/components/footer'
 import { FloatingWhatsApp } from '@/components/floating-whatsapp'
@@ -37,9 +35,12 @@ export default async function Home() {
     <main className="w-full overflow-hidden bg-site-black">
       <AnnouncementBar />
       <Navbar />
-      <Hero desktopImage={heroImages?.desktop} mobileImage={heroImages?.mobile} />
+      <Hero
+        desktopImages={Array.isArray(heroImages?.desktop) ? heroImages.desktop : heroImages?.desktop ? [heroImages.desktop] : undefined}
+        mobileImages={Array.isArray(heroImages?.mobile) ? heroImages.mobile : heroImages?.mobile ? [heroImages.mobile] : undefined}
+      />
       {/* <GoldRateTicker /> */}
-      <CategoryGrid categories={categories} />
+      <CategoryGrid categories={categories.map(c => ({ ...c, slug: c.slug ?? '' }))} />
 
       {/* <EditorialStory /> */}
       <TrustSignals />
