@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const ASPECTS = { desktop: 16 / 9, mobile: 9 / 19.5 }
+const ASPECTS = { desktop: 21 / 9, mobile: 9 / 19 }
 const MAX_SLIDES = 3
 
 interface CropBox { x: number; y: number; w: number; h: number }
@@ -87,7 +87,7 @@ function CropModal({ file, asp, label, onDone, onCancel }: {
     const img = document.getElementById('hcrop') as HTMLImageElement | null
     if (!img || !nat.w || !disp.w) return
     const sx = nat.w / disp.w; const sy = nat.h / disp.h
-    const ow = asp >= 1 ? 1920 : 800; const oh = ow / asp
+    const ow = asp >= 1 ? 2520 : 800; const oh = ow / asp
     const cv = document.createElement('canvas'); cv.width = ow; cv.height = oh
     cv.getContext('2d')!.drawImage(img, crop.x * sx, crop.y * sy, crop.w * sx, crop.h * sy, 0, 0, ow, oh)
     cv.toBlob(blob => { if (blob) onDone(blob) }, 'image/jpeg', 0.88)
@@ -99,7 +99,7 @@ function CropModal({ file, asp, label, onDone, onCancel }: {
         <div className="px-5 py-3.5 border-b border-[#E8E0D5] flex items-center justify-between shrink-0">
           <div>
             <p className="font-brandon text-sm font-black uppercase tracking-tight text-[#1A1A1A]">Crop — {label}</p>
-            <p className="font-syndicatgrotesk text-[10px] text-[#8A7A6A]">{asp >= 1 ? '16:9 landscape' : '9:19.5 portrait'}</p>
+            <p className="font-syndicatgrotesk text-[10px] text-[#8A7A6A]">{asp >= 1 ? '21:9 ultrawide' : '9:19 portrait'}</p>
           </div>
           <button onClick={onCancel} className="w-7 h-7 border border-[#E8E0D5] text-[#8A7A6A] hover:text-[#D4A017] hover:border-[#D4A017] text-base transition-colors">×</button>
         </div>
@@ -330,7 +330,7 @@ export default function AdminHeroPage() {
             <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
             Desktop
           </p>
-          <span className="font-syndicatgrotesk text-[9px] uppercase tracking-widest text-[#C4B49A]">16:9 · 1920×1080</span>
+          <span className="font-syndicatgrotesk text-[9px] uppercase tracking-widest text-[#C4B49A]">21:9 · 2520×1080</span>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {desktop.map((url, i) => (

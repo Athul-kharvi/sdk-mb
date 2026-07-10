@@ -108,7 +108,7 @@ export function Hero() {
   return (
     <>
       {/* ── MOBILE ── */}
-      <section className="sm:hidden relative w-full overflow-hidden" style={{ height: '92svh' }}>
+      <section className="sm:hidden relative w-full overflow-hidden aspect-[9/19]">
         <Slideshow images={mobileImgs} objectPosition="center bottom" />
 
         <div className="absolute inset-x-0 top-0 h-1/2 pointer-events-none z-10"
@@ -137,7 +137,7 @@ export function Hero() {
       </section>
 
       {/* ── DESKTOP ── */}
-      <section className="hidden sm:block relative w-full overflow-hidden" style={{ height: 'clamp(480px, 70vh, 800px)' }}>
+      <section className="hidden sm:block relative w-full overflow-hidden aspect-[21/9]">
         <Slideshow images={desktopImgs} />
 
         <div className="relative z-10 flex flex-col justify-center h-full px-12 lg:px-20 xl:px-28 max-w-[600px] pointer-events-none">
