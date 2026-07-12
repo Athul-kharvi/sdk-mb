@@ -52,10 +52,12 @@ export default function NewProduct() {
         body: JSON.stringify({
           name: formData.name,
           price: parseFloat(formData.price),
+          original_price: formData.original_price ? parseFloat(formData.original_price) : null,
           stock: parseInt(formData.stock) || 0,
           description: formData.description,
           category_id: formData.category_id,
           image: JSON.stringify(images),
+          weight: formData.weight,
         }),
       })
       if (res.ok) { router.push('/admin') }

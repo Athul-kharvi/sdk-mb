@@ -67,6 +67,16 @@ const NAV_ITEMS = [
     ),
   },
   {
+    href: '/admin/arrange',
+    label: 'Arrange Products',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+        <path d="M3 9h18M3 15h18M8 3v18M16 3v18" opacity="0.4" />
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+    ),
+  },
+  {
     href: '/admin/products/bulk-upload',
     label: 'Bulk Upload',
     icon: (

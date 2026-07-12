@@ -10,7 +10,7 @@ interface ProductScrollProps {
   subtitle?: string
   viewAllLink?: string
   isDark?: boolean
-  products: Array<{ id: string; name: string; price: number; weight?: string; image?: string }>
+  products: Array<{ id: string; name: string; price: number; original_price?: number | null; weight?: string; image?: string }>
 }
 
 export function ProductScroll({
@@ -88,6 +88,7 @@ export function ProductScroll({
               >
                 <ProductCard
                   {...product}
+                  originalPrice={product.original_price ?? undefined}
                   isDark={isDark}
                   badge={index === 0 ? 'NEW' : index === 1 ? 'BESTSELLER' : undefined}
                 />

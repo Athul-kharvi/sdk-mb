@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { CartService } from '@/services/cart.service'
+import Razorpay from 'razorpay'
 
 const getSupabaseWithAuth = (req: Request) => {
   const token = req.headers.get('Authorization')?.replace('Bearer ', '')
@@ -55,14 +56,28 @@ export async function POST(req: Request) {
     const { error: itemsError } = await supabase.from('order_items').insert(orderItems)
     if (itemsError) throw new Error(itemsError.message)
 
-    // Mock Razorpay order until credentials are configured
-    const mockRazorpayOrderId = `mock_order_${order.id}`
-    await supabase.from('orders').update({ razorpay_order_id: mockRazorpayOrderId }).eq('id', order.id)
+    const amountPaise = Math.round(total * 100)
+    if (amountPaise < 100) {
+      return Response.json({ error: 'Order amount too low (minimum ₹1)' }, { status: 400 })
+    }
+
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    })
+
+    const rzpOrder = await razorpay.orders.create({
+      amount: amountPaise,
+      currency: 'INR',
+      receipt: `receipt_${order.id}`.slice(0, 40),
+    })
+
+    await supabase.from('orders').update({ razorpay_order_id: rzpOrder.id }).eq('id', order.id)
 
     return Response.json({
       success: true,
       orderId: order.id,
-      razorpayOrderId: mockRazorpayOrderId,
+      razorpayOrderId: rzpOrder.id,
       amount: total,
       currency: 'INR',
       name,
@@ -70,6 +85,7 @@ export async function POST(req: Request) {
       phone,
     })
   } catch (e: any) {
-    return Response.json({ error: e.message }, { status: 400 })
+    const msg = e?.error?.description ?? e?.message ?? 'Checkout failed'
+    return Response.json({ error: msg }, { status: 500 })
   }
 }

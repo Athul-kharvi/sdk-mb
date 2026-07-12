@@ -55,6 +55,12 @@ export default function CheckoutPage() {
     setLoading(true)
     setError('')
 
+    if (!window.Razorpay) {
+      setError('Payment SDK not loaded. Please refresh the page and try again.')
+      setLoading(false)
+      return
+    }
+
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
@@ -85,8 +91,6 @@ export default function CheckoutPage() {
 
       const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: data.amount * 100,
-        currency: data.currency,
         name: 'Vinayak Creation',
         description: 'Jewellery Order',
         image: '/images/logo.png',
@@ -130,7 +134,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive" />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
 
       <div className="min-h-screen bg-warm-beige">
         <Navbar />

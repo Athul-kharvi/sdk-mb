@@ -18,12 +18,11 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json()
-    const { name, price, category_id, description, image, stock, is_active } = body
+    const { name, price, original_price, category_id, description, image, stock, weight, is_active } = body
 
     if (!name?.trim()) return Response.json({ error: 'Product name is required' }, { status: 400 })
     if (!price || isNaN(Number(price))) return Response.json({ error: 'Valid price is required' }, { status: 400 })
 
-    // Only insert columns that actually exist in the DB
     const payload: Record<string, any> = {
       name: name.trim(),
       price: Number(price),
@@ -33,6 +32,8 @@ export async function POST(req: Request) {
     if (description?.trim()) payload.description = description.trim()
     if (image) payload.image = image
     if (stock !== undefined && stock !== '') payload.stock = Number(stock) || 0
+    if (original_price !== undefined) payload.original_price = original_price ? Number(original_price) : null
+    if (weight?.trim()) payload.weight = weight.trim()
 
     const { data, error } = await ProductRepo.create(payload)
     if (error) return Response.json({ error: error.message }, { status: 500 })

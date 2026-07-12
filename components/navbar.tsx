@@ -290,7 +290,7 @@ export function Navbar() {
           />
           {/* Search box */}
           <div className="relative w-full max-w-lg">
-            <form onSubmit={handleSearch} className="flex items-center bg-[#111] border border-white/15 focus-within:border-rich-gold/60 transition-colors">
+            <form onSubmit={handleSearch} className="flex items-center bg-white border border-border-light focus-within:border-deep-gold focus-within:ring-1 focus-within:ring-deep-gold/20 transition-colors shadow-sm">
               <Search size={16} className="ml-4 text-muted-taupe shrink-0" />
               <input
                 autoFocus
@@ -298,18 +298,18 @@ export function Navbar() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search jewellery…"
-                className="flex-1 px-3 py-4 bg-transparent font-syndicatgrotesk text-sm text-ivory placeholder-white/30 outline-none"
+                className="flex-1 px-3 py-4 bg-transparent font-syndicatgrotesk text-sm text-warm-black placeholder-muted-taupe outline-none"
               />
               <button
                 type="button"
                 onClick={() => { setIsSearchOpen(false); setSearchQuery('') }}
-                className="p-4 text-muted-taupe hover:text-ivory transition-colors"
+                className="p-4 text-muted-taupe hover:text-warm-black transition-colors"
                 aria-label="Close search"
               >
                 <X size={16} />
               </button>
             </form>
-            <p className="mt-2 font-syndicatgrotesk text-[10px] text-white/30 text-center">
+            <p className="mt-2 font-syndicatgrotesk text-[10px] text-warm-black/40 text-center">
               Press Enter to search · Esc to close
             </p>
           </div>

@@ -91,6 +91,8 @@ export default async function CategoryPage({ params }: Props) {
                 id={product.id}
                 name={product.name}
                 price={product.price}
+                originalPrice={product.original_price ?? undefined}
+                weight={product.weight ?? undefined}
                 image={getFirstImage(product.image)}
                 isDark={false}
               />
