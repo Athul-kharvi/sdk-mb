@@ -90,7 +90,7 @@ export default function CheckoutPage() {
       }
 
       const rzp = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: data.razorpayKeyId,
         name: 'Vinayak Creation',
         description: 'Jewellery Order',
         image: '/images/logo.png',

@@ -61,23 +61,32 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Order amount too low (minimum ₹1)' }, { status: 400 })
     }
 
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET!,
-    })
+    const hasRazorpayCredentials = process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
 
-    const rzpOrder = await razorpay.orders.create({
-      amount: amountPaise,
-      currency: 'INR',
-      receipt: `receipt_${order.id}`.slice(0, 40),
-    })
+    let razorpayOrderId: string
 
-    await supabase.from('orders').update({ razorpay_order_id: rzpOrder.id }).eq('id', order.id)
+    if (hasRazorpayCredentials) {
+      const razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID!,
+        key_secret: process.env.RAZORPAY_KEY_SECRET!,
+      })
+      const rzpOrder = await razorpay.orders.create({
+        amount: amountPaise,
+        currency: 'INR',
+        receipt: `receipt_${order.id}`.slice(0, 40),
+      })
+      razorpayOrderId = rzpOrder.id
+    } else {
+      razorpayOrderId = `mock_order_${order.id}`
+    }
+
+    await supabase.from('orders').update({ razorpay_order_id: razorpayOrderId }).eq('id', order.id)
 
     return Response.json({
       success: true,
       orderId: order.id,
-      razorpayOrderId: rzpOrder.id,
+      razorpayOrderId,
+      razorpayKeyId: hasRazorpayCredentials ? process.env.RAZORPAY_KEY_ID : undefined,
       amount: total,
       currency: 'INR',
       name,
