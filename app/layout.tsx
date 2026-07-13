@@ -69,25 +69,6 @@ export default function RootLayout({
       <body className="font-brandon">
         {children}
         <Analytics />
-        {/* <p className="font-brandon text-xl border border-red-500">
-          BRANDON FONT
-        </p>
-
-        <p className="font-monoCustom text-xl">
-          SIMPLY MONO FONT
-        </p>
-        <p className="font-syndicatgrotesk text-xl">
-          SYNDICAT GROTESK FONT
-        </p>
-        <p className="font-kapraneuepro text-xl">
-          KAPRANEUEPRO FONT
-        </p>
-        <p className="font-cormorantGaramond text-xl">
-          CORMORANT GARAMOND FONT
-        </p>
-        <p className="font-dmSans text-xl">
-          DM SANS FONT
-        </p> */}
       </body>
     </html>
   )
