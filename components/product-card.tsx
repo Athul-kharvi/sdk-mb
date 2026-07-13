@@ -33,7 +33,8 @@ export function ProductCard({
   const router = useRouter()
   const { addToCart } = useCartStore()
 
-  const handleAddToCart = async (redirect = false) => {
+  const handleAddToCart = async (e: React.MouseEvent, redirect = false) => {
+    e.stopPropagation()
     setAdding(true)
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
@@ -53,7 +54,8 @@ export function ProductCard({
     <motion.div
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-      className={`group relative flex flex-col overflow-hidden ${
+      onClick={() => router.push(`/products/${id}`)}
+      className={`group relative flex flex-col overflow-hidden cursor-pointer ${
         isDark
           ? 'bg-card-dark border border-border-gold/40 hover:border-rich-gold/60'
           : 'bg-white border border-site-black/15 hover:border-site-black/40'
@@ -61,7 +63,6 @@ export function ProductCard({
     >
       {/* Image container */}
       <div className="relative aspect-square overflow-hidden">
-        {/* Background fallback */}
         <div className={`absolute inset-0 ${isDark ? 'bg-section-dark' : 'bg-warm-beige/60'}`} />
 
         {image ? (
@@ -98,8 +99,8 @@ export function ProductCard({
         {/* Wishlist */}
         <motion.button
           whileTap={{ scale: 0.85 }}
-          onClick={() => setIsWishlisted(!isWishlisted)}
-          className="absolute top-2.5 right-2.5 z-30 w-8 h-8 flex items-center justify-center bg-site-black/65 backdrop-blur-sm border border-white/10 hover:border-rich-gold/60 transition-all duration-200"
+          onClick={e => { e.stopPropagation(); setIsWishlisted(!isWishlisted) }}
+          className="absolute top-2.5 right-2.5 z-40 w-8 h-8 flex items-center justify-center bg-site-black/65 backdrop-blur-sm border border-white/10 hover:border-rich-gold/60 transition-all duration-200"
           aria-label="Wishlist"
         >
           <Heart
@@ -108,10 +109,10 @@ export function ProductCard({
           />
         </motion.button>
 
-        {/* Quick Add overlay — slides up on hover */}
-        <div className="absolute inset-x-0 bottom-0 z-30 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        {/* Quick Add — slides up on hover */}
+        <div className="absolute inset-x-0 bottom-0 z-40 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <button
-            onClick={() => handleAddToCart(false)}
+            onClick={e => handleAddToCart(e, false)}
             disabled={adding}
             className="w-full py-3 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase hover:bg-light-gold transition-colors duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
           >
@@ -123,13 +124,6 @@ export function ProductCard({
 
       {/* Info */}
       <div className={`flex flex-col gap-2 p-3.5 ${isDark ? 'bg-card-dark' : 'bg-white'}`}>
-        {/* Weight tag */}
-        <span className={`self-start font-syndicatgrotesk text-[8px] tracking-[0.22em] uppercase px-2 py-0.5 ${
-          isDark ? 'bg-rich-gold/20 text-rich-gold' : 'bg-site-black/8 text-site-black/70'
-        }`}>
-          {weight}
-        </span>
-
         {/* Name */}
         <h3 className={`font-brandon text-sm font-black uppercase tracking-wide leading-snug line-clamp-2 ${
           isDark ? 'text-ivory' : 'text-site-black'
@@ -150,32 +144,44 @@ export function ProductCard({
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 mt-1">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleAddToCart(false)}
-            disabled={adding}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
-              isDark
-                ? 'border border-border-gold/70 text-muted-taupe hover:border-rich-gold hover:text-rich-gold'
-                : 'border border-site-black/30 text-site-black hover:border-deep-gold hover:text-deep-gold'
-            }`}
-          >
-            <ShoppingBag size={11} />
-            {adding ? '…' : 'Add to Cart'}
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleAddToCart(true)}
-            disabled={adding}
-            className={`flex-1 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase transition-all duration-200 disabled:opacity-50 ${
-              isDark
-                ? 'bg-rich-gold text-site-black hover:bg-light-gold'
-                : 'bg-site-black text-white hover:bg-deep-gold'
-            }`}
-          >
-            Buy Now
-          </motion.button>
+        <div className={`mt-1 border-t ${isDark ? 'border-border-gold/30' : 'border-deep-gold/20'}`}>
+          <div className="flex">
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={e => handleAddToCart(e, false)}
+              disabled={adding}
+              className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn ${
+                isDark
+                  ? 'text-muted-taupe hover:text-rich-gold'
+                  : 'text-deep-gold/80 hover:text-deep-gold'
+              }`}
+            >
+              <span className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover/btn:w-full transition-all duration-300 ${
+                isDark ? 'bg-rich-gold' : 'bg-deep-gold'
+              }`} />
+              <ShoppingBag size={11} className="shrink-0" />
+              <span>{adding ? '…' : 'Add to Cart'}</span>
+            </motion.button>
+
+            <span className={`w-px my-2 ${isDark ? 'bg-border-gold/50' : 'bg-deep-gold/20'}`} />
+
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={e => handleAddToCart(e, true)}
+              disabled={adding}
+              className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 ${
+                isDark
+                  ? 'text-rich-gold hover:text-light-gold'
+                  : 'text-site-black hover:text-deep-gold'
+              }`}
+            >
+              <span className={`absolute inset-0 opacity-0 group-hover/btn2:opacity-100 transition-opacity duration-300 ${
+                isDark ? 'bg-rich-gold/10' : 'bg-deep-gold/8'
+              }`} />
+              <Zap size={11} className="shrink-0" />
+              <span>Buy Now</span>
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>

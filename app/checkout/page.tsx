@@ -229,12 +229,12 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  {/* Razorpay badge */}
+                  {/* Security badge */}
                   <div className="flex items-center gap-3 px-4 py-3 bg-soft-cream border border-border-light">
                     <Shield size={16} className="text-deep-gold shrink-0" />
                     <div>
                       <p className="font-syndicatgrotesk text-[10px] tracking-[0.15em] uppercase text-warm-black font-semibold">
-                        Secured by Razorpay
+                        100% Secure Checkout
                       </p>
                       <p className="font-syndicatgrotesk text-[10px] text-text-muted mt-0.5">
                         UPI · Debit / Credit Cards · Net Banking · Wallets
