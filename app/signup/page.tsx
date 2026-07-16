@@ -9,19 +9,23 @@ export default function SignUpPage() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
 
     const handleSignUp = async () => {
-        setLoading(true)
         setError('')
         setSuccess('')
 
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        })
+        if (password !== confirmPassword) {
+            setError('Passwords do not match')
+            return
+        }
+
+        setLoading(true)
+
+        const { error } = await supabase.auth.signUp({ email, password })
 
         if (error) {
             setError(error.message)
@@ -29,13 +33,12 @@ export default function SignUpPage() {
             return
         }
 
-        setSuccess('Account created! Please check your email to confirm.')
+        setSuccess('Account created! Redirecting to sign in...')
         setLoading(false)
 
-        // optional redirect after delay
         setTimeout(() => {
-            router.push('/products')
-        }, 2000)
+            router.push('/signin')
+        }, 1500)
     }
 
     return (
@@ -53,12 +56,10 @@ export default function SignUpPage() {
                 </p>
 
                 {/* Email */}
-                {/* Email */}
                 <div className="mb-4">
                     <label className="text-xs uppercase tracking-widest text-foreground-light">
                         Email
                     </label>
-
                     <input
                         type="email"
                         name="email"
@@ -75,15 +76,14 @@ export default function SignUpPage() {
                 </div>
 
                 {/* Password */}
-                <div className="mb-6">
+                <div className="mb-4">
                     <label className="text-xs uppercase tracking-widest text-foreground-light">
                         Password
                     </label>
-
                     <input
                         type="password"
                         name="password"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -94,25 +94,45 @@ export default function SignUpPage() {
                         border-strong"
                     />
                 </div>
+
+                {/* Confirm Password */}
+                <div className="mb-6">
+                    <label className="text-xs uppercase tracking-widest text-foreground-light">
+                        Confirm Password
+                    </label>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        autoComplete="new-password"
+                        placeholder="••••••••"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className={`flex w-full rounded-md border bg-foreground/[.026] placeholder:text-foreground-muted
+                        text-sm leading-4 px-3 py-2 h-[34px]
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background-control
+                        focus-visible:ring-offset-2 focus-visible:ring-offset-foreground-muted
+                        ${confirmPassword && password !== confirmPassword ? 'border-red-400' : 'border-control border-strong'}`}
+                    />
+                    {confirmPassword && password !== confirmPassword && (
+                        <p className="text-red-500 text-xs mt-1">Passwords do not match</p>
+                    )}
+                </div>
+
                 {/* Error */}
                 {error && (
-                    <p className="text-red-500 text-sm mb-3 text-center">
-                        {error}
-                    </p>
+                    <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
                 )}
 
                 {/* Success */}
                 {success && (
-                    <p className="text-green-600 text-sm mb-3 text-center">
-                        {success}
-                    </p>
+                    <p className="text-green-600 text-sm mb-3 text-center">{success}</p>
                 )}
 
                 {/* Button */}
                 <button
                     onClick={handleSignUp}
                     disabled={loading}
-                    className="w-full bg-yellow-600 text-white py-3 rounded-lg tracking-widest uppercase text-sm hover:bg-yellow-700 transition"
+                    className="w-full bg-yellow-600 text-white py-3 rounded-lg tracking-widest uppercase text-sm hover:bg-yellow-700 transition disabled:opacity-60"
                 >
                     {loading ? 'Creating Account...' : 'Sign Up'}
                 </button>
