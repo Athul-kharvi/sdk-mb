@@ -20,27 +20,48 @@ export const CartService = {
         if (!cart) throw new Error('Cart not found')
         const cartId = cart.id
 
-        // Check if item already exists in cart
+        const { data: product } = await CartRepo.getProductStock(productId)
+        const stock: number | null = product?.stock ?? null
+
         const { data: existingItem } = await CartRepo.getCartItem(cartId, productId)
+        const currentQty = existingItem?.quantity ?? 0
+        const newQty = currentQty + quantity
+
+        if (stock !== null && stock === 0) {
+            throw new Error('This item is out of stock')
+        }
+        if (stock !== null && newQty > stock) {
+            throw new Error(`Only ${stock} in stock`)
+        }
 
         if (existingItem) {
-            const newQty = existingItem.quantity + quantity
             await CartRepo.updateCartItemQuantity(existingItem.id, newQty)
         } else {
             await CartRepo.addCartItem(cartId, productId, quantity)
         }
-        
+
         return await this.getCart(userId)
     },
 
     async updateItemQuantity(userId: string, cartItemId: string, quantity: number) {
-        // Enforce user ownership of the cart in a robust app.
-        // For now, updating by item id.
         if (quantity <= 0) {
             await CartRepo.removeCartItem(cartItemId)
-        } else {
-            await CartRepo.updateCartItemQuantity(cartItemId, quantity)
+            return await this.getCart(userId)
         }
+
+        const { data: itemRow } = await CartRepo.getCartItemById(cartItemId)
+        if (itemRow?.product_id) {
+            const { data: product } = await CartRepo.getProductStock(itemRow.product_id)
+            const stock: number | null = product?.stock ?? null
+            if (stock !== null && stock === 0) {
+                throw new Error('This item is out of stock')
+            }
+            if (stock !== null && quantity > stock) {
+                throw new Error(`Only ${stock} in stock`)
+            }
+        }
+
+        await CartRepo.updateCartItemQuantity(cartItemId, quantity)
         return await this.getCart(userId)
     },
 

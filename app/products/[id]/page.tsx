@@ -93,13 +93,18 @@ export default function ProductDetailPage() {
       setAdding(false)
       return
     }
-    await addToCart(session.access_token, id, qty)
-    setAdding(false)
-    if (redirect) {
-      router.push('/checkout')
-    } else {
-      setAddedFeedback(true)
-      setTimeout(() => setAddedFeedback(false), 2000)
+    try {
+      await addToCart(session.access_token, id, qty)
+      if (redirect) {
+        router.push('/checkout')
+      } else {
+        setAddedFeedback(true)
+        setTimeout(() => setAddedFeedback(false), 2000)
+      }
+    } catch (err: any) {
+      alert(err.message)
+    } finally {
+      setAdding(false)
     }
   }
 
@@ -132,7 +137,8 @@ export default function ProductDetailPage() {
   const discount = product.original_price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : null
-  const inStock = !product.stock || product.stock > 0
+  const stock = product.stock ?? null
+  const inStock = stock === null || stock > 0
 
   return (
     <div className="min-h-screen bg-warm-beige">
@@ -302,25 +308,33 @@ export default function ProductDetailPage() {
 
             {/* Quantity selector */}
             {inStock && (
-              <div className="flex items-center gap-4">
-                <span className="font-syndicatgrotesk text-[10px] tracking-[0.2em] uppercase text-text-muted">Qty</span>
-                <div className="flex items-center border border-border-light">
-                  <button
-                    onClick={() => setQty(q => Math.max(1, q - 1))}
-                    className="w-9 h-9 flex items-center justify-center text-warm-black hover:bg-soft-cream transition-colors font-brandon font-black text-lg"
-                  >
-                    −
-                  </button>
-                  <span className="w-10 text-center font-brandon text-sm font-black text-warm-black">
-                    {qty}
-                  </span>
-                  <button
-                    onClick={() => setQty(q => q + 1)}
-                    className="w-9 h-9 flex items-center justify-center text-warm-black hover:bg-soft-cream transition-colors font-brandon font-black text-lg"
-                  >
-                    +
-                  </button>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-4">
+                  <span className="font-syndicatgrotesk text-[10px] tracking-[0.2em] uppercase text-text-muted">Qty</span>
+                  <div className="flex items-center border border-border-light">
+                    <button
+                      onClick={() => setQty(q => Math.max(1, q - 1))}
+                      className="w-9 h-9 flex items-center justify-center text-warm-black hover:bg-soft-cream transition-colors font-brandon font-black text-lg"
+                    >
+                      −
+                    </button>
+                    <span className="w-10 text-center font-brandon text-sm font-black text-warm-black">
+                      {qty}
+                    </span>
+                    <button
+                      onClick={() => setQty(q => (stock === null || q < stock) ? q + 1 : q)}
+                      disabled={stock !== null && qty >= stock}
+                      className="w-9 h-9 flex items-center justify-center text-warm-black hover:bg-soft-cream transition-colors font-brandon font-black text-lg disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
+                {stock !== null && stock <= 5 && stock > 0 && (
+                  <p className="font-syndicatgrotesk text-[10px] tracking-[0.1em] text-amber-600">
+                    Only {stock} left in stock
+                  </p>
+                )}
               </div>
             )}
 

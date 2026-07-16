@@ -8,6 +8,7 @@ export interface CartItem {
         name: string
         price: number
         image?: string
+        stock?: number | null
     }
 }
 
@@ -35,7 +36,8 @@ const mapCartData = (data: any): CartItem[] => {
             id: item.products.id,
             name: item.products.name,
             price: item.products.price,
-            image: item.products.image
+            image: item.products.image,
+            stock: item.products.stock ?? null
         }
     }))
 }
@@ -67,17 +69,18 @@ export const useCartStore = create<CartState>((set) => ({
         try {
             const res = await fetch('/api/cart', {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}` 
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({ productId, quantity })
             })
-            if (!res.ok) throw new Error('Failed to add to cart')
-            const { data } = await res.json()
-            set({ items: mapCartData(data), isOpen: true, isLoading: false }) // Auto-open cart on add
+            const json = await res.json()
+            if (!res.ok) throw new Error(json.error || 'Failed to add to cart')
+            set({ items: mapCartData(json.data), isOpen: true, isLoading: false })
         } catch (error: any) {
             set({ error: error.message, isLoading: false })
+            throw error
         }
     },
 
@@ -86,17 +89,18 @@ export const useCartStore = create<CartState>((set) => ({
         try {
             const res = await fetch('/api/cart', {
                 method: 'PUT',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}` 
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({ cartItemId, quantity })
             })
-            if (!res.ok) throw new Error('Failed to update quantity')
-            const { data } = await res.json()
-            set({ items: mapCartData(data), isLoading: false })
+            const json = await res.json()
+            if (!res.ok) throw new Error(json.error || 'Failed to update quantity')
+            set({ items: mapCartData(json.data), isLoading: false })
         } catch (error: any) {
             set({ error: error.message, isLoading: false })
+            throw error
         }
     },
 

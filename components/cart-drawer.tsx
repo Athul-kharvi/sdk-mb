@@ -19,6 +19,7 @@ export function CartDrawer() {
   const { isOpen, setIsOpen, items, updateQuantity, removeItem, isLoading } = useCartStore()
   const router = useRouter()
   const [token, setToken] = useState<string | null>(null)
+  const [stockError, setStockError] = useState<string | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -26,13 +27,24 @@ export function CartDrawer() {
     })
   }, [isOpen])
 
+  useEffect(() => {
+    if (stockError) {
+      const t = setTimeout(() => setStockError(null), 3000)
+      return () => clearTimeout(t)
+    }
+  }, [stockError])
+
   const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
   const itemCount = items.reduce((a, i) => a + i.quantity, 0)
 
-  const handleUpdateQty = (cartItemId: string, newQty: number) => {
+  const handleUpdateQty = async (cartItemId: string, newQty: number) => {
     if (!token) return
-    if (newQty <= 0) removeItem(token, cartItemId)
-    else updateQuantity(token, cartItemId, newQty)
+    try {
+      if (newQty <= 0) await removeItem(token, cartItemId)
+      else await updateQuantity(token, cartItemId, newQty)
+    } catch (err: any) {
+      setStockError(err.message)
+    }
   }
 
   if (!isOpen) return null
@@ -70,6 +82,14 @@ export function CartDrawer() {
               <X size={15} />
             </button>
           </div>
+
+          {/* Stock error banner */}
+          {stockError && (
+            <div className="px-6 py-2.5 bg-red-50 border-b border-red-200 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+              <p className="font-syndicatgrotesk text-[10px] tracking-[0.1em] text-red-700">{stockError}</p>
+            </div>
+          )}
 
           {/* Items */}
           <div className="flex-1 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:#B8860B_#F0EBE1]">
@@ -151,9 +171,9 @@ export function CartDrawer() {
                               {item.quantity}
                             </span>
                             <button
-                              disabled={isLoading}
+                              disabled={isLoading || (item.product.stock !== null && item.product.stock !== undefined && item.quantity >= item.product.stock)}
                               onClick={() => handleUpdateQty(item.id, item.quantity + 1)}
-                              className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-deep-gold hover:bg-soft-cream transition-colors disabled:opacity-40"
+                              className="w-7 h-7 flex items-center justify-center text-text-muted hover:text-deep-gold hover:bg-soft-cream transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                               <Plus size={11} />
                             </button>

@@ -6,13 +6,13 @@ export const CartRepo = {
         return supabase
             .from('carts')
             .select(`
-                id, 
+                id,
                 user_id,
                 cart_items (
                     id,
                     quantity,
                     products (
-                        id, name, price, image
+                        id, name, price, image, stock
                     )
                 )
             `)
@@ -39,6 +39,22 @@ export const CartRepo = {
 
     async updateCartItemQuantity(cartItemId: string, quantity: number) {
         return supabase.from('cart_items').update({ quantity }).eq('id', cartItemId)
+    },
+
+    async getProductStock(productId: string) {
+        return supabase
+            .from('products')
+            .select('stock')
+            .eq('id', productId)
+            .single()
+    },
+
+    async getCartItemById(cartItemId: string) {
+        return supabase
+            .from('cart_items')
+            .select('id, product_id, quantity')
+            .eq('id', cartItemId)
+            .single()
     },
 
     async removeCartItem(cartItemId: string) {
