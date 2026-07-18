@@ -13,6 +13,7 @@ interface Product {
   original_price?: number
   weight?: string
   image?: string
+  stock?: number | null
 }
 
 interface Props {
@@ -92,6 +93,7 @@ export function CategoryContent({ categoryName, slug, products, allCategories }:
     if (price === 'a2k')    r = r.filter(p => p.price >= 2000)
     if (sort === 'price-asc')  r.sort((a, b) => a.price - b.price)
     if (sort === 'price-desc') r.sort((a, b) => b.price - a.price)
+    r.sort((a, b) => (a.stock === 0 ? 1 : 0) - (b.stock === 0 ? 1 : 0))
     return r
   }, [products, sort, price])
 
@@ -314,6 +316,7 @@ export function CategoryContent({ categoryName, slug, products, allCategories }:
                     originalPrice={product.original_price ?? undefined}
                     weight={product.weight ?? undefined}
                     image={getFirstImage(product.image)}
+                    stock={product.stock ?? null}
                     isDark={false}
                   />
                 </motion.div>

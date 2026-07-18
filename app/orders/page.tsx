@@ -71,9 +71,8 @@ export default function OrdersPage() {
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-px bg-deep-gold/60" />
             <span className="font-syndicatgrotesk text-[9px] tracking-[0.35em] uppercase text-deep-gold">Account</span>
-            <div className="w-8 h-px bg-deep-gold/60" />
+            <div className="flex-1 h-px bg-deep-gold/60" />
           </div>
           <h1 className="font-brandon text-3xl sm:text-4xl font-black uppercase tracking-tight text-warm-black">
             My Orders

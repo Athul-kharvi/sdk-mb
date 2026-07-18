@@ -44,6 +44,7 @@ export default async function CategoryPage({ params }: Props) {
       original_price: p.original_price ?? undefined,
       weight: p.weight ?? undefined,
       image: getFirstImage(p.image),
+      stock: p.stock ?? null,
     }))
   }
 

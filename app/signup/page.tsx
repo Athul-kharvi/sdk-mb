@@ -14,7 +14,8 @@ export default function SignUpPage() {
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
 
-    const handleSignUp = async () => {
+    const handleSignUp = async (e?: React.FormEvent) => {
+        e?.preventDefault()
         setError('')
         setSuccess('')
 
@@ -55,6 +56,7 @@ export default function SignUpPage() {
                     Create your account
                 </p>
 
+                <form onSubmit={handleSignUp}>
                 {/* Email */}
                 <div className="mb-4">
                     <label className="text-xs uppercase tracking-widest text-foreground-light">
@@ -130,12 +132,13 @@ export default function SignUpPage() {
 
                 {/* Button */}
                 <button
-                    onClick={handleSignUp}
+                    type="submit"
                     disabled={loading}
                     className="w-full bg-yellow-600 text-white py-3 rounded-lg tracking-widest uppercase text-sm hover:bg-yellow-700 transition disabled:opacity-60"
                 >
                     {loading ? 'Creating Account...' : 'Sign Up'}
                 </button>
+                </form>
 
                 {/* Divider */}
                 <div className="text-center my-6 text-gray-400 text-sm">

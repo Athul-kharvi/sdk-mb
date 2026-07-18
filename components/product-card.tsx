@@ -16,6 +16,7 @@ interface ProductCardProps {
   image?: string
   isDark?: boolean
   badge?: string
+  stock?: number | null
 }
 
 export function ProductCard({
@@ -27,7 +28,9 @@ export function ProductCard({
   image,
   isDark = false,
   badge,
+  stock,
 }: ProductCardProps) {
+  const outOfStock = stock !== null && stock !== undefined && stock === 0
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [adding, setAdding] = useState(false)
   const router = useRouter()
@@ -69,7 +72,7 @@ export function ProductCard({
           <img
             src={image}
             alt={name}
-            className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.08]"
+            className={`relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.08] ${outOfStock ? 'grayscale opacity-60' : ''}`}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -84,15 +87,23 @@ export function ProductCard({
 
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 z-30 flex flex-col gap-1.5">
-          {badge && (
-            <span className="px-2.5 py-1 bg-rich-gold text-site-black font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase shadow-md">
-              {badge}
+          {outOfStock ? (
+            <span className="px-2.5 py-1 bg-warm-black/80 text-muted-taupe border border-muted-taupe/40 font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase backdrop-blur-sm">
+              Out of Stock
             </span>
-          )}
-          {discount && (
-            <span className="px-2.5 py-1 bg-site-black text-rich-gold font-syndicatgrotesk text-[9px] font-bold tracking-[0.1em] uppercase border border-border-gold">
-              -{discount}%
-            </span>
+          ) : (
+            <>
+              {badge && (
+                <span className="px-2.5 py-1 bg-rich-gold text-site-black font-syndicatgrotesk text-[9px] font-bold tracking-[0.18em] uppercase shadow-md">
+                  {badge}
+                </span>
+              )}
+              {discount && (
+                <span className="px-2.5 py-1 bg-site-black text-rich-gold font-syndicatgrotesk text-[9px] font-bold tracking-[0.1em] uppercase border border-border-gold">
+                  -{discount}%
+                </span>
+              )}
+            </>
           )}
         </div>
 
@@ -109,17 +120,26 @@ export function ProductCard({
           />
         </motion.button>
 
-        {/* Quick Add — slides up on hover */}
-        <div className="absolute inset-x-0 bottom-0 z-40 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <button
-            onClick={e => handleAddToCart(e, false)}
-            disabled={adding}
-            className="w-full py-3 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase hover:bg-light-gold transition-colors duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
-          >
-            <Zap size={12} />
-            {adding ? 'Adding…' : 'Quick Add'}
-          </button>
-        </div>
+        {/* Quick Add — slides up on hover (hidden when out of stock) */}
+        {outOfStock ? (
+          <div className="absolute inset-x-0 bottom-0 z-40 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <div className="w-full py-3 bg-warm-black/80 border-t border-muted-taupe/30 font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase flex items-center justify-center gap-2 text-muted-taupe cursor-not-allowed backdrop-blur-sm">
+              <span className="w-3 h-3 rounded-full border border-muted-taupe/60 flex-shrink-0" />
+              Unavailable
+            </div>
+          </div>
+        ) : (
+          <div className="absolute inset-x-0 bottom-0 z-40 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <button
+              onClick={e => handleAddToCart(e, false)}
+              disabled={adding}
+              className="w-full py-3 bg-rich-gold text-site-black font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase hover:bg-light-gold transition-colors duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
+            >
+              <Zap size={12} />
+              {adding ? 'Adding…' : 'Quick Add'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Info */}
@@ -145,43 +165,53 @@ export function ProductCard({
 
         {/* Actions */}
         <div className={`mt-1 border-t ${isDark ? 'border-border-gold/30' : 'border-deep-gold/20'}`}>
-          <div className="flex">
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              onClick={e => handleAddToCart(e, false)}
-              disabled={adding}
-              className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn ${
-                isDark
-                  ? 'text-muted-taupe hover:text-rich-gold'
-                  : 'text-deep-gold/80 hover:text-deep-gold'
-              }`}
-            >
-              <span className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover/btn:w-full transition-all duration-300 ${
-                isDark ? 'bg-rich-gold' : 'bg-deep-gold'
-              }`} />
-              <ShoppingBag size={11} className="shrink-0" />
-              <span>{adding ? '…' : 'Add to Cart'}</span>
-            </motion.button>
+          {outOfStock ? (
+            <div className="flex items-center justify-center gap-2 py-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-taupe/50" />
+              <span className={`font-syndicatgrotesk text-[9px] tracking-[0.22em] uppercase ${isDark ? 'text-muted-taupe/60' : 'text-site-black/40'}`}>
+                Out of Stock
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-taupe/50" />
+            </div>
+          ) : (
+            <div className="flex">
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                onClick={e => handleAddToCart(e, false)}
+                disabled={adding}
+                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn ${
+                  isDark
+                    ? 'text-muted-taupe hover:text-rich-gold'
+                    : 'text-deep-gold/80 hover:text-deep-gold'
+                }`}
+              >
+                <span className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover/btn:w-full transition-all duration-300 ${
+                  isDark ? 'bg-rich-gold' : 'bg-deep-gold'
+                }`} />
+                <ShoppingBag size={11} className="shrink-0" />
+                <span>{adding ? '…' : 'Add to Cart'}</span>
+              </motion.button>
 
-            <span className={`w-px my-2 ${isDark ? 'bg-border-gold/50' : 'bg-deep-gold/20'}`} />
+              <span className={`w-px my-2 ${isDark ? 'bg-border-gold/50' : 'bg-deep-gold/20'}`} />
 
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              onClick={e => handleAddToCart(e, true)}
-              disabled={adding}
-              className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 ${
-                isDark
-                  ? 'text-rich-gold hover:text-light-gold'
-                  : 'text-site-black hover:text-deep-gold'
-              }`}
-            >
-              <span className={`absolute inset-0 opacity-0 group-hover/btn2:opacity-100 transition-opacity duration-300 ${
-                isDark ? 'bg-rich-gold/10' : 'bg-deep-gold/8'
-              }`} />
-              <Zap size={11} className="shrink-0" />
-              <span>Buy Now</span>
-            </motion.button>
-          </div>
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                onClick={e => handleAddToCart(e, true)}
+                disabled={adding}
+                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 ${
+                  isDark
+                    ? 'text-rich-gold hover:text-light-gold'
+                    : 'text-site-black hover:text-deep-gold'
+                }`}
+              >
+                <span className={`absolute inset-0 opacity-0 group-hover/btn2:opacity-100 transition-opacity duration-300 ${
+                  isDark ? 'bg-rich-gold/10' : 'bg-deep-gold/8'
+                }`} />
+                <Zap size={11} className="shrink-0" />
+                <span>Buy Now</span>
+              </motion.button>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

@@ -12,7 +12,8 @@ export default function SignInPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    const handleLogin = async () => {
+    const handleLogin = async (e?: React.FormEvent) => {
+        e?.preventDefault()
         setLoading(true)
         setError('')
 
@@ -60,6 +61,7 @@ export default function SignInPage() {
                     Sign in to your account
                 </p>
 
+                <form onSubmit={handleLogin}>
                 {/* Email */}
                 <div className="mb-4">
                     <label className="text-xs uppercase tracking-widest text-foreground-light">
@@ -104,12 +106,13 @@ export default function SignInPage() {
                 )}
 
                 <button
-                    onClick={handleLogin}
+                    type="submit"
                     disabled={loading}
                     className="w-full bg-yellow-600 text-white py-3 rounded-lg tracking-widest uppercase text-sm hover:bg-yellow-700 transition"
                 >
                     {loading ? 'Signing In...' : 'Sign In'}
                 </button>
+                </form>
 
                 {/* Divider */}
                 <div className="text-center my-6 text-gray-400 text-sm">or</div>
