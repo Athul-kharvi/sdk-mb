@@ -23,7 +23,7 @@ export async function GET(req: Request) {
     const { supabase, token } = getSupabaseWithAuth(req)
     if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser(token)
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
@@ -36,10 +36,10 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     const { supabase, token } = getSupabaseWithAuth(req)
-    if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!supabase || !token) return Response.json({ error: 'Unauthorized', reason: 'no token' }, { status: 401 })
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+    if (!user) return Response.json({ error: 'Unauthorized', reason: authError?.message ?? 'user null', tokenSnippet: token.slice(0, 20) }, { status: 401 })
 
     try {
         const body = await req.json()
@@ -58,7 +58,7 @@ export async function PUT(req: Request) {
     const { supabase, token } = getSupabaseWithAuth(req)
     if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser(token)
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
@@ -80,7 +80,7 @@ export async function DELETE(req: Request) {
     const { supabase, token } = getSupabaseWithAuth(req)
     if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser(token)
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
