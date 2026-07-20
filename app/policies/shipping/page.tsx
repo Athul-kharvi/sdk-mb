@@ -55,10 +55,6 @@ export default function ShippingPolicy() {
           heading: 'Failed Delivery Attempts',
           body: 'If delivery fails after 2–3 attempts due to unavailability or incorrect address, the package will be returned to us. In such cases, please contact us within 7 days and we will re-ship at no extra charge (subject to address verification).',
         },
-        {
-          heading: 'International Shipping',
-          body: 'At this time, we only ship within India. International shipping is not available. We plan to expand to international markets soon — stay tuned.',
-        },
       ]}
       relatedLinks={[
         { label: 'Return & Refund Policy', href: '/policies/returns' },

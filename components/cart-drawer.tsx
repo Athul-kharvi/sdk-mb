@@ -34,6 +34,21 @@ export function CartDrawer() {
     }
   }, [stockError])
 
+  const [mounted, setMounted] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setMounted(true)
+      const t = setTimeout(() => setVisible(true), 10)
+      return () => clearTimeout(t)
+    } else {
+      setVisible(false)
+      const t = setTimeout(() => setMounted(false), 320)
+      return () => clearTimeout(t)
+    }
+  }, [isOpen])
+
   const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
   const itemCount = items.reduce((a, i) => a + i.quantity, 0)
 
@@ -47,22 +62,22 @@ export function CartDrawer() {
     }
   }
 
-  if (!isOpen) return null
+  if (!mounted) return null
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-warm-black/40 backdrop-blur-[2px]"
+        className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
         onClick={() => setIsOpen(false)}
       />
 
-      {/* Panel — cream theme */}
+      {/* Panel */}
       <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
-        <div className="pointer-events-auto w-screen max-w-[420px] flex flex-col bg-warm-beige shadow-2xl">
+        <div className={`pointer-events-auto w-screen max-w-[420px] flex flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
 
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-5 bg-soft-cream border-b border-border-light">
+          <div className="flex items-center justify-between px-6 py-5 bg-white border-b border-gray-200">
             <div className="flex items-center gap-3">
               <ShoppingBag size={17} className="text-deep-gold" />
               <h2 className="font-brandon text-sm font-black uppercase tracking-[0.2em] text-warm-black">
@@ -76,7 +91,7 @@ export function CartDrawer() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="w-8 h-8 flex items-center justify-center border border-border-light bg-white text-text-muted hover:border-deep-gold/50 hover:text-deep-gold transition-colors"
+              className="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-500 hover:border-deep-gold/50 hover:text-deep-gold transition-colors"
               aria-label="Close cart"
             >
               <X size={15} />
@@ -92,11 +107,11 @@ export function CartDrawer() {
           )}
 
           {/* Items */}
-          <div className="flex-1 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:#B8860B_#F0EBE1]">
+          <div className="flex-1 overflow-y-auto bg-[#f5f5f5] [scrollbar-width:thin] [scrollbar-color:#B8860B_#e5e5e5]">
             {items.length === 0 ? (
               /* Empty state */
-              <div className="flex flex-col items-center justify-center h-full gap-5 py-20 text-center px-8">
-                <div className="w-20 h-20 border-2 border-dashed border-border-light rounded-full flex items-center justify-center bg-soft-cream">
+              <div className="flex flex-col items-center justify-center h-full gap-5 py-20 text-center px-8 bg-white">
+                <div className="w-20 h-20 border-2 border-dashed border-gray-200 rounded-full flex items-center justify-center bg-gray-50">
                   <ShoppingBag size={28} className="text-muted-taupe" />
                 </div>
                 <div>
@@ -115,13 +130,13 @@ export function CartDrawer() {
                 </button>
               </div>
             ) : (
-              <ul className="divide-y divide-border-light px-6">
+              <ul className="divide-y divide-gray-200 px-0">
                 {items.map((item) => {
                   const img = getFirstImage(item.product.image)
                   return (
-                    <li key={item.id} className="py-5 flex gap-4">
+                    <li key={item.id} className="py-4 px-4 flex gap-4 bg-white">
                       {/* Product image */}
-                      <div className="w-20 h-20 shrink-0 bg-soft-cream border border-border-light overflow-hidden">
+                      <div className="w-20 h-20 shrink-0 bg-gray-50 border border-gray-200 overflow-hidden">
                         {img ? (
                           <img
                             src={img}
@@ -159,7 +174,7 @@ export function CartDrawer() {
 
                         <div className="flex items-center justify-between mt-3">
                           {/* Qty stepper */}
-                          <div className="flex items-center border border-border-light bg-white divide-x divide-border-light">
+                          <div className="flex items-center border border-gray-300 bg-white divide-x divide-gray-300">
                             <button
                               disabled={isLoading}
                               onClick={() => handleUpdateQty(item.id, item.quantity - 1)}
@@ -194,7 +209,7 @@ export function CartDrawer() {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="bg-soft-cream border-t border-border-light px-6 py-5 space-y-4">
+            <div className="bg-white border-t border-gray-200 px-6 py-5 space-y-4">
 
               {/* Order summary */}
               <div className="space-y-2">
@@ -214,7 +229,7 @@ export function CartDrawer() {
                     Free
                   </span>
                 </div>
-                <div className="pt-2 border-t border-border-light flex justify-between items-center">
+                <div className="pt-2 border-t border-gray-200 flex justify-between items-center">
                   <span className="font-brandon text-sm font-black uppercase tracking-wide text-warm-black">
                     Total
                   </span>
@@ -235,7 +250,7 @@ export function CartDrawer() {
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="w-full py-2.5 border border-border-light bg-white font-syndicatgrotesk text-[10px] tracking-[0.18em] uppercase text-text-muted hover:border-deep-gold/60 hover:text-deep-gold transition-colors"
+                className="w-full py-2.5 border border-gray-300 bg-white font-syndicatgrotesk text-[10px] tracking-[0.18em] uppercase text-gray-500 hover:border-deep-gold/60 hover:text-deep-gold transition-colors"
               >
                 Continue Shopping
               </button>

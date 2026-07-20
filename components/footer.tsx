@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react'
 import { categoryService } from '@/services/category.service'
 
 const POLICY_LINKS = [
-  { label: 'Shipping',  href: '/policies/shipping' },
-  { label: 'Returns',   href: '/policies/returns' },
-  { label: 'Privacy',   href: '/policies/privacy' },
-  { label: 'Terms',     href: '/policies/terms' },
-  { label: 'Orders',    href: '/orders' },
+  { label: 'Shipping',   href: '/policies/shipping' },
+  { label: 'Returns',    href: '/policies/returns' },
+  { label: 'Privacy',    href: '/policies/privacy' },
+  { label: 'Terms',      href: '/policies/terms' },
+  { label: 'Orders',     href: '/orders' },
+  { label: 'Contact Us', href: '/contact' },
 ]
 
 const SOCIAL = [
@@ -250,17 +251,24 @@ export function Footer() {
               <div className="w-8 h-px bg-[#B8860B]/40" />
               <ul className="space-y-2.5">
                 <li>
-                  <a href="https://wa.me/917259333254" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
-                    WhatsApp: +91 7259333254
+                  <a href="tel:+917977109157" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
+                    +91 7977109157
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:hello@sridevik.in" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
+                  <a href="https://wa.me/917977109157" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
+                    WhatsApp: +91 7977109157
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:vinayakcreation66@gmail.com" className="font-syndicatgrotesk text-xs text-[#7A6F62] hover:text-[#B8860B] transition-colors duration-200">
                     vinayakcreation66@gmail.com
                   </a>
                 </li>
-                <li className="font-syndicatgrotesk text-xs text-[#7A6F62]">
-                  Mumbai, Maharashtra, India
+                <li className="font-syndicatgrotesk text-xs text-[#7A6F62] leading-relaxed">
+                  Shop No. 1, Pinal Pramukh Krupa Building,<br />
+                  Ganesh Gawade Road, Mulund West,<br />
+                  Mumbai – 400080
                 </li>
               </ul>
               <div className="pt-1">
