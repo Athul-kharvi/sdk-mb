@@ -1,33 +1,34 @@
 import { createClient } from '@supabase/supabase-js'
 import { CartService } from '@/services/cart.service'
 
-const getSupabaseWithAuth = (req: Request) => {
-    const token = req.headers.get('Authorization')?.replace('Bearer ', '')
-    if (!token) return { supabase: null, token: null }
+// Auth check only — verifies the JWT, never used for DB queries
+const getAuthClient = (token: string) => createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { global: { headers: { Authorization: `Bearer ${token}` } } }
+)
 
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            global: {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        }
-    )
-    return { supabase, token }
+// Service-role client — bypasses RLS for server-side DB operations
+// Safe because auth is always verified above before this client is used
+const getServiceClient = () => createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+const getUser = async (req: Request) => {
+    const token = req.headers.get('Authorization')?.replace('Bearer ', '')
+    if (!token) return { user: null, serviceClient: null }
+    const { data: { user } } = await getAuthClient(token).auth.getUser(token)
+    if (!user) return { user: null, serviceClient: null }
+    return { user, serviceClient: getServiceClient() }
 }
 
 export async function GET(req: Request) {
-    const { supabase, token } = getSupabaseWithAuth(req)
-    if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-    const { data: { user } } = await supabase.auth.getUser(token)
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    const { user, serviceClient } = await getUser(req)
+    if (!user || !serviceClient) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
-        const cart = await CartService.getCart(user.id)
+        const cart = await CartService.getCart(user.id, serviceClient)
         return Response.json({ data: cart })
     } catch (e: any) {
         return Response.json({ error: e.message }, { status: 400 })
@@ -35,19 +36,16 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { supabase, token } = getSupabaseWithAuth(req)
-    if (!supabase || !token) return Response.json({ error: 'Unauthorized', reason: 'no token' }, { status: 401 })
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    if (!user) return Response.json({ error: 'Unauthorized', reason: authError?.message ?? 'user null', tokenSnippet: token.slice(0, 20) }, { status: 401 })
+    const { user, serviceClient } = await getUser(req)
+    if (!user || !serviceClient) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
         const body = await req.json()
         const { productId, quantity = 1 } = body
-        
+
         if (!productId) return Response.json({ error: 'productId is required' }, { status: 400 })
 
-        const cart = await CartService.addToCart(user.id, productId, quantity)
+        const cart = await CartService.addToCart(user.id, productId, quantity, serviceClient)
         return Response.json({ success: true, data: cart })
     } catch (e: any) {
         return Response.json({ error: e.message }, { status: 400 })
@@ -55,21 +53,18 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-    const { supabase, token } = getSupabaseWithAuth(req)
-    if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-    const { data: { user } } = await supabase.auth.getUser(token)
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    const { user, serviceClient } = await getUser(req)
+    if (!user || !serviceClient) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
         const body = await req.json()
         const { cartItemId, quantity } = body
-        
+
         if (!cartItemId || typeof quantity !== 'number') {
             return Response.json({ error: 'cartItemId and quantity are required' }, { status: 400 })
         }
 
-        const cart = await CartService.updateItemQuantity(user.id, cartItemId, quantity)
+        const cart = await CartService.updateItemQuantity(user.id, cartItemId, quantity, serviceClient)
         return Response.json({ success: true, data: cart })
     } catch (e: any) {
         return Response.json({ error: e.message }, { status: 400 })
@@ -77,19 +72,16 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-    const { supabase, token } = getSupabaseWithAuth(req)
-    if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-    const { data: { user } } = await supabase.auth.getUser(token)
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    const { user, serviceClient } = await getUser(req)
+    if (!user || !serviceClient) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
     try {
         const url = new URL(req.url)
         const cartItemId = url.searchParams.get('cartItemId')
-        
+
         if (!cartItemId) return Response.json({ error: 'cartItemId is required' }, { status: 400 })
 
-        const cart = await CartService.removeItem(user.id, cartItemId)
+        const cart = await CartService.removeItem(user.id, cartItemId, serviceClient)
         return Response.json({ success: true, data: cart })
     } catch (e: any) {
         return Response.json({ error: e.message }, { status: 400 })

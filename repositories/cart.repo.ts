@@ -1,9 +1,8 @@
-import { supabase } from '@/lib/supabase'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 export const CartRepo = {
-    // Get active cart for user with existing items
-    async getCartByUserId(userId: string) {
-        return supabase
+    async getCartByUserId(userId: string, client: SupabaseClient) {
+        const result = await client
             .from('carts')
             .select(`
                 id,
@@ -17,15 +16,17 @@ export const CartRepo = {
                 )
             `)
             .eq('user_id', userId)
-            .single()
+            .order('created_at', { ascending: true })
+            .limit(1)
+        return { data: result.data?.[0] ?? null, error: result.error }
     },
 
-    async createCart(userId: string) {
-        return supabase.from('carts').insert([{ user_id: userId }]).select('id').single()
+    async createCart(userId: string, client: SupabaseClient) {
+        return client.from('carts').insert([{ user_id: userId }]).select('id').single()
     },
 
-    async getCartItem(cartId: string, productId: string) {
-        return supabase
+    async getCartItem(cartId: string, productId: string, client: SupabaseClient) {
+        return client
             .from('cart_items')
             .select('*')
             .eq('cart_id', cartId)
@@ -33,35 +34,35 @@ export const CartRepo = {
             .single()
     },
 
-    async addCartItem(cartId: string, productId: string, quantity: number) {
-        return supabase.from('cart_items').insert([{ cart_id: cartId, product_id: productId, quantity }])
+    async addCartItem(cartId: string, productId: string, quantity: number, client: SupabaseClient) {
+        return client.from('cart_items').insert([{ cart_id: cartId, product_id: productId, quantity }])
     },
 
-    async updateCartItemQuantity(cartItemId: string, quantity: number) {
-        return supabase.from('cart_items').update({ quantity }).eq('id', cartItemId)
+    async updateCartItemQuantity(cartItemId: string, quantity: number, client: SupabaseClient) {
+        return client.from('cart_items').update({ quantity }).eq('id', cartItemId)
     },
 
-    async getProductStock(productId: string) {
-        return supabase
+    async getProductStock(productId: string, client: SupabaseClient) {
+        return client
             .from('products')
             .select('stock')
             .eq('id', productId)
             .single()
     },
 
-    async getCartItemById(cartItemId: string) {
-        return supabase
+    async getCartItemById(cartItemId: string, client: SupabaseClient) {
+        return client
             .from('cart_items')
             .select('id, product_id, quantity')
             .eq('id', cartItemId)
             .single()
     },
 
-    async removeCartItem(cartItemId: string) {
-        return supabase.from('cart_items').delete().eq('id', cartItemId)
+    async removeCartItem(cartItemId: string, client: SupabaseClient) {
+        return client.from('cart_items').delete().eq('id', cartItemId)
     },
 
-    async clearCart(cartId: string) {
-        return supabase.from('cart_items').delete().eq('cart_id', cartId)
+    async clearCart(cartId: string, client: SupabaseClient) {
+        return client.from('cart_items').delete().eq('cart_id', cartId)
     }
 }

@@ -2,23 +2,25 @@ import { createClient } from '@supabase/supabase-js'
 import { CartService } from '@/services/cart.service'
 import Razorpay from 'razorpay'
 
-const getSupabaseWithAuth = (req: Request) => {
-  const token = req.headers.get('Authorization')?.replace('Bearer ', '')
-  if (!token) return { supabase: null, token: null }
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${token}` } } }
-  )
-  return { supabase, token }
-}
+const getAuthClient = (token: string) => createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  { global: { headers: { Authorization: `Bearer ${token}` } } }
+)
+
+const getServiceClient = () => createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export async function POST(req: Request) {
-  const { supabase, token } = getSupabaseWithAuth(req)
-  if (!supabase || !token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const token = req.headers.get('Authorization')?.replace('Bearer ', '')
+  if (!token) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user } } = await getAuthClient(token).auth.getUser(token)
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const serviceClient = getServiceClient()
 
   try {
     const body = await req.json()
@@ -28,7 +30,7 @@ export async function POST(req: Request) {
       return Response.json({ error: 'All fields are required' }, { status: 400 })
     }
 
-    const cart = await CartService.getCart(user.id)
+    const cart = await CartService.getCart(user.id, serviceClient)
     if (!cart || !cart.cart_items || cart.cart_items.length === 0) {
       return Response.json({ error: 'Cart is empty' }, { status: 400 })
     }
@@ -38,22 +40,20 @@ export async function POST(req: Request) {
     )
     const formattedAddress = `Name: ${name} | Email: ${email} | Phone: ${phone} | Address: ${address}`
 
-    // Create pending order in DB first
-    const { data: order, error: orderError } = await supabase
+    const { data: order, error: orderError } = await serviceClient
       .from('orders')
       .insert([{ user_id: user.id, total, address: formattedAddress, status: 'pending' }])
       .select()
       .single()
     if (orderError) throw new Error(orderError.message)
 
-    // Insert order items
     const orderItems = cart.cart_items.map((item: any) => ({
       order_id: order.id,
       product_id: item.products.id,
       quantity: item.quantity,
       price: item.products.price,
     }))
-    const { error: itemsError } = await supabase.from('order_items').insert(orderItems)
+    const { error: itemsError } = await serviceClient.from('order_items').insert(orderItems)
     if (itemsError) throw new Error(itemsError.message)
 
     const amountPaise = Math.round(total * 100)
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
       razorpayOrderId = `mock_order_${order.id}`
     }
 
-    await supabase.from('orders').update({ razorpay_order_id: razorpayOrderId }).eq('id', order.id)
+    await serviceClient.from('orders').update({ razorpay_order_id: razorpayOrderId }).eq('id', order.id)
 
     return Response.json({
       success: true,
