@@ -6,6 +6,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/supabase/:path*',
+        destination: 'https://gmutwwuglrhyvcpzealx.supabase.co/:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig
