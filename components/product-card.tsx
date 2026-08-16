@@ -58,7 +58,7 @@ export function ProductCard({
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 350, damping: 22 }}
       onClick={() => router.push(`/products/${id}`)}
-      className={`group relative flex flex-col overflow-hidden cursor-pointer ${
+      className={`group relative flex flex-col overflow-hidden cursor-pointer h-full ${
         isDark
           ? 'bg-card-dark border border-border-gold/40 hover:border-rich-gold/60'
           : 'bg-white border border-site-black/15 hover:border-site-black/40'
@@ -84,6 +84,16 @@ export function ProductCard({
 
         {/* Overlay on hover */}
         <div className="absolute inset-0 z-20 bg-site-black/0 group-hover:bg-site-black/20 transition-all duration-400 pointer-events-none" />
+
+        {/* Bottom gradient — bleeds into info section */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-10 z-[15] pointer-events-none"
+          style={{
+            background: isDark
+              ? 'linear-gradient(to top, rgba(30,28,26,0.82), transparent)'
+              : 'linear-gradient(to top, rgba(255,255,255,0.75), transparent)',
+          }}
+        />
 
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 z-30 flex flex-col gap-1.5">
@@ -142,8 +152,18 @@ export function ProductCard({
         )}
       </div>
 
+      {/* Image → info divider */}
+      <div
+        className="h-[2px] flex-shrink-0"
+        style={{
+          background: isDark
+            ? 'linear-gradient(to right, transparent, rgba(212,160,23,0.65) 40%, rgba(212,160,23,0.65) 60%, transparent)'
+            : 'linear-gradient(to right, transparent, rgba(184,134,11,0.5) 40%, rgba(184,134,11,0.5) 60%, transparent)',
+        }}
+      />
+
       {/* Info */}
-      <div className={`flex flex-col gap-2 p-3.5 ${isDark ? 'bg-card-dark' : 'bg-white'}`}>
+      <div className={`flex flex-col flex-1 gap-2 p-3.5 ${isDark ? 'bg-card-dark' : 'bg-white'}`}>
         {/* Name */}
         <h3 className={`font-brandon text-sm font-black uppercase tracking-wide leading-snug line-clamp-2 ${
           isDark ? 'text-ivory' : 'text-site-black'

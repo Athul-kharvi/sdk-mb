@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { categoryService, Category } from '@/services/category.service'
 import Link from 'next/link'
+import { GripVertical, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function EditProduct() {
   const router = useRouter()
@@ -16,6 +17,15 @@ export default function EditProduct() {
   const [images, setImages] = useState<string[]>([])
   const [urlInput, setUrlInput] = useState('')
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
+
+  const moveImage = (from: number, to: number) => {
+    const next = [...images]
+    const [item] = next.splice(from, 1)
+    next.splice(to, 0, item)
+    setImages(next)
+  }
 
   const getAuthHeaders = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -199,17 +209,77 @@ export default function EditProduct() {
                 <p className="font-syndicatgrotesk text-sm text-[#C4B49A]">{uploadingImage ? 'Uploading…' : 'Click or drag to upload'}</p>
               </div>
               {images.length > 0 && (
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-                  {images.map((url, i) => (
-                    <div key={i} className="relative group rounded-lg overflow-hidden border aspect-square">
-                      <img src={url} alt="" className="w-full h-full object-cover" />
-                      <button type="button" onClick={() => setImages(images.filter((_, j) => j !== i))}
-                        className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold">
-                        ×
-                      </button>
-                      {i === 0 && <span className="absolute bottom-1 left-1 text-[9px] bg-black/60 text-white px-1.5 py-0.5 rounded">Main</span>}
-                    </div>
-                  ))}
+                <div className="mt-4">
+                  <p className="font-syndicatgrotesk text-[9px] tracking-[0.15em] uppercase text-[#C4B49A] mb-2.5 flex items-center gap-1.5">
+                    <GripVertical size={10} />
+                    Drag to reorder · first image is the main display
+                  </p>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                    {images.map((url, i) => (
+                      <div
+                        key={`${url}-${i}`}
+                        draggable
+                        onDragStart={() => setDragIndex(i)}
+                        onDragOver={e => { e.preventDefault(); setDragOverIndex(i) }}
+                        onDrop={() => {
+                          if (dragIndex !== null && dragIndex !== i) moveImage(dragIndex, i)
+                          setDragIndex(null)
+                          setDragOverIndex(null)
+                        }}
+                        onDragEnd={() => { setDragIndex(null); setDragOverIndex(null) }}
+                        className={`relative group aspect-square overflow-hidden border select-none cursor-grab active:cursor-grabbing transition-all duration-150 ${
+                          dragOverIndex === i && dragIndex !== i
+                            ? 'border-[#D4A017] ring-2 ring-[#D4A017]/30 scale-[1.03]'
+                            : 'border-[#E8E0D5]'
+                        } ${dragIndex === i ? 'opacity-40 scale-95' : ''}`}
+                      >
+                        <img src={url} alt="" className="w-full h-full object-cover pointer-events-none" />
+
+                        {/* Drag handle */}
+                        <div className="absolute top-1 left-1 w-6 h-6 bg-black/55 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <GripVertical size={11} />
+                        </div>
+
+                        {/* Delete */}
+                        <button
+                          type="button"
+                          onClick={() => setImages(images.filter((_, j) => j !== i))}
+                          className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold"
+                        >
+                          ×
+                        </button>
+
+                        {/* Move left */}
+                        {i > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => moveImage(i, i - 1)}
+                            className="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/55 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <ChevronLeft size={13} />
+                          </button>
+                        )}
+
+                        {/* Move right */}
+                        {i < images.length - 1 && (
+                          <button
+                            type="button"
+                            onClick={() => moveImage(i, i + 1)}
+                            className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/55 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <ChevronRight size={13} />
+                          </button>
+                        )}
+
+                        {/* Main badge */}
+                        {i === 0 && (
+                          <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] bg-[#D4A017] text-[#0D0D0D] px-2 py-0.5 font-bold tracking-wide whitespace-nowrap">
+                            MAIN
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
