@@ -211,15 +211,15 @@ export default function ProductDetailPage() {
                 <>
                   <button
                     onClick={() => setActiveImg(i => (i - 1 + images.length) % images.length)}
-                    className="group/nav absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-black/25 backdrop-blur-md border border-white/15 hover:bg-rich-gold hover:border-rich-gold/80 transition-all duration-200"
+                    className="group/nav absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center transition-all duration-200"
                   >
-                    <ChevronLeft size={16} className="text-white/90 group-hover/nav:text-site-black transition-colors duration-200" />
+                    <ChevronLeft size={22} className="text-site-black/70" />
                   </button>
                   <button
                     onClick={() => setActiveImg(i => (i + 1) % images.length)}
-                    className="group/nav absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center bg-black/25 backdrop-blur-md border border-white/15 hover:bg-rich-gold hover:border-rich-gold/80 transition-all duration-200"
+                    className="group/nav absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center transition-all duration-200"
                   >
-                    <ChevronRight size={16} className="text-white/90 group-hover/nav:text-site-black transition-colors duration-200" />
+                    <ChevronRight size={22} className="text-site-black/70" />
                   </button>
                 </>
               )}

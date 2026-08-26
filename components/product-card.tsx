@@ -85,15 +85,13 @@ export function ProductCard({
         {/* Overlay on hover */}
         <div className="absolute inset-0 z-20 bg-site-black/0 group-hover:bg-site-black/20 transition-all duration-400 pointer-events-none" />
 
-        {/* Bottom gradient — bleeds into info section */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-10 z-[15] pointer-events-none"
-          style={{
-            background: isDark
-              ? 'linear-gradient(to top, rgba(30,28,26,0.82), transparent)'
-              : 'linear-gradient(to top, rgba(255,255,255,0.75), transparent)',
-          }}
-        />
+        {/* Bottom gradient — bleeds into info section (dark only) */}
+        {isDark && (
+          <div
+            className="absolute inset-x-0 bottom-0 h-10 z-[15] pointer-events-none"
+            style={{ background: 'linear-gradient(to top, rgba(30,28,26,0.82), transparent)' }}
+          />
+        )}
 
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 z-30 flex flex-col gap-1.5">
