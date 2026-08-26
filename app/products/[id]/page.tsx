@@ -54,6 +54,7 @@ export default function ProductDetailPage() {
   const [adding, setAdding] = useState(false)
   const [addedFeedback, setAddedFeedback] = useState(false)
   const [qty, setQty] = useState(1)
+  const [lightbox, setLightbox] = useState(false)
 
   const { addToCart } = useCartStore()
 
@@ -141,6 +142,73 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-warm-beige">
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox && images.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85"
+            onClick={() => setLightbox(false)}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setLightbox(false)}
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white transition-colors"
+              aria-label="Close"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+
+            {/* Image */}
+            <motion.img
+              key={activeImg}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              src={images[activeImg]}
+              alt={product?.name}
+              onClick={e => e.stopPropagation()}
+              className="max-h-[88vh] max-w-[88vw] object-contain select-none"
+            />
+
+            {/* Prev */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={e => { e.stopPropagation(); setActiveImg(i => (i - 1 + images.length) % images.length) }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button
+                  onClick={e => { e.stopPropagation(); setActiveImg(i => (i + 1) % images.length) }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/80 hover:text-white transition-colors"
+                  aria-label="Next"
+                >
+                  <ChevronRight size={32} />
+                </button>
+                {/* Dots */}
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={e => { e.stopPropagation(); setActiveImg(i) }}
+                      className={`rounded-full transition-all duration-200 ${activeImg === i ? 'w-5 h-1.5 bg-rich-gold' : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
@@ -177,7 +245,8 @@ export default function ProductDetailPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-full h-full object-cover"
+                    onClick={() => setLightbox(true)}
+                    className="w-full h-full object-cover cursor-zoom-in"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
