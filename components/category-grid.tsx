@@ -74,7 +74,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 aria-label={`Shop ${cat.name}`}
               >
                 {/* Image */}
-                <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full overflow-hidden bg-card-dark">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-card-dark">
                   {image ? (
                   <Image
                     src={image}
