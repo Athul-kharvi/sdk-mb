@@ -26,6 +26,7 @@ export default function AdminInventory() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
   const [edits, setEdits] = useState<Record<string, EditRow>>({})
   const [toastMsg, setToastMsg] = useState('')
+  const [lightboxImg, setLightboxImg] = useState<string | null>(null)
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -143,6 +144,27 @@ export default function AdminInventory() {
   return (
     <div className="p-6 lg:p-8 space-y-6">
 
+      {/* Lightbox */}
+      {lightboxImg && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          onClick={() => setLightboxImg(null)}
+        >
+          <img
+            src={lightboxImg}
+            alt="Product preview"
+            className="max-h-[80vh] max-w-[80vw] object-contain shadow-2xl border border-white/10"
+            onClick={e => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setLightboxImg(null)}
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white text-lg leading-none transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Toast */}
       {toastMsg && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#1A1A1A] text-[#D4A017] px-6 py-3 font-syndicatgrotesk text-[11px] tracking-[0.18em] uppercase shadow-xl">
@@ -244,7 +266,7 @@ export default function AdminInventory() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {thumb
-                          ? <img src={thumb} alt={p.name} className="w-9 h-9 object-cover border border-[#E8E0D5] flex-shrink-0" />
+                          ? <img src={thumb} alt={p.name} onClick={e => { e.stopPropagation(); setLightboxImg(thumb) }} className="w-9 h-9 object-cover border border-[#E8E0D5] flex-shrink-0 cursor-zoom-in hover:border-[#D4A017] transition-colors" />
                           : <div className="w-9 h-9 bg-[#F0EBE1] flex-shrink-0" />
                         }
                         <span className="font-brandon text-sm font-black text-[#1A1A1A] line-clamp-1 max-w-[140px]">{p.name}</span>
