@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useInView } from 'framer-motion'
 import { ProductCard } from './product-card'
 import { ArrowRight } from 'lucide-react'
 
@@ -32,11 +32,12 @@ export function ProductScroll({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header — dark vs light variants */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+        <div
           className="text-center mb-10 sm:mb-12 space-y-3"
+          style={{
+            animation: inView ? 'fade-in-up 0.6s ease-out both' : undefined,
+            opacity: inView ? undefined : 0,
+          }}
         >
           {isDark ? (
             // ── DARK SECTION header ──
@@ -73,18 +74,19 @@ export function ProductScroll({
               </p>
             </>
           )}
-        </motion.div>
+        </div>
 
         {/* Product grid — 4 col desktop, 2 col tablet, horizontal scroll mobile */}
         <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="grid grid-flow-col sm:grid-flow-row grid-rows-1 sm:grid-rows-none sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 min-w-min sm:min-w-0">
             {products.map((product, index) => (
-              <motion.div
+              <div
                 key={product.id}
                 className="w-44 xs:w-48 sm:w-auto h-full"
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, delay: index * 0.08, ease: 'easeOut' }}
+                style={{
+                  animation: inView ? `fade-in-up 0.55s ease-out ${index * 0.08}s both` : undefined,
+                  opacity: inView ? undefined : 0,
+                }}
               >
                 <ProductCard
                   {...product}
@@ -92,23 +94,22 @@ export function ProductScroll({
                   isDark={isDark}
                   badge={index === 0 ? 'NEW' : index === 1 ? 'BESTSELLER' : undefined}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* View all CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }}
+        <div
           className="flex justify-center mt-10 sm:mt-12"
+          style={{
+            animation: inView ? 'fade-in-up 0.5s ease-out 0.5s both' : undefined,
+            opacity: inView ? undefined : 0,
+          }}
         >
-          <motion.a
+          <a
             href={viewAllLink}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className={`inline-flex items-center gap-3 px-8 py-3 border font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase transition-all duration-200 group ${
+            className={`inline-flex items-center gap-3 px-8 py-3 border font-syndicatgrotesk text-[10px] font-bold tracking-[0.22em] uppercase transition-all duration-200 group hover:scale-[1.04] active:scale-[0.97] ${
               isDark
                 ? 'border-rich-gold/50 text-ivory hover:border-rich-gold hover:text-rich-gold hover:bg-rich-gold/8'
                 : 'border-site-black text-site-black hover:border-deep-gold hover:text-deep-gold hover:bg-deep-gold/10'
@@ -116,8 +117,8 @@ export function ProductScroll({
           >
             Shop All {title}
             <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </motion.a>
-        </motion.div>
+          </a>
+        </div>
       </div>
     </section>
   )

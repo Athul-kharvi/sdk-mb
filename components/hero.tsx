@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -81,29 +81,12 @@ function Slideshow({ images, objectPosition = 'center' }: { images: string[]; ob
 }
 
 // ─── Main Hero ────────────────────────────────────────────────────────────────
-export function Hero() {
-  const [desktopImgs, setDesktopImgs] = useState<string[]>(['/images/hero_image.png'])
-  const [mobileImgs, setMobileImgs] = useState<string[]>(['/images/hero_image_mobile.png'])
+interface HeroProps {
+  desktopImgs?: string[]
+  mobileImgs?: string[]
+}
 
-  // Fetch fresh from DB every time — bypasses all Next.js caching
-  useEffect(() => {
-    fetch('/api/admin/hero', { cache: 'no-store' })
-      .then(r => r.json())
-      .then(({ data }) => {
-        if (!data) return
-        const norm = (v: any): string[] => {
-          if (Array.isArray(v) && v.length) return v.filter(Boolean)
-          if (typeof v === 'string' && v) return [v]
-          return []
-        }
-        const d = norm(data.desktop)
-        const m = norm(data.mobile)
-        if (d.length) setDesktopImgs(d)
-        if (m.length) setMobileImgs(m)
-        else if (d.length) setMobileImgs(d) // fallback: use desktop for mobile
-      })
-      .catch(() => {})
-  }, [])
+export function Hero({ desktopImgs = ['/images/hero_image.png'], mobileImgs = ['/images/hero_image_mobile.png'] }: HeroProps) {
 
   return (
     <>

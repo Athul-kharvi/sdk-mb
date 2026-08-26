@@ -62,21 +62,20 @@ export default function ProductDetailPage() {
     setQty(1)
     const load = async () => {
       setLoading(true)
-      const res = await fetch(`/api/products/${id}`)
-      if (!res.ok) { setLoading(false); return }
-      const { data } = await res.json()
+      const [productRes, allRes] = await Promise.all([
+        fetch(`/api/products/${id}`),
+        fetch('/api/products'),
+      ])
+      if (!productRes.ok) { setLoading(false); return }
+      const { data } = await productRes.json()
       setProduct(data)
 
-      // fetch related: same category, excluding current product
-      if (data?.category_id) {
-        const allRes = await fetch('/api/products')
-        if (allRes.ok) {
-          const { data: all } = await allRes.json()
-          const others = (all as Product[]).filter(
-            p => p.category_id === data.category_id && p.id !== data.id
-          ).slice(0, 6)
-          setRelated(others)
-        }
+      if (data?.category_id && allRes.ok) {
+        const { data: all } = await allRes.json()
+        const others = (all as Product[]).filter(
+          p => p.category_id === data.category_id && p.id !== data.id
+        ).slice(0, 6)
+        setRelated(others)
       }
 
       setLoading(false)

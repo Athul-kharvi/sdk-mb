@@ -36,8 +36,8 @@ export default async function CategoryPage({ params }: Props) {
 
   let products: any[] = []
   if (category) {
-    const { data } = await ProductRepo.getAll()
-    products = (data || []).filter((p: any) => p.category_id === category.id).map((p: any) => ({
+    const { data } = await ProductRepo.getByCategory(category.id)
+    products = (data || []).map((p: any) => ({
       id: p.id,
       name: p.name,
       price: p.price,

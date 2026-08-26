@@ -2,7 +2,7 @@
 
 import { Heart, ShoppingBag, Zap } from 'lucide-react'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { useCartStore } from '@/store/cart'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
@@ -54,25 +54,25 @@ export function ProductCard({
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : null
 
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+    <div
       onClick={() => router.push(`/products/${id}`)}
-      className={`group relative flex flex-col overflow-hidden cursor-pointer h-full ${
+      className={`group relative flex flex-col overflow-hidden cursor-pointer h-full hover:-translate-y-1 transition-all duration-200 ease-out ${
         isDark
           ? 'bg-card-dark border border-border-gold/40 hover:border-rich-gold/60'
           : 'bg-white border border-site-black/15 hover:border-site-black/40'
-      } transition-colors duration-300`}
+      }`}
     >
       {/* Image container */}
       <div className="relative aspect-square overflow-hidden">
         <div className={`absolute inset-0 ${isDark ? 'bg-section-dark' : 'bg-warm-beige/60'}`} />
 
         {image ? (
-          <img
+          <Image
             src={image}
             alt={name}
-            className={`relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.08] ${outOfStock ? 'grayscale opacity-60' : ''}`}
+            fill
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className={`object-cover z-10 transition-transform duration-700 group-hover:scale-[1.08] ${outOfStock ? 'grayscale opacity-60' : ''}`}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -116,17 +116,16 @@ export function ProductCard({
         </div>
 
         {/* Wishlist */}
-        <motion.button
-          whileTap={{ scale: 0.85 }}
+        <button
           onClick={e => { e.stopPropagation(); setIsWishlisted(!isWishlisted) }}
-          className="absolute top-2.5 right-2.5 z-40 w-8 h-8 flex items-center justify-center bg-site-black/65 backdrop-blur-sm border border-white/10 hover:border-rich-gold/60 transition-all duration-200"
+          className="absolute top-2.5 right-2.5 z-40 w-8 h-8 flex items-center justify-center bg-site-black/65 backdrop-blur-sm border border-white/10 hover:border-rich-gold/60 active:scale-[0.85] transition-all duration-200"
           aria-label="Wishlist"
         >
           <Heart
             size={13}
             className={isWishlisted ? 'fill-rich-gold text-rich-gold' : 'text-white/80'}
           />
-        </motion.button>
+        </button>
 
         {/* Quick Add — slides up on hover (hidden when out of stock) */}
         {outOfStock ? (
@@ -193,11 +192,10 @@ export function ProductCard({
             </div>
           ) : (
             <div className="flex">
-              <motion.button
-                whileTap={{ scale: 0.96 }}
+              <button
                 onClick={e => handleAddToCart(e, false)}
                 disabled={adding}
-                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn ${
+                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn active:scale-[0.96] ${
                   isDark
                     ? 'text-muted-taupe hover:text-rich-gold'
                     : 'text-deep-gold/80 hover:text-deep-gold'
@@ -208,15 +206,14 @@ export function ProductCard({
                 }`} />
                 <ShoppingBag size={11} className="shrink-0" />
                 <span>{adding ? '…' : 'Add to Cart'}</span>
-              </motion.button>
+              </button>
 
               <span className={`w-px my-2 ${isDark ? 'bg-border-gold/50' : 'bg-deep-gold/20'}`} />
 
-              <motion.button
-                whileTap={{ scale: 0.96 }}
+              <button
                 onClick={e => handleAddToCart(e, true)}
                 disabled={adding}
-                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 ${
+                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 active:scale-[0.96] ${
                   isDark
                     ? 'text-rich-gold hover:text-light-gold'
                     : 'text-site-black hover:text-deep-gold'
@@ -227,11 +224,11 @@ export function ProductCard({
                 }`} />
                 <Zap size={11} className="shrink-0" />
                 <span>Buy Now</span>
-              </motion.button>
+              </button>
             </div>
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

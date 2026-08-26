@@ -9,13 +9,17 @@ import { supabase } from '@/lib/supabase'
 import { useCartStore } from '@/store/cart'
 import { CartDrawer } from '@/components/cart-drawer'
 
-export function Navbar() {
+interface NavbarProps {
+  categories?: { name: string; slug: string; image?: string | null }[]
+}
+
+export function Navbar({ categories }: NavbarProps = {}) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [session, setSession] = useState<any>(null)
-  const [navLinks, setNavLinks] = useState<{ name: string; slug: string; image?: string | null }[]>([])
+  const [navLinks, setNavLinks] = useState<{ name: string; slug: string; image?: string | null }[]>(categories ?? [])
   const router = useRouter()
   const { items, setIsOpen, fetchCart } = useCartStore()
 
@@ -57,6 +61,7 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
+    if (categories?.length) return
     const load = async () => {
       try {
         const cats = await categoryService.getAll()
