@@ -6,6 +6,19 @@ export async function GET(req: Request) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  const url = new URL(req.url)
+  const pageParam = url.searchParams.get('page')
+  const search = url.searchParams.get('search') ?? ''
+  const categoryId = url.searchParams.get('category') ?? ''
+
+  if (pageParam !== null) {
+    const page = Math.max(0, parseInt(pageParam) || 0)
+    const limit = 25
+    const { data, count, error } = await ProductRepo.getAllAdminPaginated(page, limit, search, categoryId)
+    if (error) return Response.json({ error: error.message }, { status: 500 })
+    return Response.json({ data, total: count ?? 0, page, limit })
+  }
+
   const { data, error } = await ProductRepo.getAllAdmin()
   if (error) return Response.json({ error: error.message }, { status: 500 })
   return Response.json({ data })

@@ -42,6 +42,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [filterCat, setFilterCat] = useState('')
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -79,9 +80,11 @@ export default function AdminDashboard() {
   const revenue = orders.reduce((a, o) => a + (o.total || 0), 0)
   const pendingCount = orders.filter(o => ['pending', 'Pending'].includes(o.status ?? '')).length
   const activeProducts = products.filter(p => p.is_active !== false).length
-  const filtered = products.filter(p =>
-    p.name?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filtered = products.filter(p => {
+    const ms = p.name?.toLowerCase().includes(search.toLowerCase())
+    const mc = !filterCat || p.category_id === filterCat
+    return ms && mc
+  })
 
   const getThumb = (img?: string) => {
     if (!img) return null
@@ -136,13 +139,25 @@ export default function AdminDashboard() {
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h2 className="font-brandon text-lg font-black uppercase tracking-tight text-[#1A1A1A]">Products</h2>
-          <input
-            type="text"
-            placeholder="Search products…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full sm:w-56 px-3 py-2 border border-[#E8E0D5] bg-white text-sm font-syndicatgrotesk text-[#1A1A1A] placeholder-[#C4B49A] outline-none focus:border-[#D4A017] transition-colors"
-          />
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <input
+              type="text"
+              placeholder="Search products…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full sm:w-48 px-3 py-2 border border-[#E8E0D5] bg-white text-sm font-syndicatgrotesk text-[#1A1A1A] placeholder-[#C4B49A] outline-none focus:border-[#D4A017] transition-colors"
+            />
+            <select
+              value={filterCat}
+              onChange={e => setFilterCat(e.target.value)}
+              className="w-full sm:w-44 px-3 py-2 border border-[#E8E0D5] bg-white font-syndicatgrotesk text-sm text-[#1A1A1A] outline-none focus:border-[#D4A017] transition-colors"
+            >
+              <option value="">All Categories</option>
+              {categories.map((c: any) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="bg-white border border-[#E8E0D5] overflow-hidden shadow-sm">

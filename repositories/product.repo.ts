@@ -16,6 +16,17 @@ export const ProductRepo = {
 
     getAllAdmin: () => supabase.from('products').select('*, categories(id, name, slug)').order('created_at', { ascending: false }),
 
+    getAllAdminPaginated: (page: number, limit: number, search: string, categoryId: string) => {
+        let q = supabase
+            .from('products')
+            .select('*, categories(id, name, slug)', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .range(page * limit, (page + 1) * limit - 1)
+        if (search) q = q.ilike('name', `%${search}%`)
+        if (categoryId) q = q.eq('category_id', categoryId)
+        return q
+    },
+
     getById: (id: string) =>
         supabase.from('products').select('*, categories(id, name, slug)').eq('id', id).single(),
 

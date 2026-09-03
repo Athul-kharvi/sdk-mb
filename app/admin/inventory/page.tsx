@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Pencil } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 interface Product {
@@ -17,8 +19,13 @@ interface Product {
 
 type EditRow = { price: string; original_price: string; stock: string }
 
+const PAGE_SIZE = 25
+
 export default function AdminInventory() {
+  const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState<string | null>(null)
   const [search, setSearch] = useState('')
@@ -38,16 +45,15 @@ export default function AdminInventory() {
     setTimeout(() => setToastMsg(''), 3000)
   }
 
-  const fetchData = async () => {
+  const fetchProducts = async (pg: number, q: string, cat: string) => {
+    setLoading(true)
     const token = await getToken()
-    const h = { Authorization: `Bearer ${token}` }
-    const [pr, cr] = await Promise.all([
-      fetch('/api/admin/products', { headers: h }).then(r => r.json()),
-      fetch('/api/admin/categories', { headers: h }).then(r => r.json()),
-    ])
-    const prods: Product[] = pr.data || []
+    const params = new URLSearchParams({ page: String(pg), search: q, category: cat })
+    const res = await fetch(`/api/admin/products?${params}`, { headers: { Authorization: `Bearer ${token}` } })
+    const json = await res.json()
+    const prods: Product[] = json.data || []
     setProducts(prods)
-    setCategories(cr.data || [])
+    setTotal(json.total ?? 0)
     const init: Record<string, EditRow> = {}
     prods.forEach(p => {
       init[p.id] = {
@@ -56,11 +62,18 @@ export default function AdminInventory() {
         stock: String(p.stock ?? ''),
       }
     })
-    setEdits(init)
+    setEdits(prev => ({ ...prev, ...init }))
     setLoading(false)
   }
 
-  useEffect(() => { fetchData() }, [])
+  const fetchCategories = async () => {
+    const token = await getToken()
+    const cr = await fetch('/api/admin/categories', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json())
+    setCategories(cr.data || [])
+  }
+
+  useEffect(() => { fetchCategories() }, [])
+  useEffect(() => { fetchProducts(page, search, filterCat) }, [page, search, filterCat])
 
   const setField = (id: string, field: keyof EditRow, val: string) => {
     setEdits(prev => ({ ...prev, [id]: { ...prev[id], [field]: val } }))
@@ -81,7 +94,7 @@ export default function AdminInventory() {
     })
     setSaving(null)
     showToast(`"${p.name}" updated`)
-    fetchData()
+    fetchProducts(page, search, filterCat)
   }
 
   const handleToggleActive = async (id: string, is_active: boolean) => {
@@ -92,7 +105,7 @@ export default function AdminInventory() {
       body: JSON.stringify({ is_active: !is_active }),
     })
     showToast(is_active ? 'Product hidden from store' : 'Product visible on store')
-    fetchData()
+    fetchProducts(page, search, filterCat)
   }
 
   const getThumb = (img?: string) => {
@@ -118,17 +131,11 @@ export default function AdminInventory() {
     )
   }
 
-  const filtered = products.filter(p => {
-    const ms = p.name?.toLowerCase().includes(search.toLowerCase())
-    const mc = !filterCat || p.category_id === filterCat
-    return ms && mc
-  })
+  const filtered = products
 
-  const lowStock = products.filter(p => {
-    const n = parseInt(String(p.stock ?? ''))
-    return !isNaN(n) && n <= 5
-  }).length
+  const lowStock = products.filter(p => { const n = parseInt(String(p.stock ?? '')); return !isNaN(n) && n <= 5 }).length
   const outOfStock = products.filter(p => p.stock === 0).length
+  const totalPages = Math.ceil(total / PAGE_SIZE)
 
   if (loading) {
     return (
@@ -214,12 +221,12 @@ export default function AdminInventory() {
           type="text"
           placeholder="Search products…"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => { setPage(0); setSearch(e.target.value) }}
           className="flex-1 px-3 py-2.5 border border-[#E8E0D5] bg-white font-syndicatgrotesk text-sm text-[#1A1A1A] placeholder-[#C4B49A] outline-none focus:border-[#D4A017] transition-colors"
         />
         <select
           value={filterCat}
-          onChange={e => setFilterCat(e.target.value)}
+          onChange={e => { setPage(0); setFilterCat(e.target.value) }}
           className="px-3 py-2.5 border border-[#E8E0D5] bg-white font-syndicatgrotesk text-sm text-[#1A1A1A] outline-none focus:border-[#D4A017] transition-colors"
         >
           <option value="">All Categories</option>
@@ -269,7 +276,14 @@ export default function AdminInventory() {
                           ? <img src={thumb} alt={p.name} onClick={e => { e.stopPropagation(); setLightboxImg(thumb) }} className="w-9 h-9 object-cover border border-[#E8E0D5] flex-shrink-0 cursor-zoom-in hover:border-[#D4A017] transition-colors" />
                           : <div className="w-9 h-9 bg-[#F0EBE1] flex-shrink-0" />
                         }
-                        <span className="font-brandon text-sm font-black text-[#1A1A1A] line-clamp-1 max-w-[140px]">{p.name}</span>
+                        <span className="font-brandon text-sm font-black text-[#1A1A1A] line-clamp-1 max-w-[120px]">{p.name}</span>
+                        <button
+                          onClick={e => { e.stopPropagation(); router.push(`/admin/products/${p.id}`) }}
+                          title="Edit product"
+                          className="ml-auto flex-shrink-0 p-1 text-[#C4B49A] hover:text-[#D4A017] transition-colors"
+                        >
+                          <Pencil size={13} />
+                        </button>
                       </div>
                     </td>
                     <td className="px-4 py-3 font-syndicatgrotesk text-[11px] text-[#8A7A6A] whitespace-nowrap">
@@ -348,6 +362,31 @@ export default function AdminInventory() {
           </table>
         </div>
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <span className="font-syndicatgrotesk text-[11px] text-[#8A7A6A]">
+            Page {page + 1} of {totalPages} &nbsp;·&nbsp; {total} products
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              disabled={page === 0 || loading}
+              className="px-4 py-2 font-syndicatgrotesk text-[10px] font-bold tracking-[0.15em] uppercase border border-[#E8E0D5] bg-white text-[#1A1A1A] hover:border-[#D4A017] hover:text-[#D4A017] disabled:opacity-40 disabled:cursor-default transition-colors"
+            >
+              ← Prev
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={page >= totalPages - 1 || loading}
+              className="px-4 py-2 font-syndicatgrotesk text-[10px] font-bold tracking-[0.15em] uppercase border border-[#E8E0D5] bg-white text-[#1A1A1A] hover:border-[#D4A017] hover:text-[#D4A017] disabled:opacity-40 disabled:cursor-default transition-colors"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      )}
 
       <p className="font-syndicatgrotesk text-[10px] text-[#C4B49A] tracking-wider">
         Set MRP to show a crossed-out price on the product card. Stock ≤5 shows "Low", 0 shows "Out of Stock".
