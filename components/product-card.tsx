@@ -1,6 +1,6 @@
 'use client'
 
-import { Heart, ShoppingBag, Zap } from 'lucide-react'
+import { Heart, ShoppingBag, Zap } from 'lucide-react' // Zap kept for Quick Add overlay
 import { useState } from 'react'
 import Image from 'next/image'
 import { useCartStore } from '@/store/cart'
@@ -106,11 +106,6 @@ export function ProductCard({
                   {badge}
                 </span>
               )}
-              {discount && (
-                <span className="px-2.5 py-1 bg-site-black text-rich-gold font-syndicatgrotesk text-[9px] font-bold tracking-[0.1em] uppercase border border-border-gold">
-                  -{discount}%
-                </span>
-              )}
             </>
           )}
         </div>
@@ -169,13 +164,18 @@ export function ProductCard({
         </h3>
 
         {/* Price */}
-        <div className="flex items-baseline gap-2 mt-auto pt-1">
+        <div className="flex items-baseline gap-2 mt-auto pt-1 flex-wrap">
           <span className={`font-brandon text-base font-black ${isDark ? 'text-rich-gold' : 'text-deep-gold'}`}>
             ₹{price.toLocaleString('en-IN')}
           </span>
           {originalPrice && (
             <span className={`font-syndicatgrotesk text-xs line-through ${isDark ? 'text-white/40' : 'text-site-black/40'}`}>
               ₹{originalPrice.toLocaleString('en-IN')}
+            </span>
+          )}
+          {discount && (
+            <span className="font-syndicatgrotesk text-[9px] font-bold px-1.5 py-0.5 bg-site-black text-rich-gold border border-border-gold tracking-[0.08em]">
+              -{discount}%
             </span>
           )}
         </div>
@@ -191,41 +191,21 @@ export function ProductCard({
               <span className="w-1.5 h-1.5 rounded-full bg-muted-taupe/50" />
             </div>
           ) : (
-            <div className="flex">
-              <button
-                onClick={e => handleAddToCart(e, false)}
-                disabled={adding}
-                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn active:scale-[0.96] ${
-                  isDark
-                    ? 'text-muted-taupe hover:text-rich-gold'
-                    : 'text-deep-gold/80 hover:text-deep-gold'
-                }`}
-              >
-                <span className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover/btn:w-full transition-all duration-300 ${
-                  isDark ? 'bg-rich-gold' : 'bg-deep-gold'
-                }`} />
-                <ShoppingBag size={11} className="shrink-0" />
-                <span>{adding ? '…' : 'Add to Cart'}</span>
-              </button>
-
-              <span className={`w-px my-2 ${isDark ? 'bg-border-gold/50' : 'bg-deep-gold/20'}`} />
-
-              <button
-                onClick={e => handleAddToCart(e, true)}
-                disabled={adding}
-                className={`relative flex-1 flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn2 active:scale-[0.96] ${
-                  isDark
-                    ? 'text-rich-gold hover:text-light-gold'
-                    : 'text-site-black hover:text-deep-gold'
-                }`}
-              >
-                <span className={`absolute inset-0 opacity-0 group-hover/btn2:opacity-100 transition-opacity duration-300 ${
-                  isDark ? 'bg-rich-gold/10' : 'bg-deep-gold/8'
-                }`} />
-                <Zap size={11} className="shrink-0" />
-                <span>Buy Now</span>
-              </button>
-            </div>
+            <button
+              onClick={e => handleAddToCart(e, false)}
+              disabled={adding}
+              className={`relative w-full flex items-center justify-center gap-1.5 py-3 font-syndicatgrotesk text-[9px] font-bold tracking-[0.14em] uppercase transition-all duration-200 disabled:opacity-50 overflow-hidden group/btn active:scale-[0.96] ${
+                isDark
+                  ? 'text-muted-taupe hover:text-rich-gold'
+                  : 'text-deep-gold/80 hover:text-deep-gold'
+              }`}
+            >
+              <span className={`absolute bottom-0 left-0 h-[2px] w-0 group-hover/btn:w-full transition-all duration-300 ${
+                isDark ? 'bg-rich-gold' : 'bg-deep-gold'
+              }`} />
+              <ShoppingBag size={11} className="shrink-0" />
+              <span>{adding ? '…' : 'Add to Cart'}</span>
+            </button>
           )}
         </div>
       </div>

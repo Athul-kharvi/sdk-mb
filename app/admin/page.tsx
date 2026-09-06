@@ -65,6 +65,16 @@ export default function AdminDashboard() {
 
   useEffect(() => { fetchAll() }, [])
 
+  const handleToggleActive = async (id: string, is_active: boolean) => {
+    const token = await getToken()
+    await fetch(`/api/admin/products/${id}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ is_active: !is_active }),
+    })
+    fetchAll()
+  }
+
   const handleDelete = async (id: string) => {
     if (!confirm('Hide this product from the store?')) return
     setDeletingId(id)
@@ -165,7 +175,7 @@ export default function AdminDashboard() {
             <table className="w-full min-w-[640px]">
               <thead className="bg-[#FAF7F2] border-b border-[#E8E0D5]">
                 <tr>
-                  {['Product', 'Category', 'Price', 'Stock', 'Status', 'Actions'].map(h => (
+                  {['Product', 'Category', 'Price', 'Stock', 'Status', 'Visibility', 'Actions'].map(h => (
                     <th key={h} className="px-4 py-3 text-left font-syndicatgrotesk text-[9px] tracking-[0.22em] uppercase text-[#8A7A6A] font-semibold">
                       {h}
                     </th>
@@ -218,6 +228,17 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
+                        <button
+                          onClick={() => handleToggleActive(p.id, p.is_active)}
+                          className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full transition-colors duration-200 ${isActive ? 'bg-[#D4A017]' : 'bg-[#E8E0D5]'}`}
+                          role="switch"
+                          aria-checked={isActive}
+                          aria-label={`Toggle ${p.name} visibility`}
+                        >
+                          <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${isActive ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
+                        </button>
+                      </td>
+                      <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() => router.push(`/admin/products/${p.id}`)}
@@ -239,7 +260,7 @@ export default function AdminDashboard() {
                 })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center font-syndicatgrotesk text-[11px] tracking-wider uppercase text-[#C4B49A]">
+                    <td colSpan={7} className="py-12 text-center font-syndicatgrotesk text-[11px] tracking-wider uppercase text-[#C4B49A]">
                       {search ? 'No products match your search' : 'No products yet'}
                     </td>
                   </tr>

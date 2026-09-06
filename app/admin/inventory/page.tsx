@@ -34,6 +34,8 @@ export default function AdminInventory() {
   const [edits, setEdits] = useState<Record<string, EditRow>>({})
   const [toastMsg, setToastMsg] = useState('')
   const [lightboxImg, setLightboxImg] = useState<string | null>(null)
+  const [imageEditId, setImageEditId] = useState<string | null>(null)
+  const [imageEditVal, setImageEditVal] = useState('')
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -105,6 +107,18 @@ export default function AdminInventory() {
       body: JSON.stringify({ is_active: !is_active }),
     })
     showToast(is_active ? 'Product hidden from store' : 'Product visible on store')
+    fetchProducts(page, search, filterCat)
+  }
+
+  const handleSaveImage = async (id: string) => {
+    const token = await getToken()
+    await fetch(`/api/admin/products/${id}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: imageEditVal }),
+    })
+    setImageEditId(null)
+    showToast('Image updated')
     fetchProducts(page, search, filterCat)
   }
 
@@ -272,15 +286,47 @@ export default function AdminInventory() {
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {thumb
-                          ? <img src={thumb} alt={p.name} onClick={e => { e.stopPropagation(); setLightboxImg(thumb) }} className="w-9 h-9 object-cover border border-[#E8E0D5] flex-shrink-0 cursor-zoom-in hover:border-[#D4A017] transition-colors" />
-                          : <div className="w-9 h-9 bg-[#F0EBE1] flex-shrink-0" />
-                        }
-                        <span className="font-brandon text-sm font-black text-[#1A1A1A] line-clamp-1 max-w-[120px]">{p.name}</span>
+                        <div className="relative flex-shrink-0 group/img">
+                          {thumb
+                            ? <img
+                                src={thumb}
+                                alt={p.name}
+                                onClick={e => { e.stopPropagation(); setLightboxImg(thumb) }}
+                                onDoubleClick={e => { e.stopPropagation(); setImageEditId(p.id); setImageEditVal(p.image || '') }}
+                                title="Click to preview · Double-click to edit image"
+                                className="w-9 h-9 object-cover border border-[#E8E0D5] cursor-zoom-in hover:border-[#D4A017] transition-colors"
+                              />
+                            : <div
+                                onDoubleClick={e => { e.stopPropagation(); setImageEditId(p.id); setImageEditVal('') }}
+                                title="Double-click to add image"
+                                className="w-9 h-9 bg-[#F0EBE1] flex items-center justify-center cursor-pointer hover:bg-[#E8E0D5] transition-colors"
+                              >
+                                <Pencil size={11} className="text-[#C4B49A]" />
+                              </div>
+                          }
+                        </div>
+                        <div className="flex flex-col min-w-0 flex-1">
+                          <span className="font-brandon text-sm font-black text-[#1A1A1A] line-clamp-1 max-w-[120px]">{p.name}</span>
+                          {imageEditId === p.id && (
+                            <div className="flex items-center gap-1 mt-1" onClick={e => e.stopPropagation()}>
+                              <input
+                                autoFocus
+                                type="text"
+                                value={imageEditVal}
+                                onChange={e => setImageEditVal(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') handleSaveImage(p.id); if (e.key === 'Escape') setImageEditId(null) }}
+                                placeholder="Paste image URL…"
+                                className="w-40 px-2 py-0.5 border border-[#D4A017] font-syndicatgrotesk text-[11px] text-[#1A1A1A] outline-none bg-white"
+                              />
+                              <button onClick={() => handleSaveImage(p.id)} className="px-2 py-0.5 bg-[#D4A017] text-[#0D0D0D] font-syndicatgrotesk text-[10px] font-bold">✓</button>
+                              <button onClick={() => setImageEditId(null)} className="px-2 py-0.5 bg-[#F0EBE1] text-[#8A7A6A] font-syndicatgrotesk text-[10px]">✕</button>
+                            </div>
+                          )}
+                        </div>
                         <button
                           onClick={e => { e.stopPropagation(); router.push(`/admin/products/${p.id}`) }}
                           title="Edit product"
-                          className="ml-auto flex-shrink-0 p-1 text-[#C4B49A] hover:text-[#D4A017] transition-colors"
+                          className="flex-shrink-0 p-1 text-[#C4B49A] hover:text-[#D4A017] transition-colors"
                         >
                           <Pencil size={13} />
                         </button>

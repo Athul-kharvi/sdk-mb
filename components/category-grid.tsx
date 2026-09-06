@@ -59,7 +59,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
       {/* Grid — flex-wrap + justify-center auto-centers the last row when odd */}
       <div className="px-2 sm:px-3 lg:px-12">
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 lg:max-w-7xl lg:mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 lg:max-w-7xl lg:mx-auto">
           {items.map((cat, i) => {
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-')
             const image = cat.image || null
@@ -70,7 +70,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 initial={{ opacity: 0, y: 32 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.65, delay: Math.min(0.15 + i * 0.08, 0.65), ease: 'easeOut' }}
-                className="group relative overflow-hidden cursor-pointer rounded-sm w-[calc(50%-4px)] lg:w-[calc(33.333%-8px)]"
+                className="group relative overflow-hidden cursor-pointer rounded-sm"
                 aria-label={`Shop ${cat.name}`}
               >
                 {/* Image */}
